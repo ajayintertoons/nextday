@@ -111,7 +111,7 @@ const CreatePickupRequest = () => {
   };
 
   return (
-    <div className="p-4 ">
+    <div className="container mx-auto p-3 pt-[116px] lg:pt-0 ">
       <div className=" p-6 rounded-lg shadow-md w-full ">
         <h1 className="text-2xl font-bold font-sansation text-gray-800 mb-6">{editData ? "Update Pickup Request" : "Create Pickup Request"}</h1>
 

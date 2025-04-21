@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import logo from "../../images/VerticalBorder.png";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { Bars3Icon , XMarkIcon } from "@heroicons/react/24/outline";
 import { IoMail } from "react-icons/io5";
 import { IoMdTime } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
@@ -229,7 +229,11 @@ function Navbar({ className }) {
                 {/* Mobile navigation toggle */}
                 <div className="lg:hidden flex items-center mx-3">
                   <button onClick={() => setToggleMenu(!toggleMenu)}>
-                    <Bars3Icon color="white" className="h-6" />
+                    {toggleMenu ? (
+                      <XMarkIcon color="white" className="h-6" />
+                    ) : (
+                      <Bars3Icon color="white" className="h-6" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -237,28 +241,89 @@ function Navbar({ className }) {
           </div>
           {/* Mobile navigation */}
           <div
-            className={`fixed z-40 w-full bg-gray-100 overflow-hidden flex flex-col lg:hidden gap-12 origin-top duration-700 pt-[116px] lg:pt-0 ${!toggleMenu ? "h-0" : "h-full"}`}
+            className={`fixed z-40 w-full bg-gray-100 overflow-y-auto scrollbar-hide flex flex-col lg:hidden gap-12 origin-top duration-700 pt-[116px] lg:pt-0 ${!toggleMenu ? "h-0" : "h-full"}`}
           >
-            <div className="px-8">
-              <div className="flex flex-col gap-3 font-bold tracking-wider">
+            <div className="px-5 py-4">
+            {isLogin ? (
+              <div className="flex flex-col gap-1 font-bold tracking-wide pb-3">
+                {/* Profile */}
+                <div
+                  className="flex items-center justify-between text-gray-700 px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                  onClick={() => {
+                    navigate(`/home/${userType.toLowerCase()}/my-profile`);
+                    setToggleMenu(!toggleMenu);
+                  }}
+                >
+                  <span>Profile</span>
+                  <FaUserCircle className="text-lg" />
+                </div>
+
+                {/* Logout */}
+                <div
+                  className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                  onClick={logOut}
+                >
+                  <span>Logout</span>
+                  <FaArrowRight className="text-lg" />
+                </div>
+
+                {/* Action Buttons */}
+                <>
+                  {currentPath !== "/create-pickup-request" && (
+                    <div
+                      className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                      onClick={() => {
+                        navigate(`/create-pickup-request`);
+                        setToggleMenu(!toggleMenu);
+                      }}
+                    >
+                      <span>Request Pickup</span>
+                      <FaArrowRight className="text-lg" />
+                    </div>
+                  )}
+                  {currentPath !== "/create-pickup" && (
+                    <div
+                      className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                      onClick={() => {
+                        sessionStorage.removeItem("package");
+                        sessionStorage.removeItem("pickupOptions");
+                        navigate(`/create-pickup`);
+                        setToggleMenu(!toggleMenu);
+                      }}
+                    >
+                      <span>Create Booking</span>
+                      <FaArrowRight className="text-lg" />
+                    </div>
+                  )}
+                </>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4 font-bold tracking-wide py-3">
+                <div
+                  className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                  onClick={() => {
+                    setIsLoginModalOpen(true);
+                    setToggleMenu(!toggleMenu);
+                  }}
+                >
+                  <span>Login</span>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-3 border-t pt-4 flex flex-col gap-1 font-bold tracking-wide">
                 {menuItems?.map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-1 hover:text-custom-green cursor-pointer"
+                    className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
                     onClick={() => navigate(item.path)}
                   >
-                    <button className="btn ">{item.label}</button>
+                    <button className="btn rounded-md ">
+                      {item.label}
+                    </button>
                     {item.hasPlus && <FaPlus className="text-xs" />}
                   </div>
                 ))}
-                {/* <div
-                  key={index}
-                  className="flex items-center gap-1 hover:text-custom-green cursor-pointer"
-                  onClick={() => navigate(item.path)}
-                >
-                  <button className="btn ">{item.label}</button>
-                  {item.hasPlus && <FaPlus className="text-xs" />}
-                </div> */}
               </div>
             </div>
           </div>

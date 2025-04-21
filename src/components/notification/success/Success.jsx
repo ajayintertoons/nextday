@@ -13,6 +13,7 @@ const Success = () => {
   const reqNo = searchParams.get("reqNo");
   const referenceNumber = searchParams.get("referenceNumber");
   const bookingId = searchParams.get('bookingId');
+  const pickupReqId = searchParams.get('pickupReqId');
   const [pdfData,setPdfData] = useState();
   const navigate = useNavigate();
    useEffect(()=>{
@@ -39,13 +40,20 @@ const Success = () => {
     })
    }
 
+   useEffect(() => {
+    // Let's say your page depends on some state passed via navigation
+    if (!location.state?.fromBooking) {
+      navigate('/home/customer/dashboard', { replace: true });
+    }
+  }, [location, navigate]);
+
 
   return (
     <>
       {/* ------------------------------ main div ------------------------------ */}
-      {reqNo && <div className="container mx-auto my-20 flex flex-col items-center  ">
+      {reqNo && <div className="container mx-auto px-5 pt-[116px] lg:pt-[0px] flex flex-col items-center  ">
         {/* image container */}
-        <div className="w-1/4 mb-5 ">
+        <div className="w-1/4 my-5 ">
           <img src={success} alt="success" className="mx-auto" />
         </div>
         {/* image container end */}
@@ -69,15 +77,26 @@ const Success = () => {
         {/* Success info end */}
 
         {/* Button and Link */}
-        <div className=" w-full flex justify-center gap-10 items-center mt-3">
+        <div className=" w-full flex flex-col sm:flex-col md:flex-row justify-center gap-4 md:gap-10 items-center mt-3 mb-5">
           <a
           href={pdfData}
           target="_blank"
-            className="flex items-center border justify-center rounded-md  font-sansation font-regular py-3 text-custom-white bg-custom-green border rounded-3xl md:w-[15rem] lg:w-[15rem] "
+            className="flex items-center border justify-center rounded-md  font-sansation font-regular py-3 text-custom-white bg-custom-green  w-full max-w-[15rem] md:w-[15rem] lg:w-[15rem] "
           > Print Receipts</a>
-          <a href="/home/customer/dashboard" className="text-custom-green underline ">
+          {pickupReqId && (
+            <a className="flex items-center border justify-center rounded-md  font-sansation font-regular py-3 text-custom-white bg-custom-green  w-full max-w-[15rem] md:w-[15rem] lg:w-[15rem] " href={`/create-pickup?pickupReqId=${pickupReqId}`}>
+              Repeat Booking
+            </a>
+          )}
+          
+          {/* <a href="/home/customer/dashboard" className="text-custom-green underline mt-2 md:mt-0">
             Continue to Dashboard
-          </a>
+          </a> */}
+          <button className="text-custom-green underline mt-2 md:mt-0"
+           onClick={() => navigate('/home/customer/dashboard', { replace: true })}>
+            Continue to Dashboard
+          </button>
+
         </div>
         {/* Button and Link end */}
       </div>}

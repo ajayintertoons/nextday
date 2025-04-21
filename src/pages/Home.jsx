@@ -30,7 +30,7 @@ const Home = () => {
           {isClicked ? (
             <>
               <div className="  bg-[#F1F5FF ]">
-              <div className=" flex text-3xl cursor-pointer justify-end lg:hidden">
+              <div className=" flex text-3xl py-2 cursor-pointer justify-end lg:hidden ">
                 <IoMdCloseCircle onClick={() => setIsClicked(false)} />
               </div>
                 <Sidebar />

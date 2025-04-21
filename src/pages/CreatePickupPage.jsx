@@ -319,7 +319,17 @@ const CreatePickupPage = () => {
           console.error("Failed to remove item from sessionStorage:", err);
         }
         
-        navigate(`/success?reqNo=${skip ? response?.data?.[0]?.pickupReqNo : response?.data?.[0]?.awbNumber}&referenceNumber=${response?.data?.[0]?.referenceNumber ? response?.data?.[0]?.referenceNumber : 0}&bookingId=${response?.data?.[0]?.bookingId ? response?.data?.[0]?.bookingId : ""}`)
+        // navigate(`/success?reqNo=${skip ? response?.data?.[0]?.pickupReqNo : response?.data?.[0]?.awbNumber}&referenceNumber=${response?.data?.[0]?.referenceNumber ? response?.data?.[0]?.referenceNumber : 0}&bookingId=${response?.data?.[0]?.bookingId ? response?.data?.[0]?.bookingId : ""}&pickupReqId=${pickupReqId}`, { state: { fromBooking: true } })
+        const pickupReqParam = (pickupReqId && pickupReqId !== "null" && pickupReqId !== "undefined")
+          ? `&pickupReqId=${pickupReqId}`
+          : "";
+
+        navigate(
+          `/success?reqNo=${skip ? response?.data?.[0]?.pickupReqNo : response?.data?.[0]?.awbNumber
+          }&referenceNumber=${response?.data?.[0]?.referenceNumber || 0
+          }&bookingId=${response?.data?.[0]?.bookingId || ""}${pickupReqParam}`,
+          { state: { fromBooking: true } }
+        );
       }).catch((error) => {
         if (error.response.status === 500) {
           toast.dismiss();
@@ -445,15 +455,7 @@ const CreatePickupPage = () => {
       // setFormData(formik.values);
 
       // markAllFieldsTouched();
-      // formik.validateForm().then((errors) => {
-      //   if (Object.keys(errors).length === 0 && !skip) {
-      //     setCurrentStep((prevStep) => Math.min(prevStep + 1, 3));
-      //   } else if (Object.keys(errors).length === 0 && skip) {
-      //     formik.handleSubmit();
-      //   } else {
-      //     console.log("Errors found. Not moving to the next step.");
-      //   }
-      // });
+
 
       formik.validateForm().then((errors) => {
         markAllFieldsTouched(); // Mark fields as touched AFTER validation triggers errors
@@ -530,13 +532,6 @@ const CreatePickupPage = () => {
 
             {currentStep === 3 ? (
               <>
-                {/* complete pickup button */}
-                {/* <Button
-                  buttonText={isSubmitting ? "Processing..." : "Complete Pickup"}
-                  className={`px-3 absolute right-4 ${isSubmitting ? "opacity-60 cursor-not-allowed" : ""}`}
-                  // onClick={handleCompletePickup}
-                  onClick={formik.handleSubmit}
-                /> */}
 
                 <Button
                   buttonText={
@@ -545,46 +540,17 @@ const CreatePickupPage = () => {
                     ) : "Complete Pickup"
                   }
                   className={'min-w-[180px] px-3 absolute right-4'}
-                  onClick={formik.handleSubmit}
+                  onClick={() => {
+                    if (!formik.values.paymentMethod) {
+                      toast.dismiss();
+                      toast.error("Payment method is required");
+                      return;
+                    }
+                    formik.handleSubmit();
+                  }}
                   disabled={isSubmitting}
                 />
 
-                
-{/* 
-                <Button
-                  buttonText={
-                    isSubmitting ? (
-                      <div className="flex items-center justify-center gap-2">
-                        <svg
-                          className="animate-spin h-4 w-4 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                          />
-                        </svg>
-                        Processing...
-                      </div>
-                    ) : "Complete Pickup"
-                  }
-                  className={`min-w-[180px] px-3 absolute right-4 ${isSubmitting ? "opacity-60 cursor-not-allowed" : ""}`}
-                  onClick={formik.handleSubmit}
-                  disabled={isSubmitting}
-                />
-
-                 */}
               </>
             ) : (
               <>

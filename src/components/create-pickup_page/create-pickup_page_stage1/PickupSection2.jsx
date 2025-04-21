@@ -81,6 +81,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
           boxLength: formik.values.packages[index]?.boxLength || '',
           boxBreadth: formik.values.packages[index]?.boxBreadth || '',
           volumetricWeight: formik.values.packages[index]?.volumetricWeight || '',
+          approxWeight: formik.values.packages[index]?.approxWeight || '',
           withInvoice: false,
           images: [],
           lock: false,

@@ -21,7 +21,7 @@ const CreateRecurringPickup = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [errorMap, setErrorMap] = useState({});
     const [frequency, setFrequency] = useState(""); // Add state for frequency
-    const [weeklyDay, setWeeklyDay] = useState([]);
+    // const [weeklyDay, setWeeklyDay] = useState([]);
     const [monthlyDate, setMonthlyDate] = useState();
     const [loading, setLoading] = useState(false);
     const [editData, setEditData] = useState();
@@ -30,13 +30,16 @@ const CreateRecurringPickup = () => {
     const queryParams = new URLSearchParams(location.search);
     const id = queryParams.get("id");
 
+    console.log(errorMap)
+
 
     const formik = useGlobalFormik(recurringInitialValues, recurringSchema, (values) => {
         if (!addressId) {
             toast.dismiss();
             toast.error("Please select an address");
             return false;
-        } else if (frequency == "Weekly" && weeklyDay?.length <= 0) {
+        } else if (frequency === "Weekly" && formik.values?.weeklyDay?.length <= 0) {
+            toast.error("Please select at least one weekday");
             return false;
         } else if (frequency == "Monthly" && !monthlyDate) {
             return false;
@@ -174,6 +177,8 @@ const CreateRecurringPickup = () => {
     const weeks = [{ label: "Sun", value: "1" }, { label: "Mon", value: "2" }, { label: "Tue", value: "3" }, { label: "Wed", value: "4" }, { label: "Thu", value: "5" }, { label: "Fri", value: "6" }, { label: "Sat", value: "7" }]
 
     const [addressId, setAddressId] = useState('');
+    // console.log(addressId , "address ID")
+    // console.log(addressList , "address List")
 
     return (
         <div>
@@ -190,7 +195,7 @@ const CreateRecurringPickup = () => {
                             </div>
                             <div className=' ' style={{ maxHeight: '320px', minWidth: "250px", overflowY: 'auto' }} >
                                 {addressList.filter(address => address?.addressLabel?.toLowerCase().includes(searchQuery.toLowerCase())).map((item, index) => (
-                                    <div key={index} className={`flex items-center border border-gray-200 rounded-md my-2 py-3 pe-3 relative ${addressId === item.addressId ? 'bg-blue-100 border-blue-500' : 'bg-white border-gray-200'}`} style={{ minWidth: "280px" }} onClick={() => setAddressId(item.addressId)}>
+                                    <div key={index} className={`flex items-center border border-gray-200 rounded-md my-2 py-3 pe-3 relative ${String(addressId) === String(item.addressId) ? 'bg-blue-100 border-blue-500' : 'bg-white border-gray-200'}`} style={{ minWidth: "280px" }} onClick={() => setAddressId(item.addressId)}>
                                         <div className='p-4 ms-3 rounded-full bg-white shadow-lg'>
                                             <FaLocationDot className='text-2xl text-custom-green' />
                                         </div>
@@ -235,7 +240,7 @@ const CreateRecurringPickup = () => {
                                                         ? formik.values.weeklyDay.filter(d => d !== day?.value)
                                                         : [...formik.values.weeklyDay, day?.value];
                                                     formik.setFieldValue("weeklyDay", updatedDays);
-                                                    setWeeklyDay(updatedDays);
+                                                    // setWeeklyDay(updatedDays);
                                                 }}
                                             >
                                                 {day?.label}
@@ -303,7 +308,7 @@ const CreateRecurringPickup = () => {
                                         className="border border-gray-200 outline-none w-full font-sansation font-regular text-sm p-4 rounded-lg mt-2 mb-2"
                                         onChange={formik.handleChange}
                                     />
-                                    {(formik.errors.pickupScheduleTo) && <div className="invalid-feedback text-red-500 text-sm">{formik.errors?.pickupScheduleTo}</div>}
+                                    {(formik.touched.pickupScheduleTo && formik.errors.pickupScheduleTo) && <div className="invalid-feedback text-red-500 text-sm">{formik.errors?.pickupScheduleTo}</div>}
                                     <span id="pickupScheduleTo" className="text-red-500">
                                         {errorMap['pickupScheduleTo']}
                                     </span>

@@ -85,9 +85,21 @@ const Dashboard = () => {
   ];
 
 
-  const handleCardClick = (id) => {
-    navigate(`/home/customer/details/${id}`);
+  // const handleCardClick = (id) => {
+  //   navigate(`/home/customer/details/${id}`);
+  // };
+  const handleCardClick = (data) => {
+    const status = data?.Source?.toLowerCase();
+    // console.log(status, "handle card")
+  
+    if (status === "pickuprequest") {
+      navigate(`/create-pickup-request?id=${data?.pickupReqId}`);
+    } else {
+      // setCardClicked(true);
+      navigate(`/home/customer/details/${data?.bookingId}`);
+    }
   };
+  
 
   const handleViewAllClick = () => {
     setShowAll(true)
@@ -137,7 +149,7 @@ const Dashboard = () => {
 
       {bookingList?.map((stepData, index) => {
         const status = stepData?.bookingStatus || "Unknown";
-        return <TrackingCard key={index} data={stepData} status={status} onClick={() => handleCardClick(stepData?.bookingId)} />;
+        return <TrackingCard key={index} data={stepData} status={status} onClick={() => handleCardClick(stepData)} />;
       })}
 
       {((!bookingList && !isLoading) || (bookingList.length === 0 && !isLoading)) && <div style={{ height: "250px" }} className="flex items-center justify-center"><span>No Booking Found</span></div>}
