@@ -6,7 +6,7 @@ import { IoIosDocument } from "react-icons/io";
 import { IoMdMail } from "react-icons/io";
 import { GoPlus } from "react-icons/go";
 import SearchInput from '../components/input-field/SearchInput';
-import { CiSearch } from "react-icons/ci";
+import { FiSearch } from "react-icons/fi";
 import { TbEdit } from "react-icons/tb";
 import { HiMiniBuildingOffice2 } from "react-icons/hi2";
 import request from '../utils/request'
@@ -22,6 +22,7 @@ import Breadcrub from '../components/button/Breadcrub';
 import PROFILE_PIC from '../images/dummyUser.png'
 import ProfileEditModal2 from '../components/profilePage/ProfileEditModal2';
 import { CUSTOMER_PROFILE } from '../../config';
+import { IoMdClose } from "react-icons/io";
 
 
 const Profile = () => {
@@ -153,8 +154,25 @@ const Profile = () => {
             <h2 className='text-2xl bold-sansation'>Add Address</h2>
             <Button buttonText="Add New" icon={<GoPlus />} onClick={() => setIsAddAddressModalOpen(true)} />
           </div>
-          <div className='m-3'>
+          {/* <div className='m-3'>
             <SearchInput className='w-full py-1' iconSize={25} placeholder='Search Address' onChange={handleSearch} Icon={CiSearch} />
+          </div> */}
+          <div className='m-3 relative w-fit'>
+            <SearchInput
+              className='w-full py-1' // Ensure space for icon
+              iconSize={25}
+              placeholder='Search Address'
+              onChange={handleSearch}
+              value={searchQuery}
+              Icon={FiSearch}
+            />
+            {searchQuery && (
+              <IoMdClose
+                className='absolute top-1/2 right-8 transform -translate-y-1/2 text-lg cursor-pointer'
+                onClick={() => handleSearch({ target: { value: '' } })}
+                title="Clear"
+              />
+            )}
           </div>
           <div className=' px-1 md:px-3' style={{ height: '320px', minWidth: "250px", overflowY: 'auto' ,zIndex:1 }}>
             {addressList.filter(address => address?.addressLabel?.toLowerCase().includes(searchQuery.toLowerCase())).map((item, index) => (

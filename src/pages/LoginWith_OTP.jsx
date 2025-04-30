@@ -125,6 +125,7 @@ const LoginWith_OTP = () => {
             type="text"
             placeholder="Enter Mobile Number"
             name="mobile"
+            isMandatory={true}
             value={formik.values.mobile}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

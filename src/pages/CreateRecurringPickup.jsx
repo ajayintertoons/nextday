@@ -32,7 +32,6 @@ const CreateRecurringPickup = () => {
 
     console.log(errorMap)
 
-
     const formik = useGlobalFormik(recurringInitialValues, recurringSchema, (values) => {
         if (!addressId) {
             toast.dismiss();
@@ -187,15 +186,17 @@ const CreateRecurringPickup = () => {
             </div>
             <div className='py-5 px-4 bg-custom-light-blue mb-4'>
                 <form action="" onSubmit={formik.handleSubmit} >
-                    <h2 className='text-center font-sansation font-regular bold-sansation text-xl'>{editData ? "Update Recurring Pickup" : "Create Recurring Pickup"}</h2>
+                    {/* <h2 className='text-center font-sansation font-regular bold-sansation text-xl'>{editData ? "Update Recurring Pickup" : "Create Recurring Pickup"}</h2> */}
                     <div className='grid grid-cols-1 md:grid-cols-[2fr_1.5fr] gap-2 sm:gap-4'>
-                        <div className='my-2 sm:my-8'>
+                        <div className='my-2 sm:my-4'>
+                            <label htmlFor="" className="font-sansation font-regular text-md">Select Address<span className="text-red-500"> *</span></label>
                             <div className='mb-2'>
                                 <SearchInput className='w-full py-1 border-gray-200' iconSize={25} placeholder='Search Address' onChange={handleSearch} Icon={CiSearch} />
                             </div>
-                            <div className=' ' style={{ maxHeight: '320px', minWidth: "250px", overflowY: 'auto' }} >
+                            <div className=' ' style={{ maxHeight: '320px', minWidth: "250px", overflowY: 'auto' , cursor: 'pointer' }} >
                                 {addressList.filter(address => address?.addressLabel?.toLowerCase().includes(searchQuery.toLowerCase())).map((item, index) => (
-                                    <div key={index} className={`flex items-center border border-gray-200 rounded-md my-2 py-3 pe-3 relative ${String(addressId) === String(item.addressId) ? 'bg-blue-100 border-blue-500' : 'bg-white border-gray-200'}`} style={{ minWidth: "280px" }} onClick={() => setAddressId(item.addressId)}>
+                                    <div key={index} className={`flex items-center border border-gray-200 rounded-md my-2 py-3 pe-3 relative ${String(addressId) === String(item.addressId) ? 'bg-blue-100 border-blue-500' : 'bg-white border-gray-200'}`} style={{ minWidth: "280px" }} onClick={() => setAddressId(addressId === item.addressId ? null : item.addressId)}
+>
                                         <div className='p-4 ms-3 rounded-full bg-white shadow-lg'>
                                             <FaLocationDot className='text-2xl text-custom-green' />
                                         </div>
@@ -209,9 +210,9 @@ const CreateRecurringPickup = () => {
                             </div>
                         </div>
 
-                        <div className='sm:mt-8'>
+                        <div className='sm:mt-4'>
                             <div className='mt-1'>
-                                <label htmlFor="" className='font-sansation font-regular text-md'>Frequency</label>
+                                <label htmlFor="" className='font-sansation font-regular text-md'>Frequency<span className="text-red-500"> *</span></label>
                                 <select value={formik?.values?.frequency} name="frequency" onChange={handleFrequencyChange} className='border-none border-gray-200 outline-none w-full font-sansation font-regular text-sm border p-4 rounded-lg mt-2'>
                                     <option value="">Select frequency</option>
                                     <option value="Daily">Daily</option>
@@ -226,7 +227,7 @@ const CreateRecurringPickup = () => {
 
                             {frequency === "Weekly" && (
                                 <div className='mt-2'>
-                                    <label htmlFor="weeklyDay" className="font-sansation font-regular text-md">Select Days</label>
+                                    <label htmlFor="weeklyDay" className="font-sansation font-regular text-md">Select Days<span className="text-red-500"> *</span></label>
                                     <div className="grid grid-cols-7 gap-2 mt-2">
                                         {weeks.map((day, index) => (
                                             <span
@@ -253,7 +254,7 @@ const CreateRecurringPickup = () => {
 
                             {frequency === "Monthly" && (
                                 <div className='mt-2'>
-                                    <label htmlFor="monthlyDate" className="font-sansation font-regular text-md">Select Day of Month</label>
+                                    <label htmlFor="monthlyDate" className="font-sansation font-regular text-md">Select Day of Month<span className="text-red-500"> *</span></label>
                                     <input
                                         type="date"
                                         name="monthlyDate"
@@ -276,6 +277,7 @@ const CreateRecurringPickup = () => {
                                     onBlur={formik.handleBlur}
                                     error={formik.errors?.approxWeight}
                                     touched={formik.touched?.approxWeight}
+                                    isMandatory={true}
                                 />
                                 <span id="approxWeight" className="text-red-500">
                                     {errorMap['approxWeight']}
@@ -284,7 +286,7 @@ const CreateRecurringPickup = () => {
 
                             <div className="grid grid-cols-2 gap-1 mt-2">
                                 <div className="mt-1">
-                                    <label htmlFor="" className="font-sansation font-regular text-md">Pickup Schedule From</label>
+                                    <label htmlFor="" className="font-sansation font-regular text-md">Pickup Schedule From<span className="text-red-500"> *</span></label>
                                     <input
                                         type="time"
                                         name="pickupScheduleFrom"
@@ -293,13 +295,13 @@ const CreateRecurringPickup = () => {
                                         className="border border-gray-200 outline-none w-full font-sansation font-regular text-sm p-4 rounded-lg mt-2 mb-2"
                                         onChange={formik.handleChange}
                                     />
-                                    {(formik.errors.pickupScheduleFrom && !formik.values?.pickupScheduleFrom) && <div className="invalid-feedback text-red-500 text-sm">{formik.errors?.pickupScheduleFrom}</div>}
+                                    {(formik.errors.pickupScheduleFrom && formik.touched.pickupScheduleFrom) && <div className="invalid-feedback text-red-500 text-sm">{formik.errors?.pickupScheduleFrom}</div>}
                                     <span id="pickupScheduleFrom" className="text-red-500">
                                         {errorMap['pickupScheduleFrom']}
                                     </span>
                                 </div>
                                 <div className="mt-1">
-                                    <label htmlFor="" className="font-sansation font-regular text-md">Pickup Schedule To</label>
+                                    <label htmlFor="" className="font-sansation font-regular text-md">Pickup Schedule To<span className="text-red-500"> *</span></label>
                                     <input
                                         type="time"
                                         name="pickupScheduleTo"

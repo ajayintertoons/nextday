@@ -193,7 +193,7 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
               </div>
             </div>
           </div>
-          <p className="bold-sansation mt-5">Payment Options</p>
+          <p className="bold-sansation mt-5">Payment Options<span className="text-red-500"> *</span></p>
           <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 mt-4">
             <div className="grid grid-cols-2">
               <div className="flex gap-5 items-center">

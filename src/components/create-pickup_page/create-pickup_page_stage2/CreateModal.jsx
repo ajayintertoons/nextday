@@ -326,6 +326,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                       onBlur={formik.handleBlur}
                       error={formik.errors.name}
                       touched={formik.touched.name}
+                      isMandatory={true}
                     />
                     <span id="fullName" className="text-red-500 mt-1 text-sm">
                       {errorMap['fullName']}
@@ -341,6 +342,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                       error={formik.errors.phoneNumber}
                       touched={formik.touched.phoneNumber}
                       mobile={true}
+                      isMandatory={true}
                     />
                     <span id="phoneNo" className="text-red-500 mt-1 text-sm">
                       {errorMap['phoneNo']}
@@ -483,6 +485,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                       onBlur={formik.handleBlur}
                       error={formik.errors.addressLabel}
                       touched={formik.touched.addressLabel}
+                      isMandatory={true}
                     />
                     <span id="addressLabel" className="text-red-500 mt-1 text-sm">
                       {errorMap['addressLabel']}
@@ -503,7 +506,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                     </span> */}
                     <div className="mt-3">
                       <LoadScript googleMapsApiKey={'AIzaSyD_M5QYY_seLbsWsWtVtZRSpCFYUxjRoeI'} libraries={['places']}>
-                        <label htmlFor="location" className="form-label ">Location </label>
+                        <label htmlFor="location" className="form-label ">Location <span className="text-red-500"> *</span></label>
                         <Autocomplete
                           onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
                           onPlaceChanged={onPlaceChanged}
@@ -552,6 +555,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                       onBlur={formik.handleBlur}
                       error={formik.errors.email}
                       touched={formik.touched.email}
+                      isMandatory={true}
                     />
                     <span id="emailId" className="text-red-500 mt-1 text-sm">
                       {errorMap['emailId']}
@@ -567,6 +571,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                       onBlur={formik.handleBlur}
                       error={formik.errors.addressLine1}
                       touched={formik.touched.addressLine1}
+                      isMandatory={true}
                     />
                     <span id="addressLine1" className="text-red-500 mt-1 text-sm">
                       {errorMap['addressLine1']}
@@ -582,6 +587,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                       onBlur={formik.handleBlur}
                       error={formik.errors.addressLine2}
                       touched={formik.touched.addressLine2}
+                      isMandatory={true}
                     />
                     <span id="addressLine2" className="text-red-500 mt-1 text-sm">
                       {errorMap['addressLine2']}

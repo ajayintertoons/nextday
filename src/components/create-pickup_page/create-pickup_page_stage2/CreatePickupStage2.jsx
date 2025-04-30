@@ -168,7 +168,7 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
   return (
     <>
       <div className="container mx-auto p-4">
-        <h5 className="text-xl font-sansation font-regular">Choose a Consigner</h5>
+        <h5 className="text-xl font-sansation font-regular">Choose a Consigner<span className="text-red-500"> *</span></h5>
         {consignerModalOpen && <CreateConsigner fetchAddressList={fetchAddressList} />}
         {consigneeModalOpen && <CreateConsignee fetchAddressList={fetchAddressList} />}
         <SearchInput
@@ -226,7 +226,7 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
         </div>
 
         <div className="py-6">
-          <h5 className="text-xl font-sansation font-regular">Choose a Consignee</h5>
+          <h5 className="text-xl font-sansation font-regular">Choose a Consignee<span className="text-red-500"> *</span></h5>
           <SearchInput
             placeholder="Search to Select Consignee Address"
             onChange={(e) => setSearchConsignee(e.target.value)}

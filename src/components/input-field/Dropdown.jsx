@@ -12,6 +12,7 @@ const Dropdown = ({
   name,
   error,
   touched,
+  isMandatory = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,7 +32,7 @@ const Dropdown = ({
 
   return (
     <div className="relative pt-3">
-      <h5 className="font-sansation font-regular">{title}</h5>
+      <h5 className="font-sansation font-regular">{title}{isMandatory && <span className="text-red-500"> *</span>}</h5>
       <div className="w-full flex cursor-pointer bg-custom-white justify-between items-center mt-2 p-3 border border-gray-300 rounded-lg focus-within:border-blue-500" onClick={handleToggle} style={{ height: "51px" }}>
         <input
           type="text"

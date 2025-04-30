@@ -106,9 +106,10 @@ const PickupSection1 = ({ formik, setIsReversePickup, isReversePickup, isToPay, 
             onBlur={formik.handleBlur}
             error={formik.errors.modeType}
             touched={formik.touched.modeType}
+            isMandatory={true}
           />
           <div className="pt-3">
-            <label htmlFor="pickupScheduleFrom" className="font-sansation">Pickup Shedule From</label>
+            <label htmlFor="pickupScheduleFrom" className="font-sansation">Pickup Shedule From<span className="text-red-500"> *</span></label>
             <input type="datetime-local" name="pickupScheduleFrom" className="p-3 mt-2 w-full border border-gray-300 rounded-lg "
               min={getTodayDate()} 
               value={formik?.values?.pickupScheduleFrom} 
@@ -122,7 +123,7 @@ const PickupSection1 = ({ formik, setIsReversePickup, isReversePickup, isToPay, 
 
           </div>
           <div className="pt-3">
-            <label htmlFor="pickupScheduleTo" className="font-sansation">Pickup Shedule To</label>
+            <label htmlFor="pickupScheduleTo" className="font-sansation">Pickup Shedule To<span className="text-red-500"> *</span></label>
             <input type="datetime-local" name="pickupScheduleTo" className="p-3 mt-2 w-full border border-gray-300 rounded-lg " 
               value={formik?.values?.pickupScheduleTo} 
               onChange={formik.handleChange} 
@@ -136,7 +137,7 @@ const PickupSection1 = ({ formik, setIsReversePickup, isReversePickup, isToPay, 
 
           </div>
           <div className="" style={{ marginTop: "10px" }}>
-            <label className="font-sansation font-regular text-md">Box Type</label>
+            <label className="font-sansation font-regular text-md">Box Type<span className="text-red-500"> *</span></label>
             <Select
               options={options2}
               placeholder="Select"
@@ -169,7 +170,7 @@ const PickupSection1 = ({ formik, setIsReversePickup, isReversePickup, isToPay, 
                   <div className="group ">
                     <MdInfo className="text-[#FFE603] " />
                     {/* display text when hovering over the info icon */}
-                    <div className="absolute hidden group-hover:block bg-[#9A9A9A] pt-3 text-custom-white text-sm px-2  py-1 rounded-md w-48 top-1/2 transform -translate-y-1/2 mx-8 ">
+                    <div className="absolute hidden group-hover:block bg-[#9A9A9A] pt-3 text-custom-white text-sm px-2  py-1 rounded-md w-48 top-1/2 transform -translate-y-1/2 mx-8 z-10">
                       Payment will be collected from the consignee
                       <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2">
                         <svg
@@ -204,7 +205,7 @@ const PickupSection1 = ({ formik, setIsReversePickup, isReversePickup, isToPay, 
                   <div className="group ">
                     <MdInfo className="text-[#FFE603]" />
                     {/* display text when hovering over the info icon */}
-                    <div className="absolute hidden group-hover:block bg-[#9A9A9A] pt-3 text-custom-white text-sm px-2  py-1 rounded-md w-48 top-1/2 transform -translate-y-1/2 mx-8 ">
+                    <div className="absolute hidden group-hover:block bg-[#9A9A9A] pt-3 text-custom-white text-sm px-2  py-1 rounded-md w-48 top-1/2 transform -translate-y-1/2 mx-8 z-10">
                       Enable reverse pickup
                       <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2">
                         <svg

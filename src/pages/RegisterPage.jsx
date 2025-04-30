@@ -57,6 +57,7 @@ const RegisterPage = () => {
             type="text"
             placeholder="Enter Your Email ID"
             name="email"
+            isMandatory={true}
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -69,6 +70,7 @@ const RegisterPage = () => {
               type="text"
               placeholder="Enter Your Name"
               name="name"
+              isMandatory={true}
               value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -81,6 +83,7 @@ const RegisterPage = () => {
               type="text"
               placeholder="Enter Phone Number"
               name="phoneNumber"
+              isMandatory={true}
               value={formik.values.phoneNumber}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -94,6 +97,7 @@ const RegisterPage = () => {
             type="text"
             placeholder="Enter Your Password"
             name="password"
+            isMandatory={true}
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

@@ -190,7 +190,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
             {packages?.map((pkg, index) => (
               <div key={index} className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6">
                 <div className="py-3">
-                  <h5 className="bold-sansation mt-3">Box Dimensions</h5>
+                  <h5 className="bold-sansation mt-3">Box Dimensions<span className="text-red-500"> *</span></h5>
                   <div className="flex w-full items-center flex-col sm:flex-row sm:gap-4 py-2">
                     <div className="flex justify-center">
                       <UnitField
@@ -294,7 +294,8 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                         onBlur={formik.handleBlur}
                         error={formik.errors.packages?.[index]?.volumetricWeight}
                         touched={formik.touched.packages?.[index]?.volumetricWeight}
-                        readOnly // Make the field read-only as it's auto-calculated
+                        readOnly
+                        isMandatory={true}
                       />
                     </div>
                     <div className="w-1/2">
@@ -308,6 +309,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                         onBlur={formik.handleBlur}
                         error={formik.errors.packages?.[index]?.approxWeight}
                         touched={formik.touched.packages?.[index]?.approxWeight}
+                        isMandatory={true}
                       />
                     </div>
                   </div>
@@ -371,13 +373,14 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                     <CustomInputField
                       title="Package Value (₹)"
                       type="number"
-                      placeholder="Enter Invoice Value"
+                      placeholder="Enter Package Value"
                       name={`packages[${index}].packageValue`}
                       value={formik.values.packages[index]?.packageValue}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       error={formik.errors.packages?.[index]?.packageValue}
                       touched={formik.touched.packages?.[index]?.packageValue}
+                      isMandatory={true}
                     />
                   </div>
 

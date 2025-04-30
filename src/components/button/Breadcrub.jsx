@@ -18,7 +18,7 @@ function Breadcrub({ pageTitle, parentLink = '', child = false, setIsVisible, is
                 )}
             </div>
             <nav aria-label="breadcrumb">
-                <ol className="flex items-center space-x-1 text-sm text-gray-400 font-sansation font-regular text-lg">
+                <ol className="flex items-center space-x-1 text-sm text-gray-400 font-sansation font-regular">
                     <li>
                         <Link to={`/home/${userType.toLowerCase()}/dashboard`} className="text-gray-400 text-md font-sansation ">
                             Dashboard

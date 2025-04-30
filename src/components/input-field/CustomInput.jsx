@@ -21,6 +21,7 @@ const CustomInputField = ({
   ref,
   accept,
   mobile = false,
+  isMandatory = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -50,7 +51,9 @@ const CustomInputField = ({
     <div className="pt-3">
       <div className="flex justify-between">
         <h5 className="font-sansation font-regular text-md">
-          {title} {unit && <span className="text-[#C00000]">({unit})</span>}
+          {title}
+          {isMandatory && <span className="text-red-500"> *</span>}
+          {unit && <span className="text-[#C00000]"> ({unit})</span>}
         </h5>
         {showForgotPassword && (
           <p

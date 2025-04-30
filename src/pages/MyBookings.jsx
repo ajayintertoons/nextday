@@ -68,12 +68,12 @@ const MyBookings = () => {
   // handle search
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
-      setIsSearch(true)
+      // setIsSearch(true)
     } else {
       setIsSearch(false)
       fetchBookingDetails();
     }
-    setIsLoading(true)
+    // setIsLoading(true)
     request({
       url: `/V1/customer/search/bookings?searchQuery=${searchQuery}`,
       method: "GET"

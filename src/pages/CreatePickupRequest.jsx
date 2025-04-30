@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { convertDateFormat, getTodayDate } from '../utils/helpers';
+import PICKUP_IMG from '../images/pickupRequest.png'
 
 
 // Yup validation schema
@@ -45,30 +46,49 @@ const CreatePickupRequest = () => {
     keys.forEach((key) => sessionStorage.removeItem(key));
     console.log("Session storage cleared:", keys);
   };
-  
-
-  // Handle form submission
   const handleSubmit = async (values, { resetForm }) => {
     setLoading(true);
-    request({
-      url: `V1/customer/pickup-request`,
-      method: 'POST',
-      data: {
-        "pickupScheduleFrom": convertDateFormat(values?.pickupScheduleFrom),
-        "pickupScheduleTo": convertDateFormat(values?.pickupScheduleTo),
-        "approxWeight": values?.approxWeight
-      }
-    }).then((response) => {
-      clearSessionStorage();
-      toast.dismiss();
-      toast.success(response?.message);
-      resetForm();
-      setLoading(false);
-    }).catch((err) => {
-      toast.dismiss();
-      toast.error(err?.response?.data?.message || "Something went wrong");
-      setLoading(false)
-    })
+  
+    const payload = {
+      pickupScheduleFrom: convertDateFormat(values?.pickupScheduleFrom),
+      pickupScheduleTo: convertDateFormat(values?.pickupScheduleTo),
+      approxWeight: values?.approxWeight
+    };
+  
+    const isUpdate = Boolean(editData);
+  
+    const requestOptions = {
+      url: isUpdate ? `V1/customer/pickup-request/${editData?.pickupReqId}` : `V1/customer/pickup-request`,
+      method: isUpdate ? 'PUT' : 'POST',
+      data: payload
+    };
+  
+    request(requestOptions)
+      .then((response) => {
+        clearSessionStorage();
+        toast.dismiss();
+        toast.success(response?.message);
+        
+        if (isUpdate) {
+          
+          setEditData(prev => ({
+            ...prev,
+            pickupScheduleFrom: values.pickupScheduleFrom,
+            pickupScheduleTo: values.pickupScheduleTo,
+            approxWeight: values.approxWeight
+          }));
+        } else {
+          resetForm();
+          navigate('/home/customer/my-bookings'); // Redirect after create
+        }
+  
+        setLoading(false);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.message || "Something went wrong");
+        setLoading(false);
+      });
   };
 
   const fetchEditData = async () => {
@@ -113,9 +133,9 @@ const CreatePickupRequest = () => {
   return (
     <div className="container mx-auto p-3 pt-[116px] lg:pt-0 ">
       <div className=" p-6 rounded-lg shadow-md w-full ">
-        <h1 className="text-2xl font-bold font-sansation text-gray-800 mb-6">{editData ? "Update Pickup Request" : "Create Pickup Request"}</h1>
+        <h1 className="text-3xl font-bold font-sansation text-gray-800 mb-6">{editData ? "Update Pickup Request" : "Create Pickup Request"}</h1>
 
-        <div className='grid grid-cols-2 h-full rounded-md shadow-sm' >
+        <div className='grid grid-cols-1 md:grid-cols-2 h-full rounded-md shadow-sm' >
           <div className=''>
             <Formik
               enableReinitialize={true}
@@ -127,7 +147,7 @@ const CreatePickupRequest = () => {
                 <Form className=''>
                   <div className='flex flex-col mb-3 gap-3 py-4'>
                     <div className="">
-                      <label className="block font-regular font-sansation" htmlFor="pickupScheduleFrom">Pickup Schedule (From):</label>
+                      <label className="block font-regular font-sansation" htmlFor="pickupScheduleFrom">Pickup Schedule (From)<span className="text-red-500"> *</span></label>
                       <Field
                         type="datetime-local"
                         id="pickupScheduleFrom"
@@ -143,7 +163,7 @@ const CreatePickupRequest = () => {
                     </div>
 
                     <div className="">
-                      <label className="block font-regular font-sansation" htmlFor="pickupScheduleTo">Pickup Schedule (To):</label>
+                      <label className="block font-regular font-sansation" htmlFor="pickupScheduleTo">Pickup Schedule (To)<span className="text-red-500"> *</span></label>
                       <Field
                         type="datetime-local"
                         id="pickupScheduleTo"
@@ -156,46 +176,57 @@ const CreatePickupRequest = () => {
                     </div>
 
                     <div className=" ">
-                      <label className="block font-regular font-sansation" htmlFor="approxWeight">Approximate Weight:</label>
+                      <label className="block font-regular font-sansation" htmlFor="approxWeight">Approximate Weight<span className="text-red-500"> *</span></label>
                       <Field
                         type="number"
                         id="approxWeight"
                         name="approxWeight"
-                        placeholder="approxWeight"
+                        placeholder="Enter approx weight"
                         style={{ height: "44px" }}
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <ErrorMessage name="approxWeight" component="div" className="text-red-500 text-sm " />
                     </div>
                   </div>
-                  <button
-                    type="submit"
-                    className=" py-2 px-4 bg-[#1ba169] text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
-                  >
-                    {loading ? <ClipLoader color='white' size={18} /> : `${editData ? "Update" : "Submit"}`}
-                  </button>
-                  {editData && <button
-                    type="button"
-                    className=" py-2 px-4 ms-3 bg-[#1ba169] text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
-                    onClick={() =>  {
-                      clearSessionStorage();
-                      navigate(`/create-pickup?pickupReqId=${editData?.pickupReqId}`);
-                    }}
-                  >
-                    {loading ? <ClipLoader color='white' size={18} /> : "Create Booking"}
-                  </button>}
-                  {editData && <button
-                    type="button"
-                    className="py-2 px-4 ms-3 bg-red-600 text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
-                  >
-                    {loading ? <ClipLoader color='white' size={18} /> : "Cancel"}
-                  </button>}
+                  <div className="flex flex-wrap gap-3">
+                  {/* <button
+                      type="button"
+                      className=" py-2 px-4 bg-[#1ba169] text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
+                      onClick={() => navigate(-1)}
+                    >
+                      Back
+                    </button> */}
+                    <button
+                      type="submit"
+                      className=" py-2 px-4 bg-[#1ba169] text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
+                    >
+                      {loading ? <ClipLoader color='white' size={18} /> : `${editData ? "Update" : "Submit"}`}
+                    </button>
+                    {editData && <button
+                      type="button"
+                      className=" py-2 px-4 bg-[#1ba169] text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
+                      onClick={() =>  {
+                        clearSessionStorage();
+                        navigate(`/create-pickup?pickupReqId=${editData?.pickupReqId}`);
+                      }}
+                    >
+                      {loading ? <ClipLoader color='white' size={18} /> : "Create Booking"}
+                    </button>}
+                    <button
+                      type="button"
+                      className="py-2 px-4 bg-red-600 text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
+                      onClick={() => navigate(-1)}
+                    >
+                      {loading ? <ClipLoader color='white' size={18} /> : "Cancel"}
+                    </button>
+                    
+                  </div>
                 </Form>
               )}
             </Formik>
           </div>
-          <div>
-
+          <div className='p-3 pb-4 hidden md:block'>
+            <img src={PICKUP_IMG} alt="" className='w-full h-full object-contain' />
           </div>
         </div>
 

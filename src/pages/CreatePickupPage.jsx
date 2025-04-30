@@ -479,7 +479,7 @@ const CreatePickupPage = () => {
     <>
       {/* ---------------------------- main container div ----------------------------- */}
       <div className="container mx-auto p-3 pt-[116px] lg:pt-0">
-        <h5 className="px-3 text-3xl bold-sansation my-5 ">Create Pickup Request</h5>
+        <h5 className="px-3 text-3xl bold-sansation my-5 ">Create Booking</h5>
         {/* stepper component */}
         <Stepper
           currentStep={currentStep}

@@ -1,9 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CheckoutStepper from '../stepper/TrackingStepper';
 import packageImage from "../../images/package_3d 1.png"
+import toast from "react-hot-toast";
 
+import request from '../../utils/request';
+import { MdDelete } from "react-icons/md";
+import PopupModal from '../../components/Modals/PopupModal';
 
 const TrackingCard = ({ data, status, onClick }) => {
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const convertDateFormat = (dateToConvert) => {
     const date = new Date(dateToConvert);
     const options = { day: '2-digit', month: 'long' };
@@ -54,13 +59,64 @@ const TrackingCard = ({ data, status, onClick }) => {
   };
   // Extract styles based on status
   const { backgroundColor, color } = getStatusStyles(status);
+
+  const handleDeleteClick = (address) => {
+    setSelectedAddressId(address);
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleDelete = () => {
+    request({
+      url: `V1/customer/pickup-request/${data?.pickupReqId}`,
+      method: 'DELETE',
+    }).then((response) => {
+      toast.success(response?.message || 'Pickup request deleted');
+    }).catch((err) => {
+      if (err.response?.status === 500) {
+        toast.dismiss();
+        toast.error(err.response.data.message);
+      }
+    });
+    setIsConfirmModalOpen(false);
+  };
+
+  const handleModalClose = () => {
+    setIsConfirmModalOpen(false);
+    setSelectedAddressId(null); // Reset the selected address when modal closes
+  };
+
+  console.log(status)
   return (
     <div className="relative grid grid-cols-1 border  rounded-md my-3 pt-4 cursor-pointer hover:shadow-lg " onClick={onClick}>
-      <div className=" absolute right-0 top-0 border min-w-1/6 h-8 rounded-tr-md flex justify-center items-center px-2" style={{ backgroundColor, color }}>
-        <p className="relative text-center bold-sansation" >
-          {status}
-          {data?.isReversePickup && <span className='absolute  border rounded-lg px-1 -left-12 text-red-500'>RP</span>}
-        </p>
+      <div className="absolute right-0 top-0 flex items-center gap-1">
+      <PopupModal isOpen={isConfirmModalOpen}
+        onClose={handleModalClose}
+        onConfirm={handleDelete}
+        title="Delete Address"
+        message={`Are you sure you want to delete ?`} />
+        {/* Status background */}
+        <div
+          className="h-8 px-2 flex items-center"
+          style={{ backgroundColor, color }}
+        >
+          <p className="bold-sansation text-sm whitespace-nowrap">
+            {status}
+            {data?.isReversePickup && <span className='absolute  border rounded-lg px-1 -left-12 text-red-500'>RP</span>}
+          </p>
+
+        </div>
+
+        {/* Delete icon without background */}
+        {data?.Source === "PickupRequest" && (
+          <MdDelete
+            className="text-red-500 cursor-pointer ml-1 mr-2"
+            size={24}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsConfirmModalOpen(true);
+            }}
+          />
+        )}
       </div>
 
       <div className="grid grid-cols-12">

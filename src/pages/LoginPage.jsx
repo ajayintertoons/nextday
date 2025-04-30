@@ -193,6 +193,7 @@ const LoginPage = () => {
                                 type={isFirstCharNumber(isMobile) ? "number":"text"}
                                 placeholder="Enter your phone/email address"
                                 name="email"
+                                isMandatory={true}
                                 value={formik.values.email}
                                 onChange={(e)=>{
                                   formik.handleChange(e)
@@ -209,6 +210,7 @@ const LoginPage = () => {
                                 type="password"
                                 placeholder="Enter Your Password"
                                 name="password"
+                                isMandatory={true}
                                 value={formik.values.password}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
@@ -219,11 +221,15 @@ const LoginPage = () => {
                               />
                               <span className="text-red-500">{passwordError}</span>
                               <div className="bold-sansation pt-5">
-                                <Button buttonText={`${isLoading ? <ClipLoader color="white" size={20}/> : "LOGIN"}`} icon={<PulseLoader color="white"
-                                  loading={isLoading}
-                                  size={10}
-                                  aria-label="Loading Spinner"
-                                  data-testid="loader" />} type="submit" className="w-full" />
+                                <Button 
+                                  // buttonText={`${isLoading ? <ClipLoader color="white" size={20}/> : "LOGIN"}`}
+                                  buttonText={isLoading ? <ClipLoader color="white" size={20} /> : "LOGIN"} 
+                                  // icon={<PulseLoader color="white"
+                                  // loading={isLoading}
+                                  // size={10}
+                                  // aria-label="Loading Spinner"
+                                  // data-testid="loader" />} 
+                                  type="submit" className="w-full" />
                               </div>
                             </form>
                           )}

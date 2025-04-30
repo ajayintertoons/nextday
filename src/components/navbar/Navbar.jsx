@@ -175,8 +175,8 @@ function Navbar({ className }) {
                     </div>
                   </div>
 
-                  <div className="hidden lg:flex h-3/4 justify-between  items-center gap-4 text-custom-white ">
-                    <div className="flex justify-center w-3/4 gap-5">
+                  <div className="hidden lg:flex h-3/4 justify-between  items-center gap-2 text-custom-white ">
+                    <div className="flex justify-center w-3/4 gap-4">
                       {menuItems?.map((item, index) => (
                         <div
                           key={index}
@@ -241,14 +241,14 @@ function Navbar({ className }) {
           </div>
           {/* Mobile navigation */}
           <div
-            className={`fixed z-40 w-full bg-gray-100 overflow-y-auto scrollbar-hide flex flex-col lg:hidden gap-12 origin-top duration-700 pt-[116px] lg:pt-0 ${!toggleMenu ? "h-0" : "h-full"}`}
+            className={`fixed z-40 w-full bg-gray-100 font-sansation overflow-y-auto scrollbar-hide flex flex-col lg:hidden gap-12 origin-top duration-700 pt-[116px] lg:pt-0 ${!toggleMenu ? "h-0" : "h-full"}`}
           >
             <div className="px-5 py-4">
             {isLogin ? (
               <div className="flex flex-col gap-1 font-bold tracking-wide pb-3">
                 {/* Profile */}
                 <div
-                  className="flex items-center justify-between text-gray-700 px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
                   onClick={() => {
                     navigate(`/home/${userType.toLowerCase()}/my-profile`);
                     setToggleMenu(!toggleMenu);
@@ -311,7 +311,7 @@ function Navbar({ className }) {
               </div>
             )}
 
-            <div className="mt-3 border-t pt-4 flex flex-col gap-1 font-bold tracking-wide">
+            <div className="mt-1 border-t pt-4 flex flex-col gap-1 font-bold tracking-wide">
                 {menuItems?.map((item, index) => (
                   <div
                     key={index}

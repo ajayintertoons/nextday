@@ -89,7 +89,7 @@ const ProfileEditModal = ({ isProfileEditModalOpen, setIsProfileEditModalOpen, p
     };
 
     return (
-        <Dialog open={isProfileEditModalOpen} onClose={() => setIsProfileEditModalOpen(false)} className="relative z-50">
+        <Dialog open={isProfileEditModalOpen} onClose={() => setIsProfileEditModalOpen(false)} className="relative z-[1000]">
             {/* Overlay */}
             <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-40" />
 
@@ -105,6 +105,10 @@ const ProfileEditModal = ({ isProfileEditModalOpen, setIsProfileEditModalOpen, p
                         <IoMdClose className="text-2xl" />
                     </button>
 
+                    <div className="px-6 pt-6 pb-2  border-gray-200">
+                        <h2 className="bold-sansation font-regular text-lg">Edit Profile</h2>
+                    </div>
+
                     {/* Modal Content */}
                     <form onSubmit={formik.handleSubmit}>
                         <div className="px-4 py-5 grid grid-cols-1  gap-2 md:grid-cols-2 sm:p-6">
@@ -118,6 +122,7 @@ const ProfileEditModal = ({ isProfileEditModalOpen, setIsProfileEditModalOpen, p
                                 onBlur={formik.handleBlur}
                                 error={formik.errors.fullName}
                                 touched={formik.touched.fullName}
+                                isMandatory={true}
                             />
                             <CustomInputField
                                 title="email"
@@ -129,6 +134,7 @@ const ProfileEditModal = ({ isProfileEditModalOpen, setIsProfileEditModalOpen, p
                                 onBlur={formik.handleBlur}
                                 error={formik.errors.email}
                                 touched={formik.touched.email}
+                                isMandatory={true}
                             />
                             <CustomInputField
                                 title="Mobile"
@@ -141,6 +147,7 @@ const ProfileEditModal = ({ isProfileEditModalOpen, setIsProfileEditModalOpen, p
                                 error={formik.errors.mobile}
                                 touched={formik.touched.mobile}
                                 mobile={true}
+                                isMandatory={true}
                             />
                             <CustomInputField
                                 title="GST Number"
@@ -152,6 +159,7 @@ const ProfileEditModal = ({ isProfileEditModalOpen, setIsProfileEditModalOpen, p
                                 onBlur={formik.handleBlur}
                                 error={formik.errors.gstNumber}
                                 touched={formik.touched.gstNumber}
+                                isMandatory={true}
                             />
                             <div className="relative cursor-pointer pt-3 overflow-hidden">
                                 <label htmlFor="" className='font-sansation font-regular'>Profile Pic</label>

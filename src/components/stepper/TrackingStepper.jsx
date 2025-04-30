@@ -38,7 +38,7 @@ const stepData = [
   },
   {
     name: "delivered",
-    hub: "delivered",
+    hub: "Delivered",
     check: 0
   },
 ];
