@@ -15,6 +15,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { useLocation, useNavigate } from 'react-router-dom';
 import Switch from 'react-switch';
 
+import { IoMdClose } from "react-icons/io";
 
 const CreateRecurringPickup = () => {
     const { addressList, setAddressList } = useContext(myContext);
@@ -190,8 +191,15 @@ const CreateRecurringPickup = () => {
                     <div className='grid grid-cols-1 md:grid-cols-[2fr_1.5fr] gap-2 sm:gap-4'>
                         <div className='my-2 sm:my-4'>
                             <label htmlFor="" className="font-sansation font-regular text-md">Select Address<span className="text-red-500"> *</span></label>
-                            <div className='mb-2'>
-                                <SearchInput className='w-full py-1 border-gray-200' iconSize={25} placeholder='Search Address' onChange={handleSearch} Icon={CiSearch} />
+                            <div className='relative mb-2 sm:w-1/2'>
+                                <SearchInput className='w-full py-1 border-gray-200 sm:w-full' iconSize={25} placeholder='Search Address' onChange={handleSearch} Icon={CiSearch} value={searchQuery} />
+                                {searchQuery && (
+                                    <IoMdClose
+                                    className='absolute top-1/2 right-8 transform -translate-y-1/2 text-lg cursor-pointer'
+                                    onClick={() => handleSearch({ target: { value: '' } })}
+                                    title="Clear"
+                                    />
+                                )}
                             </div>
                             <div className=' ' style={{ maxHeight: '320px', minWidth: "250px", overflowY: 'auto' , cursor: 'pointer' }} >
                                 {addressList.filter(address => address?.addressLabel?.toLowerCase().includes(searchQuery.toLowerCase())).map((item, index) => (

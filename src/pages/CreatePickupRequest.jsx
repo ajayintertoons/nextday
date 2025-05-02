@@ -5,7 +5,7 @@ import request from '../utils/request';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { convertDateFormat, getTodayDate } from '../utils/helpers';
+import { convertDateFormat, getTodayDate, convertDateFormatUTC, convertLocalToUTCISOString } from '../utils/helpers';
 import PICKUP_IMG from '../images/pickupRequest.png'
 
 
@@ -68,20 +68,6 @@ const CreatePickupRequest = () => {
         clearSessionStorage();
         toast.dismiss();
         toast.success(response?.message);
-        
-        if (isUpdate) {
-          
-          setEditData(prev => ({
-            ...prev,
-            pickupScheduleFrom: values.pickupScheduleFrom,
-            pickupScheduleTo: values.pickupScheduleTo,
-            approxWeight: values.approxWeight
-          }));
-        } else {
-          resetForm();
-          navigate('/home/customer/my-bookings'); // Redirect after create
-        }
-  
         setLoading(false);
       })
       .catch((err) => {
@@ -110,17 +96,24 @@ const CreatePickupRequest = () => {
   }, [id])
 
   const initialValues = {
-    pickupScheduleFrom: editData?.pickupScheduleFrom ? convertDateFormat(editData?.pickupScheduleFrom) : null,
-    pickupScheduleTo: editData?.pickupScheduleTo ? convertDateFormat(editData?.pickupScheduleTo) : null,
+    pickupScheduleFrom: editData?.pickupScheduleFrom ? convertDateFormatUTC(editData?.pickupScheduleFrom) : null,
+    pickupScheduleTo: editData?.pickupScheduleTo ? convertDateFormatUTC(editData?.pickupScheduleTo) : null,
     approxWeight: editData?.approxWeight || "",
   };
 
   useEffect(() => {
     if (fromDate) {
       const pickupFromDate = new Date(fromDate);
-      const minTime = pickupFromDate.toISOString().slice(0, 16);
+      const year = pickupFromDate.getFullYear();
+      const month = String(pickupFromDate.getMonth() + 1).padStart(2, '0');
+      const day = String(pickupFromDate.getDate()).padStart(2, '0');
+      const hours = String(pickupFromDate.getHours()).padStart(2, '0');
+      const minutes = String(pickupFromDate.getMinutes()).padStart(2, '0');
+  
+      const minTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+      const maxTime = `${year}-${month}-${day}T23:59`;
+
       setMinScheduleTo(minTime);
-      const maxTime = `${pickupFromDate.toISOString().slice(0, 10)}T23:59`;
       setMaxScheduleTo(maxTime);
     }
   }, [fromDate])

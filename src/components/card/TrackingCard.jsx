@@ -85,7 +85,7 @@ const TrackingCard = ({ data, status, onClick }) => {
     setSelectedAddressId(null); // Reset the selected address when modal closes
   };
 
-  console.log(status)
+  // console.log(status)
   return (
     <div className="relative grid grid-cols-1 border  rounded-md my-3 pt-4 cursor-pointer hover:shadow-lg " onClick={onClick}>
       <div className="absolute right-0 top-0 flex items-center gap-1">

@@ -159,7 +159,7 @@ const Profile = () => {
           </div> */}
           <div className='m-3 relative w-fit'>
             <SearchInput
-              className='w-full py-1' // Ensure space for icon
+              className='w-full py-1 sm:w-full' // Ensure space for icon
               iconSize={25}
               placeholder='Search Address'
               onChange={handleSearch}

@@ -12,7 +12,7 @@ import { pincodeValidation } from "../utils/validation-schema/commonValidation";
 import toast from "react-hot-toast";
 import request from '../utils/request'
 import { useLocation, useNavigate } from "react-router-dom";
-import { convertDateFormat } from "../utils/helpers";
+import { convertDateFormat ,convertDateFormatUTC } from "../utils/helpers";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const normalValidation = Yup.object({
@@ -260,8 +260,8 @@ const CreatePickupPage = () => {
 
   useEffect(() => {
     if (pickupData) {
-      formik.setFieldValue('pickupScheduleFrom', convertDateFormat(pickupData?.pickupScheduleFrom));
-      formik.setFieldValue('pickupScheduleTo', convertDateFormat(pickupData?.pickupScheduleTo))
+      formik.setFieldValue('pickupScheduleFrom', convertDateFormatUTC(pickupData?.pickupScheduleFrom));
+      formik.setFieldValue('pickupScheduleTo', convertDateFormatUTC(pickupData?.pickupScheduleTo))
     }
   }, [pickupData])
 
