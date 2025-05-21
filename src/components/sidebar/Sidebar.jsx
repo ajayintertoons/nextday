@@ -22,6 +22,7 @@ const Sidebar = () => {
   const sidebarData = [
     { id: "dashboard", label: "Dashboard", path: "customer/dashboard" },
     { id: "myBookings", label: "My Bookings", path: "customer/my-bookings" },
+    { id: "sheduledPickups", label: "Sheduled Pickups", path: "customer/scheduled-pickups" },
     {
       id: "createRecurringPickup",
       label: "Create Recurring Pickup",

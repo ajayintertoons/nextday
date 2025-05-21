@@ -89,34 +89,35 @@ const TrackingCard = ({ data, status, onClick }) => {
   return (
     <div className="relative grid grid-cols-1 border  rounded-md my-3 pt-4 cursor-pointer hover:shadow-lg " onClick={onClick}>
       <div className="absolute right-0 top-0 flex items-center gap-1">
-      <PopupModal isOpen={isConfirmModalOpen}
-        onClose={handleModalClose}
-        onConfirm={handleDelete}
-        title="Delete Address"
-        message={`Are you sure you want to delete ?`} />
+        <PopupModal isOpen={isConfirmModalOpen}
+          onClose={handleModalClose}
+          onConfirm={handleDelete}
+          title="Delete Address"
+          message={`Are you sure you want to delete ?`} />
         {/* Status background */}
-        <div
-          className="h-8 px-2 flex items-center"
-          style={{ backgroundColor, color }}
-        >
-          <p className="bold-sansation text-sm whitespace-nowrap">
-            {status}
-            {data?.isReversePickup && <span className='absolute  border rounded-lg px-1 -left-12 text-red-500'>RP</span>}
-          </p>
+       <div className="flex items-center">
+          <div className="relative flex items-center">
+            {status && (<p className="bold-sansation text-sm whitespace-nowrap h-8 flex items-center px-2" style={{ backgroundColor, color }}>{status}</p>)}
+            
+            { data?.isReversePickup && (
+              <span className="absolute left-[-40px] border rounded-lg px-1 text-red-500">
+                RP
+              </span>
+            )}
+          </div>
 
+          {/* Delete icon without background */}
+          {data?.Source === "PickupRequest" && (
+            <MdDelete
+              className="text-red-500 cursor-pointer ml-1 mr-2 h-8"
+              size={24}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsConfirmModalOpen(true);
+              }}
+            />
+          )}
         </div>
-
-        {/* Delete icon without background */}
-        {data?.Source === "PickupRequest" && (
-          <MdDelete
-            className="text-red-500 cursor-pointer ml-1 mr-2"
-            size={24}
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsConfirmModalOpen(true);
-            }}
-          />
-        )}
       </div>
 
       <div className="grid grid-cols-12">
