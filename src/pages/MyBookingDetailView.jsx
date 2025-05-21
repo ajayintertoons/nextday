@@ -69,6 +69,13 @@ const MyBookingDetailView = () => {
     }
   }
 
+  const consignerAddress = bookingDetails?.consignerAddress
+    ? JSON.parse(bookingDetails.consignerAddress)
+    : [];
+
+  const consignerLat = Number(consignerAddress[0]?.lat);
+  const consignerLong = Number(consignerAddress[0]?.long);
+
   return (
     <>
       <div className="relative">
@@ -114,7 +121,7 @@ const MyBookingDetailView = () => {
 
         <div className="grid grid-cols-1 py-5 ">
           <div>
-            <MyGoogleMap latitude={Number(bookingDetails?.lat)} longitude={Number(bookingDetails?.long)} />
+            <MyGoogleMap latitude={consignerLat} longitude={consignerLong} />
             <div className="flex justify-end gap-2">
               {bookingDetails?.canMarkPickupReady && <div className="flex justify-end"><Button type="button" buttonText="Ready to pickup" className="my-2" onClick={handleReadyToPickup} /> </div>}
               {bookingDetails?.canMarkPickupReady && <div className="flex justify-end "><Button type="button" buttonText="Cancel Pickup" className="my-2 bg-gray-400 text-gray-900"/> </div>}

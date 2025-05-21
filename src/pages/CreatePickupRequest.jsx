@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { convertDateFormat, getTodayDate, convertDateFormatUTC, convertLocalToUTCISOString } from '../utils/helpers';
 import PICKUP_IMG from '../images/pickupRequest.png'
-
+import { FaArrowLeft } from "react-icons/fa";
 
 // Yup validation schema
 const validationSchema = Yup.object({
@@ -69,6 +69,7 @@ const CreatePickupRequest = () => {
         toast.dismiss();
         toast.success(response?.message);
         setLoading(false);
+        navigate('/home/customer/my-bookings')
       })
       .catch((err) => {
         toast.dismiss();
@@ -126,6 +127,7 @@ const CreatePickupRequest = () => {
   return (
     <div className="container mx-auto p-3 pt-[116px] lg:pt-0 ">
       <div className=" p-6 rounded-lg shadow-md w-full ">
+        <div className='float-end'><button className="text-white bg-custom-green py-2 px-5 rounded-md font-sansation" onClick={() => navigate(-1)}>Back</button></div>
         <h1 className="text-3xl font-bold font-sansation text-gray-800 mb-6">{editData ? "Update Pickup Request" : "Create Pickup Request"}</h1>
 
         <div className='grid grid-cols-1 md:grid-cols-2 h-full rounded-md shadow-sm' >

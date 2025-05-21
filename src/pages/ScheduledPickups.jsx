@@ -12,17 +12,16 @@ import Breadcrub from "../components/button/Breadcrub";
 import { myContext } from "../utils/context_api/context";
 import { IoMdClose } from "react-icons/io";
 
-const MyBookings = () => {
+const ScheduledPickups = () => {
   //hooks
   const [selected, setSelected] = useState(0);
-  const [filter, setFilter] = useState("all")
   const [cardClicked, setCardClicked] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [offset, setOffset] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(2);
   const [totalCount, setTotalCount] = useState(0);
-  const [bookingList, setBookingList] = useState([]);
+  const [sheduledPickups, setSheduledPickups] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearch, setIsSearch] = useState(false)
@@ -30,10 +29,10 @@ const MyBookings = () => {
   const fetchBookingDetails = () => {
     setIsLoading(true)
     request({
-      url: `V1/customer/bookings?&pageNumber=${offset + 1}&pageSize=${rowsPerPage}&status=${filter}`,
+      url: `V1/customer/bookings?&pageNumber=${offset + 1}&pageSize=${rowsPerPage}&status=scheduledpickup`,
       method: "GET"
     }).then((response) => {
-      setBookingList(response?.data)
+      setSheduledPickups(response?.data)
       setTotalCount((response?.data[0].total))
       setIsLoading(false)
     }).catch((err) => {
@@ -47,14 +46,8 @@ const MyBookings = () => {
 
   useEffect(() => {
     fetchBookingDetails();
-  }, [rowsPerPage, offset, filter])
+  }, [rowsPerPage, offset])
 
-  // Handler function for selection(All,Requested......)
-  const handleClick = (index) => {
-    setSelected(index);
-    setFilter(index === 0 ? "all" : index === 1 ? "pickuprequest" : index === 2 ? "intransit" : index === 3 ? "completed" : '')
-    setOffset(0)
-  };
 
   // pagination functions
   const handleChangePage = (event, newPage) => {
@@ -67,85 +60,17 @@ const MyBookings = () => {
     setOffset(0);
   };
 
-  
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  // handle search
-  const handleSearchSubmit  = () => {
-    if (searchQuery.trim() !== "") {
-      // setIsSearch(true)
-    } else {
-      setIsSearch(false)
-      fetchBookingDetails();
-    }
-    // setIsLoading(true)
-    request({
-      url: `/V1/customer/search/bookings?searchQuery=${searchQuery}`,
-      method: "GET"
-    }).then((response) => {
-      setBookingList(response?.data);
-      setTotalCount((response?.data[0].total))
-      setIsLoading(false)
-    }).catch((error) => {
-      setIsLoading(false)
-      if (error.response?.status == 500) {
-        toast.dismiss();
-        toast.error(error.response.data.message)
-      }
-    })
-  };
-  
-
-  const handleCardClick = (data) => {
-    const status = data?.Source?.toLowerCase();
-    // console.log(status, "handle card")
-  
-    if (status === "pickuprequest") {
-      navigate(`/create-pickup-request?id=${data?.pickupReqId}`);
-    } else {
-      setCardClicked(true);
-      navigate(`/home/customer/details/${data?.bookingId}`);
-    }
-  };
-  
-
-  // Set the cardClicked state to false based on the path
-  useEffect(() => {
-    if (location.pathname === "/home/my-bookings") {
-      setCardClicked(false);
-    }
-  }, [location.pathname]);
-
   return (
     <div>
       <div className="relative">
-        <Breadcrub pageTitle="My Pickups" />
+        <Breadcrub pageTitle="Scheduled Pickups" />
       </div>
       {!cardClicked ? (
         <>
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 mt-2  items-center  ">
-              {!isSearch && <div className="grid grid-cols-4 border rounded-md bold-sansation text-sm    ">
-                {["All", "Requested", "Ongoing", "Completed"].map(
-                  (label, index) => (
-                    <div className=" flex justify-center items-center " key={index}>
-                      <div
-                        onClick={() => handleClick(index)}
-                        className={`flex cursor-pointer justify-center  items-center rounded-md p-2 m-2  w-full 
-            ${selected === index
-                            ? "bg-custom-green text-white"
-                            : `bg-${label.toLowerCase()}-300`
-                          }`}
-                      >
-                        {label}
-                      </div>
-                    </div>
-                  )
-                )}
-              </div>}
-              <div className="flex justify-center items-center h-auto mx-3 mb-3 ">
+              
+              {/* <div className="flex justify-center items-center h-auto mx-3 mb-3 ">
                 <div className='relative mb-2 mt-3 md:w-3/4'>
                   <SearchInput
                     placeholder="Search "
@@ -161,13 +86,13 @@ const MyBookings = () => {
                   )}
                 </div>
                 <button onClick={handleSearchSubmit} type="submit" className="bg-custom-green flex items-center  justify-center rounded-md text-white font-sansation font-regular mt-1 py-2 ms-2 px-3">Search</button>
-              </div>
+              </div> */}
             </div>
 
             <div style={{ minHeight: "350px" }} >
               {!isLoading && <div className="grid grid-cols-1" >
-                {bookingList?.map((stepData, index) => {
-                  const status = stepData?.bookingStatus || "";
+                {sheduledPickups?.map((stepData, index) => {
+                  const status = stepData?.status || "";
                   return (
                     <TrackingCard
                       key={index}
@@ -185,7 +110,7 @@ const MyBookings = () => {
                 aria-label="Loading Spinner"
                 data-testid="loader"
               /></div>}
-              {((!bookingList && !isLoading) || (bookingList?.length === 0 && !isLoading)) && <div style={{ height: "350px" }} className="flex items-center justify-center"><span>No Booking Found</span></div>}
+              {((!sheduledPickups && !isLoading) || (sheduledPickups?.length === 0 && !isLoading)) && <div style={{ height: "350px" }} className="flex items-center justify-center"><span>No Booking Found</span></div>}
             </div>
           </div>
           {!isSearch && <TablePagination
@@ -207,4 +132,4 @@ const MyBookings = () => {
   );
 };
 
-export default MyBookings;
+export default ScheduledPickups;

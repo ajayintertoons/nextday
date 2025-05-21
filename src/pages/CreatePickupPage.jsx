@@ -61,7 +61,7 @@ const normalValidation = Yup.object({
         .required("Volumetric weight is required")
         .positive(),
       packageValue: Yup.string()
-        .required("Invoice value is required")
+        .required("Package value is required")
         .test('is-number', 'Invoice value must be a number', (value) => !isNaN(Number(value))),
       ewaybillNo: Yup.string()
         .test('is-required', 'E-Way Bill No is required', function (value) {
@@ -529,6 +529,11 @@ const CreatePickupPage = () => {
               // style={{ display: currentStep > 1 ? "block" : "none" }}
               />
             </div>
+            {currentStep === 1 && (<Button
+              buttonText="Back"
+              className="px-9 absolute left-4"
+              onClick={() => navigate(-1)}
+            />)}
 
             {currentStep === 3 ? (
               <>

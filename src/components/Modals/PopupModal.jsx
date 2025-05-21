@@ -4,12 +4,12 @@ import { IoMdClose } from 'react-icons/io';
 
 const PopupModal = ({ isOpen, onClose, onConfirm, title, message }) => {
     return (
-        <Dialog open={isOpen} onClose={onClose} className="z-50">
+        <Dialog open={isOpen} onClose={onClose} className="z-[1000]">
             {/* Overlay */}
-            <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-40 " />
+            <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-[1000] " />
 
             {/* Top Centered Modal */}
-            <div className="fixed top-0 left-0 right-0 flex justify-center p-5 z-50">
+            <div className="fixed top-0 left-0 right-0 flex justify-center p-5 z-[1000]">
                 <DialogPanel className="relative bg-white rounded-lg shadow-xl max-w-sm w-full mx-auto ">
                     {/* Header */}
                     <div className='bg-custom-green flex justify-between px-4 py-3 rounded-tl-md rounded-tr-md'>

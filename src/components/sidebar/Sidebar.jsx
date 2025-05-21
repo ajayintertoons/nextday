@@ -41,7 +41,15 @@ const Sidebar = () => {
         <div className="grid grid-cols-3 p-2 ">
           <div className="w-3/5 justify-self-center ">
             <img
-              src={userData?.logoPath?.includes(`https://nodeapiv2.intertoons.com`) ? `${userData?.logoPath}`: userData?.logoPath ? `${CUSTOMER_PROFILE}${userData?.logoPath}`:profilePhoto}
+              src={
+                userData?.logoPath?.startsWith('data:image') // base64 case
+                  ? userData.logoPath
+                  : userData?.logoPath?.startsWith('http') // full URL case
+                  ? userData.logoPath
+                  : userData?.logoPath // filename only
+                  ? `${CUSTOMER_PROFILE}${userData.logoPath}`
+                  : profilePhoto // fallback default
+              }
               alt="profile photo"
               className="rounded-full h-[45px] object-cover "
               width="45px"

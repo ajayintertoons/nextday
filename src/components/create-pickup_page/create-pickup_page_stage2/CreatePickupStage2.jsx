@@ -12,6 +12,7 @@ import EditModal from "./EditModal";
 import { fetchAddressList } from "../../../utils/helpers";
 import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
+import { IoMdClose } from "react-icons/io";
 
 const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedConsignee, setSelectedConsignee, setSelectedConsigneeData, setSelectedConsignerData, formik, isToPay }) => {
   const {
@@ -171,11 +172,30 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
         <h5 className="text-xl font-sansation font-regular">Choose a Consigner<span className="text-red-500"> *</span></h5>
         {consignerModalOpen && <CreateConsigner fetchAddressList={fetchAddressList} />}
         {consigneeModalOpen && <CreateConsignee fetchAddressList={fetchAddressList} />}
-        <SearchInput
+        {/* <SearchInput
           placeholder="Search to Select Consigner Address"
           onChange={(e) => setSearchConsignerAddress(e.target.value)}
           Icon={FiSearch}
-        />
+          className="mt-3"
+        /> */}
+
+        <div className="relative mb-2 mt-3 sm:w-1/2">
+          <SearchInput
+            placeholder="Search to Select Consigner Address"
+            onChange={(e) => setSearchConsignerAddress(e.target.value)}
+            Icon={FiSearch}
+            value={searchConsignerAddress}
+            className="mt-3 sm:w-full"
+          />
+          {searchConsignerAddress && (
+            <IoMdClose
+            className='absolute top-1/2 right-8 transform -translate-y-1/2 text-lg cursor-pointer'
+            onClick={() => setSearchConsignerAddress('')}
+            title="Clear"
+            />
+          )}
+        </div>
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 py-5 gap-4">
           {addressList?.map((item) => (
@@ -227,16 +247,27 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
 
         <div className="py-6">
           <h5 className="text-xl font-sansation font-regular">Choose a Consignee<span className="text-red-500"> *</span></h5>
-          <SearchInput
-            placeholder="Search to Select Consignee Address"
-            onChange={(e) => setSearchConsignee(e.target.value)}
-            Icon={FiSearch}
-          />
+          <div className="relative mb-2 mt-3 sm:w-1/2">
+            <SearchInput
+              placeholder="Search to Select Consignee Address"
+              onChange={(e) => setSearchConsignee(e.target.value)}
+              Icon={FiSearch}
+              value={searchConsignee}
+              className="mt-3 sm:w-full"
+            />
+            {searchConsignee && (
+              <IoMdClose
+              className='absolute top-1/2 right-8 transform -translate-y-1/2 text-lg cursor-pointer'
+              onClick={() => setSearchConsignee('')}
+              title="Clear"
+              />
+            )}
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 py-5 gap-4">
             {consigneeAddressList?.map((item) => (
               <div
-                key={item?.id}
+                key={item?.addressId}
                 className={`border rounded-md p-3 relative cursor-pointer ${selectedConsignee === item.addressId ? 'bg-gray-200' : ''}`}
                 onClick={() => handleConsigneeSelect(item)}
               >

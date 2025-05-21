@@ -81,8 +81,8 @@ const PickupSection1 = ({ formik, setIsReversePickup, isReversePickup, isToPay, 
   }
 
   const options2 = [
-    { value: "box", label: "Box" },
-    { value: "nonBox", label: "Non Box" },
+    { value: "dox", label: "Dox" },
+    { value: "nondox", label: "Non Dox" },
   ];
 
   return (

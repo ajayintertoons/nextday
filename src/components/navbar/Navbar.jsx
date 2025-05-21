@@ -205,6 +205,9 @@ function Navbar({ className }) {
                             onClick={() => {
                               sessionStorage.removeItem("package")
                               sessionStorage.removeItem("pickupOptions")
+                              sessionStorage.removeItem("selectedConsigner");
+                              sessionStorage.removeItem("selectedConsignee");
+                              // sessionStorage.clear();
                               navigate(`/create-pickup`)
                             }}
                           />}

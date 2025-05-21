@@ -61,7 +61,7 @@ const Footer = () => {
     <>
       {/* ------------------ main container ---------------- */}
       <div className="bg-custom-gray p-3 xl:px-10">
-        <div className=" container mx-auto pt-10 mx-5 px-5">
+        <div className=" container mx-auto pt-10 px-5">
           <div className=" py-3 ">
             <img src={mainLogo} alt="logo" className="h-[2rem] " />
             <p className="text-#808080 text-[0.6rem] px-2">

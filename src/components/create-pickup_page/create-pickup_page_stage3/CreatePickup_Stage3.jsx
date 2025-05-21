@@ -38,7 +38,11 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
       });
   };
 
-  const modifiedPackages = formik.values?.packages?.map(({ images, ewaybillFile, declarationFile, ...rest }) => rest);
+  // const modifiedPackages = formik.values?.packages?.map(({ images, ewaybillFile, declarationFile, ...rest }) => rest);
+  const modifiedPackages = formik.values?.packages?.map(({ images, ewaybillFile, declarationFile, ...rest }) => ({
+    ...rest,
+    boxType: formik.values?.boxType  // inject boxType into each package
+  }));
   const packagesJson = JSON.stringify(modifiedPackages);
 
   const fetchSummaryDetails = () => {
@@ -83,7 +87,7 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
     getFormErrors: () => formik.errors,
   }));
 
-  console.log(props?.summaryData)
+  // console.log(props?.summaryData)
 
   return (
     <>
@@ -181,7 +185,8 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
               </div>
               <div className="flex justify-between py-1 text-sm">
                 <div>Tax({props?.summaryData?.taxPercentage}%)</div>
-                <div>₹ {props?.summaryData?.subTotal*(props?.summaryData?.subTotal*(props?.summaryData?.taxPercentage/100))}</div>
+                {/* <div>₹ {props?.summaryData?.subTotal*(props?.summaryData?.subTotal*(props?.summaryData?.taxPercentage/100))}</div> */}
+                <div>₹ {props?.summaryData?.tax}</div>
               </div>
               <div className="flex justify-between py-1 text-sm">
                 <div>Insurance Amount</div>
@@ -207,6 +212,7 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
                   value="upi"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  checked={formik.values.paymentMethod === "upi"}
                   className="transform scale-150 cursor-pointer"
                 />
               </div>
@@ -221,6 +227,7 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
                   value="cash"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  checked={formik.values.paymentMethod === "cash"}
                   className="transform scale-150 cursor-pointer"
                 />
               </div>

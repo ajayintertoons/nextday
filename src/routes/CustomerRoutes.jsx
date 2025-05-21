@@ -8,6 +8,7 @@ import MyBookingDetailView from '../pages/MyBookingDetailView';
 import CreateRecurringPickup from '../pages/CreateRecurringPickup';
 import CreatePickupPage from '../pages/CreatePickupPage';
 import RecurringPickupList from '../pages/RecurringPickupList';
+import ScheduledPickups from '../pages/ScheduledPickups';
 
 const CustomerRoutes = () => (
   <Routes>
@@ -15,6 +16,7 @@ const CustomerRoutes = () => (
     <Route path="change-password" element={<ChangePassword />} />
     <Route path="my-profile" element={<Profile />} />
     <Route path="my-bookings" element={<MyBookings />} />
+    <Route path="scheduled-pickups" element={<ScheduledPickups />} />
     <Route path="details/:id" element={<MyBookingDetailView />} />
     <Route path="create-recurring-pickup" element={<CreateRecurringPickup />} />
     <Route path="list-recurring-pickup" element={<RecurringPickupList />}/>

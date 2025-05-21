@@ -148,7 +148,7 @@ const Dashboard = () => {
       </div>
 
       {bookingList?.map((stepData, index) => {
-        const status = stepData?.bookingStatus || "Unknown";
+        const status = stepData?.bookingStatus || "";
         return <TrackingCard key={index} data={stepData} status={status} onClick={() => handleCardClick(stepData)} />;
       })}
 
@@ -165,13 +165,13 @@ const Dashboard = () => {
           <p>Sheduled Pickups</p>
         </div>
         <div className="text-end">
-          <p className="cursor-pointer">View All</p>
+          <p className="cursor-pointer" onClick={() => navigate('/home/customer/scheduled-pickups')}>View All</p>
         </div>
       </div>
 
       {sheduledPickups?.map((stepData, index) => {
-        const status = stepData?.status || "Unknown";
-        return <TrackingCard2 key={index} data={stepData} status={status} />;
+        const status = stepData?.status || "";
+        return <TrackingCard key={index} data={stepData} status={status} />;
       })}
       {isLoading && <div style={{ height: "250px" }} className="flex items-center justify-center"><FadeLoader
         color={"green"}
