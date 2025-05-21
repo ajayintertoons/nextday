@@ -159,16 +159,16 @@ function Navbar({ className }) {
 
                       <div className="flex items-center justify-end gap-3 p-2 text-xs">
                         <p>|</p>
-                        <p>
+                        <p title="Facebook">
                           <FaFacebookF className="cursor-pointer hover:text-custom-green" />
                         </p>
-                        <p>
+                        <p title="Twitter">
                           <FaTwitter className="cursor-pointer hover:text-custom-green" />
                         </p>
-                        <p>
+                        <p title="Linkedin">
                           <FaLinkedinIn className="cursor-pointer hover:text-custom-green" />
                         </p>
-                        <p>
+                        <p title="Instagram">
                           <FaInstagram className="cursor-pointer hover:text-custom-green" />
                         </p>
                       </div>
