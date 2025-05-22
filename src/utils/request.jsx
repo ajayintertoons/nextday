@@ -8,17 +8,17 @@ const service = axios.create({
 
   // const navigate = useNavigate()
 
-  const refreshToken = localStorage.getItem('userData');
+  const refreshToken = localStorage.getItem('refreshToken');
 
   const GenerateAccessToken = async () => {
     // Call your token refresh endpoint
     try {
       const response = await axios.post(`${BASE_URL}V1/customer/refresh-token`,{
-        "refreshToken": refreshToken
+        "refreshToken": localStorage.getItem('refreshToken')
     })
-    localStorage.setItem('accessToken', response.data[0]?.accessToken)
-    localStorage.setItem('refreshToken', response.data[0]?.refreshToken)
-    return response.data[0]?.accessToken;
+    localStorage.setItem('accessToken', response.data?.data[0]?.accessToken)
+    localStorage.setItem('refreshToken', response.data?.data[0]?.refreshToken)
+    return response.data?.data[0]?.accessToken;
     } catch (error) {
       if(error.response?.status === 401){
         localStorage.clear();
@@ -26,7 +26,6 @@ const service = axios.create({
       }
     }
   };
-
 
   const retryRequest = async (error) => {
     const originalRequest = error.config;
@@ -38,7 +37,7 @@ const service = axios.create({
       try {
         const newToken = await GenerateAccessToken();
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
-        return axios(originalRequest);
+        return service(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);
       }

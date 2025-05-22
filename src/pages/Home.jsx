@@ -24,7 +24,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 lg:gap-4  xl:gap-5 ">
+        <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 lg:gap-4  xl:gap-5 my-4">
           {/* left side div */}
 
           {isClicked ? (
@@ -43,7 +43,7 @@ const Home = () => {
           )}
 
           {/* right side div */}
-          <div className="lg:col-span-3 xl:col-span-3 ">
+          <div className="lg:col-span-3 xl:col-span-3">
             <Outlet />
           </div>
         </div>

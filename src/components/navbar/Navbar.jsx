@@ -19,6 +19,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LoginPage from "../../pages/LoginPage";
 import { Toaster } from "react-hot-toast";
 import Dropdown from "../Dropdowns/Dropdown";
+import LogOutModal from "../Modals/LogOutModal";
 // import { selectAuthdata, setAuthData, } from "../../slices/authSlice";
 // import { useDispatch, useSelector } from "react-redux";
 
@@ -26,6 +27,8 @@ function Navbar({ className }) {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isOpen,setIsOpen] = useState(false);
+  const [logOutConfirm,setLogOutConfirm] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -60,19 +63,37 @@ function Navbar({ className }) {
     setIsAccountModalOpen(false)
     setAddressList([])
     setIsLogin(false);
+    setIsOpen(false);
+    setLogOutConfirm(false);
     navigate('/')
   }
 
   const menuItems = [
     { label: "Home", path: "/", hasPlus: true },
-    { label: "About Us", path: "#", hasPlus: false },
-    { label: "Services", path: "#", hasPlus: true },
-    { label: "Blog", path: "#", hasPlus: true },
-    { label: "Contact Us", path: "#", hasPlus: false },
+    { label: "About Us", path: "/about-us", hasPlus: false },
+    { label: "Services", path: "/services", hasPlus: true },
+    { label: "Blog", path: "/blog", hasPlus: true },
+    { label: "Contact Us", path: "/contact-us", hasPlus: false },
   ];
+
+  const handleClose = ()=>{
+    setLogOutConfirm(false);
+    setIsAccountModalOpen(false);
+    setIsOpen(false);
+  }
+  const handleConfirm =()=>{
+    setLogOutConfirm(true);
+  }
+
+  useEffect(()=>{
+    if(isOpen && logOutConfirm){
+      logOut();
+    }
+  },[isOpen,logOutConfirm])
 
   return (
     <>
+    <LogOutModal isOpen={isOpen} onClose={handleClose} onConfirm={handleConfirm} title="Log Out" message="Are you sure you want to logout ?"/>
       <div className={`${isLogin ? "bg-[#0C1118]" : ""} ${className}`}>
         <Toaster containerStyle={{
           zIndex: 10001, // Ensure container has higher z-index
@@ -147,7 +168,7 @@ function Navbar({ className }) {
                               </button>
                               <button
                                 className="flex items-center px-4 rounded-md py-2 text-custom-green hover:bg-gray-200"
-                                onClick={logOut}
+                                onClick={()=>setIsOpen(true)}
                               >
                                 <FaArrowRight className="mr-2" />
                                 Logout

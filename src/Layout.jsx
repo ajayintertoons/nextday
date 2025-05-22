@@ -12,7 +12,7 @@ const Layout = () => {
 
   return (
     <>
-      <div>{!isRootPath && isLogin && <Navbar />}</div>
+      <div>{!isRootPath  && <Navbar />}</div>
       <div>
         <Outlet />
       </div>

@@ -15,6 +15,10 @@ import HomeRoutes from "./HomeRoutes";
 import CreatePickupRequest from "../pages/CreatePickupRequest";
 import PickupSuccess from "../components/notification/PickupSuccess";
 import PrivateRoute2 from "../utils/private-routes/PrivateRoute2";
+import About from "../pages/About";
+import ContactUs from "../pages/ContactUs";
+import Services from "../pages/Services";
+import Blog from "../pages/Blog";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +30,10 @@ export const router = createBrowserRouter([
       { path: "/payment", element: <PaymentPage /> },
       { path: "/success", element: <Success /> },
       { path: "/rateCalculator", element: <RateCalculator2 /> },
+      { path: "/about-us", element: <About /> },
+      { path: "/contact-us", element: <ContactUs /> },
+      { path: "/services", element: <Services /> },
+      { path: "/blog", element: <Blog /> },
       {
         path: "/create-pickup",
         element: (
