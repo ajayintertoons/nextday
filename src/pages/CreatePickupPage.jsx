@@ -11,8 +11,8 @@ import * as Yup from "yup";
 import { pincodeValidation } from "../utils/validation-schema/commonValidation";
 import toast from "react-hot-toast";
 import request from '../utils/request'
-import { useLocation, useNavigate } from "react-router-dom";
-import { convertDateFormat ,convertDateFormatUTC } from "../utils/helpers";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { convertDateFormat, convertDateFormatUTC } from "../utils/helpers";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const normalValidation = Yup.object({
@@ -40,7 +40,7 @@ const normalValidation = Yup.object({
       }
       return true;
     }),
-    
+
 
 
   boxType: Yup.string().required("Package type is required"),
@@ -54,8 +54,8 @@ const normalValidation = Yup.object({
         .positive()
         .integer(),
       boxDescription: Yup.string()
-      .nullable() 
-      .notRequired(), 
+        .nullable()
+        .notRequired(),
       // .required("Item description is required"),
       volumetricWeight: Yup.number()
         .required("Volumetric weight is required")
@@ -85,10 +85,10 @@ const normalValidation = Yup.object({
             imageUrl: Yup.string().required("Image is required")
           })
         )
-        .nullable() 
-        .notRequired(), 
-        // .required("At least one image is required")
-        // .min(1, "At least one image is required"),
+        .nullable()
+        .notRequired(),
+      // .required("At least one image is required")
+      // .min(1, "At least one image is required"),
     })
   ),
   // paymentMethod: Yup.string().required("Payment method is required"),
@@ -139,19 +139,22 @@ const CreatePickupPage = () => {
     console.error("Failed to parse sessionStorage data:", err);
   }
 
-  const [imagePreviews, setImagePreviews] = useState(localStoredData?.packages ? localStoredData?.packages?.map(item=>item?.images?.map(item=>item?.imageUrl)): []);
+  const [imagePreviews, setImagePreviews] = useState(localStoredData?.packages ? localStoredData?.packages?.map(item => item?.images?.map(item => item?.imageUrl)) : []);
   const [packages, setPackages] = useState([{}]);
   const [paymentMethod, setPaymentMethod] = useState();
   const [insurance, setInsurance] = useState();
   const [pickupData, setPickupData] = useState();
+  const [bookingDetails, setBookingDetails] = useState();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const pickupReqId = queryParams.get("pickupReqId");
+  const [searchParams] = useSearchParams();
+  const editId = searchParams.get("id");
   // console.log(packages, "pack in cRF")
 
   const navigate = useNavigate()
 
-  const [formData, setFormData] = useState(localStoredData ? localStoredData :{
+  const [formData, setFormData] = useState(localStoredData ? localStoredData : {
     pickupScheduleFrom: "",
     pickupScheduleTo: "",
     // pickupLocation: "",
@@ -175,8 +178,117 @@ const CreatePickupPage = () => {
       },
     ],
     paymentMethod: "",
-  })
- 
+  });
+
+  const fetchBookingDetails = () => {
+    request({
+      url: `/V1/customer/editbooking/${editId}`,
+      method: "GET"
+    }).then((response) => {
+      if (response?.data) {
+        setBookingDetails(response?.data);
+      }
+    }).catch((error) => {
+      if (error.response.status == 500) {
+        toast.dismiss();
+        toast.error(error.response.data.message)
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (editId) {
+      fetchBookingDetails()
+    }
+  }, [editId])
+
+  useEffect(() => {
+    if (!editId) {
+      sessionStorage.clear();
+      setFormData({
+        pickupScheduleFrom: "",
+        pickupScheduleTo: "",
+        // pickupLocation: "",
+        // postalCode: ""
+        // ,
+        modeType: "",
+        boxType: "",
+        toPay: 0,
+        packages: [
+          {
+            boxWidth: "",
+            boxLength: "",
+            boxBreadth: "",
+            boxDescription: "",
+            volumetricWeight: "",
+            approxWeight: "",
+            packageValue: "",
+            images: null,
+            ewaybillFile: null,
+            withInvoice: false
+          },
+        ],
+        paymentMethod: "",
+      })
+      localStoredData=null;
+    }
+  }, [])
+
+  useEffect(() => {
+    if (bookingDetails) {
+      setFormData({
+        pickupScheduleFrom: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleFrom),
+        pickupScheduleTo: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleTo),
+        modeType: bookingDetails?.booking?.ModeOfTransport,
+        boxType: "",
+        toPay: bookingDetails?.booking?.IsToPay ? 1 : 0,
+        packages: JSON?.parse(bookingDetails?.booking?.boxes)?.map(item => ({
+          boxWidth: item?.boxWidth,
+          boxLength: item?.boxLength,
+          boxBreadth: item?.boxBreadth,
+          boxDescription: "",
+          volumetricWeight: item?.volumetricWeight,
+          approxWeight: item?.approxWeight,
+          packageValue: item?.packageValue,
+          images: item?.boxImages?.map(item => ({ imageUrl: item?.imageUrl })),
+          ewaybillFile: item?.ewaybillFile,
+          withInvoice: item?.withInvoice,
+        })),
+        paymentMethod: ""
+      })
+      setPackages(JSON?.parse(bookingDetails?.booking?.boxes)?.map(item => ({
+        boxWidth: item?.boxWidth,
+        boxLength: item?.boxLength,
+        boxBreadth: item?.boxBreadth,
+        boxDescription: "",
+        volumetricWeight: item?.volumetricWeight,
+        approxWeight: item?.approxWeight,
+        packageValue: item?.packageValue,
+        images: item?.boxImages?.map(item => ({ imageUrl: item?.imageUrl })),
+        ewaybillFile: item?.ewaybillFile,
+        withInvoice: item?.withInvoice,
+      })))
+
+      setSelectedConsigner(JSON?.parse(bookingDetails?.pickupRequest?.consignerAddress)[0]?.AddressId);
+      setSelectedConsignee(JSON?.parse(bookingDetails?.booking?.consigneeAddress)[0]?.AddressId);
+      let consigneeAddress = JSON?.parse(bookingDetails?.booking?.consigneeAddress)[0];
+      let consignerAddress = JSON?.parse(bookingDetails?.pickupRequest?.consignerAddress)[0];
+      sessionStorage.setItem("selectedConsignee", JSON?.stringify({ addressId: consigneeAddress?.AddressId, fullName: consigneeAddress?.fullName, cityName: consigneeAddress?.CityName, stateName: consigneeAddress?.StateName, addressLine1: consigneeAddress?.AddressLine1, postalCode: consigneeAddress?.PostalCode, countryName: consigneeAddress?.CountryName }))
+      sessionStorage.setItem("selectedConsigner", JSON?.stringify({ addressId: consignerAddress?.AddressId, fullName: consignerAddress?.fullName, cityName: consignerAddress?.CityName, stateName: consignerAddress?.StateName, addressLine1: consignerAddress?.AddressLine1, postalCode: consignerAddress?.PostalCode, countryName: consignerAddress?.CountryName }))
+      setSelectedConsigner(consignerAddress?.AddressId);
+      setSelectedConsignee(consigneeAddress?.AddressId)
+      setIsToPay(bookingDetails?.booking?.IsToPay);
+      setIsReversePickup(bookingDetails?.booking?.IsReversePickup)
+      sessionStorage.setItem("package", packages);
+    }
+  }, [bookingDetails])
+
+  useEffect(() => {
+    if (packages) {
+      setImagePreviews(packages?.map(item => item?.images?.map(item => item?.imageUrl)))
+    }
+  }, [packages])
+
   // useEffect(()=>{
   //   if(localStoredData?.packages){
   //     setPackages(localStoredData?.packages)
@@ -185,11 +297,11 @@ const CreatePickupPage = () => {
 
   // useEffect(() => {
   //   const localStoredData = sessionStorage.getItem("package");
-  
+
   //   if (localStoredData) {
   //     try {
   //       const parsedData = JSON.parse(localStoredData);
-  
+
   //       if (parsedData?.packages) {
   //         setPackages((prev) => {
   //           const isSame = JSON.stringify(prev) === JSON.stringify(parsedData.packages);
@@ -202,7 +314,7 @@ const CreatePickupPage = () => {
   //     }
   //   }
   // }, [localStoredData]);
-  
+
 
   // const [pickupData,setPickupData] = useState([]);
   // // ref is used for access the create pickup stage3 form
@@ -213,8 +325,6 @@ const CreatePickupPage = () => {
   //     stage3Ref.current.submitForm();
   //   }
   // };
-
-
 
   const markAllFieldsTouched = () => {
     // Mark general fields
@@ -253,9 +363,9 @@ const CreatePickupPage = () => {
   }
 
   useEffect(() => {
-   if(pickupReqId){
-    fetchEditData();
-   }
+    if (pickupReqId) {
+      fetchEditData();
+    }
   }, [pickupReqId])
 
   useEffect(() => {
@@ -274,70 +384,137 @@ const CreatePickupPage = () => {
     validationSchema: normalValidation,
     validateOnChange: true,
     validateOnBlur: true,
-    
+
     onSubmit: (values) => {
-      setIsSubmitting(true); 
-      request({
-        url: `V1/customer/booking`,
-        method: "POST",
-        data: {
-          consignerAddressId: selectedConsigner,
-          consigneeAddressId: selectedConsignee,
-          isReversePickup: isReversePickup,
-          isPickupRequest: skip ? 1 : 0,
-          isTopay: isToPay,
-          noOfBoxes: values?.packages?.length,
-          approxTotalWeight: 0,
-          modeOfTransport: values?.modeType,
-          pickupScheduleFrom: convertDateFormat(values?.pickupScheduleFrom),
-          pickupScheduleTo: convertDateFormat(values?.pickupScheduleTo),
-          boxType: values?.boxType,
-          estimatedCost: summaryData?.grandTotal,
-          discount: summaryData?.discount ? summaryData?.discount : "",
-          deliveryCharge: summaryData?.shippingCost ? summaryData?.shippingCost : 0,
-          otherCharges: summaryData?.insuranceAmount ? summaryData?.insuranceAmount : 0,
-          taxAmount: summaryData?.shippingTax ? summaryData?.shippingTax : 0,
-          grandTotal: summaryData?.grandTotal ? summaryData?.grandTotal : 0,
-          boxesJson: JSON.stringify(values?.packages),
-          createdByStaffId: null,
-          franchiseId: null,
-          insuranceProvider: insurance?.value,
-          paymentMode: values?.paymentMethod,
-          rateId: summaryData?.rateId ? summaryData?.rateId : null,
-          subTotal: summaryData?.subTotal ? summaryData?.subTotal : 0,
-        }
-      }).then((response) => {
-        // localStoredData.removeItem("package")
-        try {
-          sessionStorage.removeItem("package");
-          sessionStorage.removeItem("pickupOptions");
-          sessionStorage.removeItem("selectedConsigner");
-          sessionStorage.removeItem("selectedConsignee");
+      setIsSubmitting(true);
+      if (editId) {
+        request({
+          url: `V1/customer/booking`,
+          method: "PUT",
+          data: {
+            bookingId: bookingDetails?.booking?.BookingId,
+            consignerAddressId: selectedConsigner,
+            consigneeAddressId: selectedConsignee,
+            isReversePickup: isReversePickup,
+            isPickupRequest: skip ? 1 : 0,
+            isTopay: isToPay,
+            noOfBoxes: values?.packages?.length,
+            approxTotalWeight: 0,
+            modeOfTransport: values?.modeType,
+            pickupScheduleFrom: convertDateFormat(values?.pickupScheduleFrom),
+            pickupScheduleTo: convertDateFormat(values?.pickupScheduleTo),
+            boxType: values?.boxType,
+            estimatedCost: summaryData?.grandTotal,
+            discount: summaryData?.discount ? summaryData?.discount : "",
+            deliveryCharge: summaryData?.shippingCost ? summaryData?.shippingCost : 0,
+            otherCharges: summaryData?.insuranceAmount ? summaryData?.insuranceAmount : 0,
+            taxAmount: summaryData?.shippingTax ? summaryData?.shippingTax : 0,
+            grandTotal: summaryData?.grandTotal ? summaryData?.grandTotal : 0,
+            boxesJson: JSON.stringify(values?.packages),
+            createdByStaffId: null,
+            franchiseId: null,
+            pickupReqId: pickupReqId ? pickupReqId : null,
+            insuranceProvider: insurance?.value,
+            paymentMode: values?.paymentMethod,
+            rateId: summaryData?.rateId ? summaryData?.rateId : null,
+            subTotal: summaryData?.subTotal ? summaryData?.subTotal : 0,
+          }
+        }).then((response) => {
+          // localStoredData.removeItem("package")
+          try {
+            sessionStorage.removeItem("package");
+            sessionStorage.removeItem("pickupOptions");
+            sessionStorage.removeItem("selectedConsigner");
+            sessionStorage.removeItem("selectedConsignee");
+            console.log("Package removed from sessionStorage.");
+            toast.success(response?.message)
+          } catch (err) {
+            console.error("Failed to remove item from sessionStorage:", err);
+          }
 
-          console.log("Package removed from sessionStorage.");
-        } catch (err) {
-          console.error("Failed to remove item from sessionStorage:", err);
-        }
-        
-        // navigate(`/success?reqNo=${skip ? response?.data?.[0]?.pickupReqNo : response?.data?.[0]?.awbNumber}&referenceNumber=${response?.data?.[0]?.referenceNumber ? response?.data?.[0]?.referenceNumber : 0}&bookingId=${response?.data?.[0]?.bookingId ? response?.data?.[0]?.bookingId : ""}&pickupReqId=${pickupReqId}`, { state: { fromBooking: true } })
-        const pickupReqParam = (pickupReqId && pickupReqId !== "null" && pickupReqId !== "undefined")
-          ? `&pickupReqId=${pickupReqId}`
-          : "";
+          // navigate(`/success?reqNo=${skip ? response?.data?.[0]?.pickupReqNo : response?.data?.[0]?.awbNumber}&referenceNumber=${response?.data?.[0]?.referenceNumber ? response?.data?.[0]?.referenceNumber : 0}&bookingId=${response?.data?.[0]?.bookingId ? response?.data?.[0]?.bookingId : ""}&pickupReqId=${pickupReqId}`, { state: { fromBooking: true } })
+          const pickupReqParam = (pickupReqId && pickupReqId !== "null" && pickupReqId !== "undefined")
+            ? `&pickupReqId=${pickupReqId}`
+            : "";
 
-        navigate(
-          `/success?reqNo=${skip ? response?.data?.[0]?.pickupReqNo : response?.data?.[0]?.awbNumber
-          }&referenceNumber=${response?.data?.[0]?.referenceNumber || 0
-          }&bookingId=${response?.data?.[0]?.bookingId || ""}${pickupReqParam}`,
-          { state: { fromBooking: true } }
-        );
-      }).catch((error) => {
-        if (error.response.status === 500) {
-          toast.dismiss();
-          toast.error(error.response.data.message);
-        }
-      }).finally(() => {
-        setIsSubmitting(false);
-      });
+          navigate(
+            `/success?reqNo=${skip ? response?.data?.[0]?.pickupReqNo : response?.data?.[0]?.awbNumber
+            }&referenceNumber=${response?.data?.[0]?.referenceNumber || 0
+            }&bookingId=${response?.data?.[0]?.bookingId || ""}${pickupReqParam}`,
+            { state: { fromBooking: true, edit: true } }
+          );
+        }).catch((error) => {
+          if (error.response.status === 500) {
+            toast.dismiss();
+            toast.error(error.response.data.message);
+          }
+        }).finally(() => {
+          setIsSubmitting(false);
+        });
+      } else {
+        request({
+          url: `V1/customer/booking`,
+          method: "POST",
+          data: {
+            consignerAddressId: selectedConsigner,
+            consigneeAddressId: selectedConsignee,
+            isReversePickup: isReversePickup,
+            isPickupRequest: skip ? 1 : 0,
+            isTopay: isToPay,
+            noOfBoxes: values?.packages?.length,
+            approxTotalWeight: 0,
+            modeOfTransport: values?.modeType,
+            pickupScheduleFrom: convertDateFormat(values?.pickupScheduleFrom),
+            pickupScheduleTo: convertDateFormat(values?.pickupScheduleTo),
+            boxType: values?.boxType,
+            estimatedCost: summaryData?.grandTotal,
+            discount: summaryData?.discount ? summaryData?.discount : "",
+            deliveryCharge: summaryData?.shippingCost ? summaryData?.shippingCost : 0,
+            otherCharges: summaryData?.insuranceAmount ? summaryData?.insuranceAmount : 0,
+            taxAmount: summaryData?.shippingTax ? summaryData?.shippingTax : 0,
+            grandTotal: summaryData?.grandTotal ? summaryData?.grandTotal : 0,
+            boxesJson: JSON.stringify(values?.packages),
+            createdByStaffId: null,
+            franchiseId: null,
+            pickupReqId: pickupReqId ? pickupReqId : null,
+            insuranceProvider: insurance?.value,
+            paymentMode: values?.paymentMethod,
+            rateId: summaryData?.rateId ? summaryData?.rateId : null,
+            subTotal: summaryData?.subTotal ? summaryData?.subTotal : 0,
+          }
+        }).then((response) => {
+          // localStoredData.removeItem("package")
+          try {
+            sessionStorage.removeItem("package");
+            sessionStorage.removeItem("pickupOptions");
+            sessionStorage.removeItem("selectedConsigner");
+            sessionStorage.removeItem("selectedConsignee");
+            toast.success(response?.message);
+            console.log("Package removed from sessionStorage.");
+          } catch (err) {
+            console.error("Failed to remove item from sessionStorage:", err);
+          }
+
+          // navigate(`/success?reqNo=${skip ? response?.data?.[0]?.pickupReqNo : response?.data?.[0]?.awbNumber}&referenceNumber=${response?.data?.[0]?.referenceNumber ? response?.data?.[0]?.referenceNumber : 0}&bookingId=${response?.data?.[0]?.bookingId ? response?.data?.[0]?.bookingId : ""}&pickupReqId=${pickupReqId}`, { state: { fromBooking: true } })
+          const pickupReqParam = (pickupReqId && pickupReqId !== "null" && pickupReqId !== "undefined")
+            ? `&pickupReqId=${pickupReqId}`
+            : "";
+
+          navigate(
+            `/success?reqNo=${skip ? response?.data?.[0]?.pickupReqNo : response?.data?.[0]?.awbNumber
+            }&referenceNumber=${response?.data?.[0]?.referenceNumber || 0
+            }&bookingId=${response?.data?.[0]?.bookingId || ""}${pickupReqParam}`,
+            { state: { fromBooking: true } }
+          );
+        }).catch((error) => {
+          if (error.response.status === 500) {
+            toast.dismiss();
+            toast.error(error.response.data.message);
+          }
+        }).finally(() => {
+          setIsSubmitting(false);
+        });
+      }
     },
   });
 
@@ -367,7 +544,7 @@ const CreatePickupPage = () => {
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
-    
+
     saveTimeoutRef.current = setTimeout(() => {
       try {
         const jsonData = JSON.stringify(data);
@@ -402,7 +579,7 @@ const CreatePickupPage = () => {
     try {
       const data = sessionStorage.getItem("package");
       const parsed = data ? JSON.parse(data) : null;
-  
+
       if (parsed?.packages) {
         setPackages(parsed.packages);
       }
@@ -410,7 +587,7 @@ const CreatePickupPage = () => {
       console.error("Failed to parse sessionStorage data:", err);
     }
   }, []); // Empty dependency array ensures it runs only once on mount
-  
+
 
 
 
@@ -441,7 +618,7 @@ const CreatePickupPage = () => {
       //   const formData = JSON.stringify(formik.values);
       //   // Estimate size before saving (in KB)
       //   const sizeInKB = new Blob([formData]).size / 1024;
-      
+
       //   if (sizeInKB > 4800) { // ~4.8MB safety threshold
       //     console.warn("SessionStorage limit exceeded! Size:", sizeInKB.toFixed(2), "KB");
       //   } else {
@@ -451,7 +628,7 @@ const CreatePickupPage = () => {
       // } catch (err) {
       //   console.error("Error saving to sessionStorage:", err);
       // }
-      
+
       // setFormData(formik.values);
 
       // markAllFieldsTouched();
@@ -459,7 +636,7 @@ const CreatePickupPage = () => {
 
       formik.validateForm().then((errors) => {
         markAllFieldsTouched(); // Mark fields as touched AFTER validation triggers errors
-      
+
         if (Object.keys(errors).length === 0 && !skip) {
           setFormData(formik.values); // Only update formData when you're moving ahead
           setCurrentStep((prevStep) => Math.min(prevStep + 1, 3));
@@ -467,10 +644,10 @@ const CreatePickupPage = () => {
           setFormData(formik.values); // Same here
           formik.handleSubmit();
         } else {
-          console.log("Errors found. Not moving to the next step.");
+          console.log(errors, "Errors found. Not moving to the next step.");
         }
       });
-    }else {
+    } else {
       setCurrentStep((prevStep) => Math.min(prevStep + 1, 3));
     }
   };
@@ -537,7 +714,6 @@ const CreatePickupPage = () => {
 
             {currentStep === 3 ? (
               <>
-
                 <Button
                   buttonText={
                     isSubmitting ? (

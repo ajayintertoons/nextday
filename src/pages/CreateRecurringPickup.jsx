@@ -31,7 +31,6 @@ const CreateRecurringPickup = () => {
     const queryParams = new URLSearchParams(location.search);
     const id = queryParams.get("id");
 
-    console.log(errorMap)
 
     const formik = useGlobalFormik(recurringInitialValues, recurringSchema, (values) => {
         if (!addressId) {

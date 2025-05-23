@@ -145,5 +145,6 @@ export const pickupDateValidation = Yup.date()
 
 export const commentValidation = Yup.string().required("Comment is required");
 export const ratingValidation = Yup.number().required("Rating is required")
+export const cancelValidation = Yup.string().required("Reason is required")
 
 // export { nameValidation, orderidTrackingidValidation, emailValidation, otpValidation, passwordValidation, phoneValidation, pincodeValidation, addressValidation, addressTypeValidation };    

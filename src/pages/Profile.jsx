@@ -50,7 +50,7 @@ const Profile = () => {
         }
       })
       .catch(function (err) {
-        if (err.response.status == 500) {
+        if (err.response?.status == 500) {
           toast.dismiss();
           toast.error(err.response.data.message)
         }

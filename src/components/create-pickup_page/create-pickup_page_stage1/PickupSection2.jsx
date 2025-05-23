@@ -95,8 +95,6 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
     // 🔑 Make sure Formik knows about the new fields
     formik.setFieldValue("packages", updatedPackages);
   };
-  
-
   // useEffect(()=>{
   //   console.log(packages , "packages")
   // },[packages])
@@ -132,11 +130,9 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
     if (formik.errors.packages) {
       newErrors.packages = formik.errors.packages.filter((_, i) => i !== index);
     }
-  
     formik.setTouched(newTouched);
     formik.setErrors(newErrors);
     formik.setFieldValue("packages", updatedPackages);
-  
     // Save clean state to session
     debounceSessionSave("package", {
       ...formik.values,
@@ -148,7 +144,6 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
     const updatedImages = formik.values.packages[packageIndex].images.filter((_, i) => i !== imageIndex);
     const updatedPreviews = [...imagePreviews];
     updatedPreviews[packageIndex] = updatedPreviews[packageIndex].filter((_, i) => i !== imageIndex);
-
     formik.setFieldValue(`packages[${packageIndex}].images`, updatedImages);
     setImagePreviews(updatedPreviews);
   };
@@ -342,9 +337,9 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                   </div>
                   {formik.values.packages[index]?.withInvoice && (
                     <div className="flex mt-1 gap-4">
-                      <div className="w-1/2 mt-2 cursor-pointer items-end">
+                      <div className="w-full sm:w-1/2 mt-2 cursor-pointer items-end">
                         <div
-                          className="w-full flex h-[2.6rem] items-center border rounded-lg border-gray-300 focus-within:border-blue-500 cursor-pointer"
+                          className="w-full flex h-[3.2rem] items-center border rounded-lg border-gray-300 focus-within:border-blue-500 cursor-pointer"
                           onClick={() => document.getElementById(`declarationFile-${index}`).click()} // Trigger the file input
                         >
                           <div className="bg-black w-1/4 text-custom-white text-2xl border rounded-l-lg border-black h-full flex items-center justify-center">
@@ -384,8 +379,8 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                     />
                   </div>
 
-                  <div className="flex mt-1 gap-4">
-                    <div className="w-3/5">
+                  <div className="flex flex-col sm:flex-row mt-1 gap-1 sm:gap-4">
+                    <div className="w-full sm:w-3/5">
                       <CustomInputField
                         title="E-Way Bill No"
                         type="text"
@@ -398,9 +393,9 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                         touched={formik.touched.packages?.[index]?.ewaybillNo}
                       />
                     </div>
-                    <div className="w-1/2 pt-11 cursor-pointer items-end">
+                    <div className="w-full sm:w-1/2 cursor-pointer items-end pt-2 sm:pt-11" >
                       <div
-                        className="w-full flex h-[2.6rem] items-center border rounded-lg border-gray-300 focus-within:border-blue-500 cursor-pointer"
+                        className="w-full flex h-[3.2rem] items-center border rounded-lg border-gray-300 focus-within:border-blue-500 cursor-pointer"
                         onClick={() => document.getElementById(`ewaybillFile-${index}`).click()} // Trigger the file input
                       >
                         <div className="bg-black w-1/4 text-custom-white text-2xl border rounded-l-lg border-black h-full flex items-center justify-center">

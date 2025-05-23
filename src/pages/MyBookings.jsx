@@ -67,13 +67,13 @@ const MyBookings = () => {
     setOffset(0);
   };
 
-  
+
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
   };
 
   // handle search
-  const handleSearchSubmit  = () => {
+  const handleSearchSubmit = () => {
     if (searchQuery.trim() !== "") {
       // setIsSearch(true)
     } else {
@@ -96,12 +96,11 @@ const MyBookings = () => {
       }
     })
   };
-  
+
 
   const handleCardClick = (data) => {
     const status = data?.Source?.toLowerCase();
     // console.log(status, "handle card")
-  
     if (status === "pickuprequest") {
       navigate(`/create-pickup-request?id=${data?.pickupReqId}`);
     } else {
@@ -109,7 +108,7 @@ const MyBookings = () => {
       navigate(`/home/customer/details/${data?.bookingId}`);
     }
   };
-  
+
 
   // Set the cardClicked state to false based on the path
   useEffect(() => {
@@ -145,7 +144,7 @@ const MyBookings = () => {
                   )
                 )}
               </div>}
-              {/* <div className="flex justify-center items-center h-auto mx-3 mb-3 ">
+              <div className="flex justify-center items-center h-auto mx-3 mb-3 ">
                 <div className='relative mb-2 mt-3 md:w-3/4'>
                   <SearchInput
                     placeholder="Search "
@@ -161,7 +160,7 @@ const MyBookings = () => {
                   )}
                 </div>
                 <button onClick={handleSearchSubmit} type="submit" className="bg-custom-green flex items-center  justify-center rounded-md text-white font-sansation font-regular mt-1 py-2 ms-2 px-3">Search</button>
-              </div> */}
+              </div>
             </div>
 
             <div style={{ minHeight: "350px" }} >

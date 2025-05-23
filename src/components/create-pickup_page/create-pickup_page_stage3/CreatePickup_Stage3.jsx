@@ -61,7 +61,6 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
       }
     })
       .then((response) => {
-        console.log(response?.data,"old")
         props?.setSummaryData(response?.data[0]);
          
       })
@@ -92,7 +91,6 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
   return (
     <>
       <div className="p-4">
-
         <form onSubmit={formik.handleSubmit}>
           <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-5 mt-5 ">
             <div className="w-full mb-5">

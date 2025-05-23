@@ -8,6 +8,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import { convertDateFormat, getTodayDate, convertDateFormatUTC, convertLocalToUTCISOString } from '../utils/helpers';
 import PICKUP_IMG from '../images/pickupRequest.png'
 import { FaArrowLeft } from "react-icons/fa";
+import CancelModal from '../components/Modals/CancelModal';
 
 // Yup validation schema
 const validationSchema = Yup.object({
@@ -40,11 +41,11 @@ const CreatePickupRequest = () => {
   const [fromDate, setFromDate] = useState();
   const [minScheduleTo, setMinScheduleTo] = useState('');
   const [maxScheduleTo, setMaxScheduleTo] = useState('');
+  const [isCancelPickup, setIsCancelPickup] = useState(false);
 
   const clearSessionStorage = () => {
     const keys = ["package", "pickupOptions", "selectedConsigner", "selectedConsignee"];
     keys.forEach((key) => sessionStorage.removeItem(key));
-    console.log("Session storage cleared:", keys);
   };
   const handleSubmit = async (values, { resetForm }) => {
     setLoading(true);
@@ -125,6 +126,8 @@ const CreatePickupRequest = () => {
   };
 
   return (
+    <>
+    <CancelModal isCancelPickup={isCancelPickup} setIsCancelPickup={setIsCancelPickup} id={id}/>
     <div className="container mx-auto p-3 pt-[116px] lg:pt-0 ">
       <div className=" p-6 rounded-lg shadow-md w-full ">
         <div className='float-end'><button className="text-white bg-custom-green py-2 px-5 rounded-md font-sansation" onClick={() => navigate(-1)}>Back</button></div>
@@ -205,15 +208,16 @@ const CreatePickupRequest = () => {
                         navigate(`/create-pickup?pickupReqId=${editData?.pickupReqId}`);
                       }}
                     >
-                      {loading ? <ClipLoader color='white' size={18} /> : "Create Booking"}
+                     Create Booking
                     </button>}
-                    <button
+                    {id && <button
                       type="button"
                       className="py-2 px-4 bg-red-600 text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
-                      onClick={() => navigate(-1)}
+                      onClick={() =>{ setIsCancelPickup(true)}}
+                      disabled={loading}
                     >
-                      {loading ? <ClipLoader color='white' size={18} /> : "Cancel"}
-                    </button>
+                     Cancel
+                    </button>}
                     
                   </div>
                 </Form>
@@ -227,6 +231,7 @@ const CreatePickupRequest = () => {
 
       </div>
     </div>
+    </>
   );
 };
 

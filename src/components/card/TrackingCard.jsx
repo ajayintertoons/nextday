@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import CheckoutStepper from '../stepper/TrackingStepper';
 import packageImage from "../../images/package_3d 1.png"
 import toast from "react-hot-toast";
@@ -6,9 +6,12 @@ import toast from "react-hot-toast";
 import request from '../../utils/request';
 import { MdDelete } from "react-icons/md";
 import PopupModal from '../../components/Modals/PopupModal';
+import { FaRegEdit } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const TrackingCard = ({ data, status, onClick }) => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const navigate = useNavigate();
   const convertDateFormat = (dateToConvert) => {
     const date = new Date(dateToConvert);
     const options = { day: '2-digit', month: 'long' };
@@ -31,23 +34,23 @@ const TrackingCard = ({ data, status, onClick }) => {
         };
       case 'Scheduled':
         return {
-          backgroundColor:"#eaf5ff",
-          color:'#0089ff'
+          backgroundColor: "#eaf5ff",
+          color: '#0089ff'
         }
       case 'PickupRequested':
         return {
-          backgroundColor:"#e8fffa",
-          color:'#00d5a4'
+          backgroundColor: "#e8fffa",
+          color: '#00d5a4'
         }
       case 'DeliveryCompleted':
-        return{
-          backgroundColor:"#eaffef",
-          color:'#10ff00'
+        return {
+          backgroundColor: "#eaffef",
+          color: '#10ff00'
         }
       case 'DeliveryFailed':
         return {
-          backgroundColor:"#ffe8e8",
-          color:"#d50000"
+          backgroundColor: "#ffe8e8",
+          color: "#d50000"
         }
 
       default:
@@ -82,10 +85,9 @@ const TrackingCard = ({ data, status, onClick }) => {
 
   const handleModalClose = () => {
     setIsConfirmModalOpen(false);
-    setSelectedAddressId(null); // Reset the selected address when modal closes
+    setSelectedAddressId(null); 
   };
 
-  // console.log(status)
   return (
     <div className="relative grid grid-cols-1 border  rounded-md my-3 pt-4 cursor-pointer hover:shadow-lg " onClick={onClick}>
       <div className="absolute right-0 top-0 flex items-center gap-1">
@@ -95,11 +97,11 @@ const TrackingCard = ({ data, status, onClick }) => {
           title="Delete Address"
           message={`Are you sure you want to delete ?`} />
         {/* Status background */}
-       <div className="flex items-center">
+        <div className="flex items-center">
           <div className="relative flex items-center">
             {status && (<p className="bold-sansation text-sm whitespace-nowrap h-8 flex items-center px-2" style={{ backgroundColor, color }}>{status}</p>)}
-            
-            { data?.isReversePickup && (
+
+            {data?.isReversePickup && (
               <span className="absolute left-[-40px] border rounded-lg px-1 text-red-500">
                 RP
               </span>
@@ -130,15 +132,15 @@ const TrackingCard = ({ data, status, onClick }) => {
             />
           </div>
         </div>
-
-        <div className="col-span-12 sm:col-span-11 pl-2 xl:pl-0">
+        <div className="col-span-12 sm:col-span-11 pl-2 xl:pl-0 position-relative ">
           <h5 className="bold-sansation">#{data?.Source === "Booking" ? data?.awbNumber : data?.pickupReqNo}</h5>
           <div className="flex gap-5 text-xs font-sansation font-regular text-[#ABABAB]">
-            <p>{data?.bookingDate ? convertDateFormat(data?.bookingDate) : data?.scheduledDate ? convertDateFormat(data?.scheduledDate):"-"}</p>
+            <p>{data?.bookingDate ? convertDateFormat(data?.bookingDate) : data?.scheduledDate ? convertDateFormat(data?.scheduledDate) : "-"}</p>
           </div>
           <div className=' mr-10 '>
             <CheckoutStepper stepsConfig={data?.statusHistory ? JSON?.parse(data?.statusHistory) : []} />
           </div>
+          {(data?.isBookingEditable && data?.Source === "Booking") && <span className='position-absolute ' onClick={(e) => { e.stopPropagation(); navigate(`/create-pickup?id=${data?.bookingId}`) }} style={{ right: "5px", bottom: "5px", position: "absolute" }}><FaRegEdit size={22} color='green' /></span>}
         </div>
       </div>
     </div>

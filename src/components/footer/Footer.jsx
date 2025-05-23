@@ -69,7 +69,7 @@ const Footer = () => {
             </p>
             <p className="#808080 text-[0.6rem] px-2">
               {" "}
-              CIN: fgfgfgsertujht rj5678
+              
             </p>
           </div>
           <hr className=" border-2 border-#808080" />

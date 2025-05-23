@@ -225,6 +225,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
     setMarker(newCenter);
     setAddress(place.formatted_address);
     map.panTo(newCenter);
+    
   };
 
   const onMapClick = (event) => {

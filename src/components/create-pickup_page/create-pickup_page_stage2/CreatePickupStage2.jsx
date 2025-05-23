@@ -59,38 +59,55 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
     }
   }
 
-
   useEffect(() => {
-    if (searchConsignee) {
-      request({
-        url: `V1/customer/searchConsigneeAddress?searchTerm=${searchConsignee}`,
-        method: "GET",
-      }).then((response) => {
-        setConsigneeAddressList(response.data);
-      }).catch((err) => {
-        if (err.response.status === 500) {
-          toast.dismiss();
-          toast.error(err.response.data.message);
-        }
-      });
-    }
+    const delayDebounce = setTimeout(() => {
+      if (searchConsignee) {
+        request({
+          url: `V1/customer/searchConsigneeAddress?searchTerm=${searchConsignee}`,
+          method: 'GET',
+        })
+          .then((response) => {
+            setConsigneeAddressList(response.data);
+          })
+          .catch((err) => {
+            if (err.response?.status === 500) {
+              toast.dismiss();
+              toast.error(err.response.data.message);
+            }
+          });
+      }else{
+        fetchConsigneeAddressList()
+      }
+    }, 800); // 300ms debounce
+  
+    return () => clearTimeout(delayDebounce);
   }, [searchConsignee]);
-
+  
   useEffect(() => {
-    if (searchConsignerAddress) {
-      request({
-        url: `V1/customer/searchConsignorAddress?searchTerm=${searchConsignerAddress}`,
-        method: "GET"
-      }).then((response) => {
-        setAddressList(response.data);
-      }).catch((err) => {
-        if (err.response.status === 500) {
-          toast.dismiss();
-          toast.error(err.response.data.message);
-        }
-      });
-    }
+    const delayDebounce = setTimeout(() => {
+      if (searchConsignerAddress) {
+        request({
+          url: `V1/customer/searchConsignorAddress?searchTerm=${searchConsignerAddress}`,
+          method: 'GET',
+        })
+          .then((response) => {
+            setAddressList(response.data);
+          })
+          .catch((err) => {
+            if (err.response?.status === 500) {
+              toast.dismiss();
+              toast.error(err.response.data.message);
+            }
+          });
+      }else{
+        fetchAddressList(setAddressList);
+      }
+    }, 800); // 300ms debounce
+  
+    return () => clearTimeout(delayDebounce);
   }, [searchConsignerAddress]);
+  
+  
 
   useEffect(() => {
     const savedConsigner = sessionStorage.getItem("selectedConsigner");
@@ -271,17 +288,17 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
                 className={`border rounded-md p-3 relative cursor-pointer ${selectedConsignee === item.addressId ? 'bg-gray-200' : ''}`}
                 onClick={() => handleConsigneeSelect(item)}
               >
-                <img
+                {/* <img
                   src={editIcon}
                   alt="edit icon"
                   className="absolute right-2 top-1 cursor-pointer"
                   style={{ width: "20px", height: "20px" }}
                   onClick={() => { setEditModalOpen(true); setAddressData(item); }}
-                />
-                <MdDelete
+                /> */}
+                {/* <MdDelete
                   className="absolute right-2 bottom-1 text-2xl text-red-500 cursor-pointer"
                   onClick={(e) => { e.stopPropagation(); handleDelete(item?.addressId); }}
-                />
+                /> */}
                 <div className="flex">
                   <div className="text-custom-light-green flex h-10 items-center mt-1">
                     <div className="border rounded-md p-2 text-2xl">

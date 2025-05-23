@@ -18,7 +18,6 @@ const Success = () => {
   const navigate = useNavigate();
    useEffect(()=>{
     if(!reqNo){
-      console.log("hello")
       navigate('/404');
     }else{
       fetchPdf();
@@ -61,11 +60,11 @@ const Success = () => {
         {/* Succes info*/}
         <div className="pt-2  text-center w-1/3">
           <h5 className="text-xl font-bold text-custom-blue">
-            {`${referenceNumber != 0 ? 'Booking Created':"Pickup Request Created Successfully"}`}
+            {`${referenceNumber != 0 ? location.state?.edit ?"Booking Updated":'Booking Created':"Pickup Request Created Successfully"}`}
           </h5>
           <div className="mt-2  text-center ">
             {referenceNumber != 0 &&<p className="text-sm font-sansation font-regular text-[#75759E]">
-              Thank you for creating a new booking. Your AWB is #{reqNo} <br />
+              {`${location.state?.edit?"Your Booking is Updated":'Thank you for creating a new booking.'} Your AWB is `}#{reqNo} <br />
               Your reference number is {referenceNumber}
             </p>}
             {referenceNumber == 0 &&<p className="text-sm font-sansation font-regular text-[#75759E]">

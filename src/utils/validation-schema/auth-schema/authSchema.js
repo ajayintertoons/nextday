@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { addressValidation, cityValidation, commentValidation, confirmPassword, currentPasswordValidation, customerValidation, emailValidation, gstNumberValidation, loginUsername, monthlyDateValidation, nameValidation, newPasswordValidation, otpValidation, passwordValidation, phoneValidation, pickupApproxWeightValidation, pickupDateValidation, pickupFrequencyValidation, pickupScheduleFromValidation, pickupScheduleToValidation, pickUpTimeValidation, pincodeValidation, pincodeValidation2, ratingValidation, stateValidation, weeklyDayValidation } from "../commonValidation";
+import { addressValidation, cancelValidation, cityValidation, commentValidation, confirmPassword, currentPasswordValidation, customerValidation, emailValidation, gstNumberValidation, loginUsername, monthlyDateValidation, nameValidation, newPasswordValidation, otpValidation, passwordValidation, phoneValidation, pickupApproxWeightValidation, pickupDateValidation, pickupFrequencyValidation, pickupScheduleFromValidation, pickupScheduleToValidation, pickUpTimeValidation, pincodeValidation, pincodeValidation2, ratingValidation, stateValidation, weeklyDayValidation } from "../commonValidation";
 
 // --------------------- login section ----------------------
 export const loginInitialValues = {
@@ -173,6 +173,12 @@ export const ratingInitialValues = {
     rating : 0,
     feedback:''
 }
+export const cancelInitialValues={
+    cancelReason:""
+}
+export const cancelSchema = Yup.object().shape({
+    cancelReason:cancelValidation
+});
 
 export const ratingSchema = Yup.object().shape({
     rating:ratingValidation,

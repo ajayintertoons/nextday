@@ -24,6 +24,8 @@ import request from '../utils/request';
 import { TiTick } from "react-icons/ti";
 import { IoClose } from "react-icons/io5";
 import { locationFinderInitialValues, locationFinderValidationSchema } from "../utils/validation-schema/auth-schema/authSchema";
+import TrackingCard3 from "../components/card/TrackingCard3";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const LandingPage = () => {
   // ----------------- hooks ----------------------
@@ -37,6 +39,9 @@ const LandingPage = () => {
   const [selectedPincode, setSelectedPincode] = useState()
   const [locationData, setLocaitonData] = useState()
   const [isVisible, setIsVisible] = useState(false);
+  const [trackData, setTrackData] = useState([]);
+  const [loading,setLoading] = useState(false);
+  const [check,setCheck]=useState(false);
   const { login } = useContext(myContext);
 
   useEffect(() => {
@@ -51,7 +56,32 @@ const LandingPage = () => {
         toast.error(err.response.data.message)
       }
     })
-  }, [])
+  }, []);
+
+  const handleTrack = () => {
+    setTrackData([])
+    setCheck(true)
+    if(!formik.values?.trackingId){
+      formik.setFieldTouched('trackindId', true);
+      return;
+    }
+    if (isAwbSelected) {
+      setLoading(true)
+      request({
+        url: `V1/getTrackingDetailsByAwb?awblist=${formik.values?.trackingId}`,
+        method: "GET",
+      }).then((response) => {
+        setTrackData(JSON.parse(response?.data[0]?.trackingResult)[0]?.tracking)
+        setLoading(false)
+      }).catch((error) => {
+        setLoading(false)
+        if (err.response.status == 500) {
+          toast.dismiss();
+          toast.error(err.response.data.message)
+        }
+      })
+    }
+  }
 
   const formik = useGlobalFormik(locationFinderInitialValues, locationFinderValidationSchema,
     (values) => {
@@ -66,7 +96,6 @@ const LandingPage = () => {
           toast.error(err.response.data.message)
         }
       })
-
     });
 
   // ----------------- hooks end here -------------
@@ -155,7 +184,7 @@ const LandingPage = () => {
         className="bg-cover bg-center bg-no-repeat "
       >
         <Navbar />
-        <div className=" flex items-center justify-center h-auto  lg:h-[650px] border-t-[0.1rem] border-gray-600 Best pt-[116px] lg:pt-0">
+        <div className=" flex items-center justify-center h-auto  lg:min-h-[650px] border-t-[0.1rem] border-gray-600 Best pt-[116px] lg:pt-0">
           <div className=" grid grid-cols-1 lg:grid-cols-2 gap-10 container mx-auto ">
             <div className=" px-8 py-4 flex justify-center items-center sm:block ">
               <div>
@@ -276,10 +305,9 @@ const LandingPage = () => {
                             </div>
                             {/* Error message outside the input box div */}
                             {isAwbSelected &&
-                              formik.touched.trackingId &&
-                              formik.errors.trackingId && (
+                              (!formik.values.trackingId && check) && (
                                 <div className="text-red-500 text-sm mt-1">
-                                  {formik.errors.trackingId}
+                                  Tracking Id is required
                                 </div>
                               )}
                             {!isAwbSelected &&
@@ -294,10 +322,16 @@ const LandingPage = () => {
                           <button
                             type="submit"
                             className="bg-black text-white w-full mt-3 rounded-md flex items-center justify-center p-2 cursor-pointer font-sansation font-bold "
+                            onClick={() => handleTrack()}
+                            disabled={loading}
                           >
-                            Track
+                           {loading ?<ClipLoader color="white" size={18}/> : "Track"}
                           </button>
                         </form>
+
+                        {trackData && <div className="max-h-screen">
+                          <TrackingCard3 steps={trackData} />
+                        </div>}
 
                         <hr className="border-t-2" />
                         <p className="text-custom-blue text-center font-sansation font-regular text-sm">

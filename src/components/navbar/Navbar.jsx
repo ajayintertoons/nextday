@@ -340,7 +340,7 @@ function Navbar({ className }) {
                   <div
                     key={index}
                     className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
-                    onClick={() => navigate(item.path)}
+                    onClick={() =>{ navigate(item.path);setToggleMenu(!toggleMenu);}}
                   >
                     <button className="btn rounded-md ">
                       {item.label}
