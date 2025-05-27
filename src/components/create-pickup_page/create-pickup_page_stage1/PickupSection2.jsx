@@ -357,6 +357,15 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                               {formik.values.packages[index]?.declarationFileName || 'Upload file'}
                             </p>
                           </div>
+                          <div className="flex items-center gap-2 m-2">
+                          {formik.values.packages[index]?.declarationFile && (
+                            <img
+                              src={formik.values.packages[index].declarationFile}
+                              alt="E-Way Bill"
+                              className="w-10 h-10 object-contain"
+                            />
+                          )}
+                        </div>
                         </div>
                         {formik.errors.packages?.[index]?.declarationFile && formik.touched.packages?.[index]?.declarationFile && (
                           <div className="text-red-500 text-sm mt-1">{formik.errors.packages[index].declarationFile}</div>
@@ -412,6 +421,15 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                           <p className="text-gray-400 font-sansation font-regular px-2 text-sm">
                             {formik.values.packages[index]?.ewaybillFileName || 'Upload E-Way Bill'}
                           </p>
+                        </div>
+                        <div className="flex items-center gap-2 m-2">
+                          {formik.values.packages[index]?.ewaybillFile && (
+                            <img
+                              src={formik.values.packages[index].ewaybillFile}
+                              alt="E-Way Bill"
+                              className="w-10 h-10 object-contain"
+                            />
+                          )}
                         </div>
                       </div>
                       {formik.errors.packages?.[index]?.ewaybillFile && formik.touched.packages?.[index]?.ewaybillFile && (

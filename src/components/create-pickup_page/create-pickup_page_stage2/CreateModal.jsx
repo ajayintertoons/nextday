@@ -292,7 +292,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
   }
 
   return (
-    <Dialog open={isOpen} onClose={() => onClose(false)} className="relative "  style={{zIndex:99999}}>
+    <Dialog open={isOpen} onClose={() => onClose(false)} className="relative "  style={{zIndex:999}}>
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"

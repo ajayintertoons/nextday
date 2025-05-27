@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect , useRef } from "react";
 import logo from "../../images/VerticalBorder.png";
 import { Bars3Icon , XMarkIcon } from "@heroicons/react/24/outline";
 import { IoMail } from "react-icons/io5";
@@ -31,6 +31,24 @@ function Navbar({ className }) {
   const [logOutConfirm,setLogOutConfirm] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
+
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target)
+      ) {
+        setIsAccountModalOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleButtonClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -131,8 +149,8 @@ function Navbar({ className }) {
                       <div className="flex-none  font-sansation font-regular text-xs  flex gap-1 p-2 items-center cursor-pointer ">
                         {isLogin ? (
                           <>
-                            <FaLocationDot className="text-custom-green" />
-                            <p>Kochi,Ernakulam</p>
+                            {/* <FaLocationDot className="text-custom-green" /> */}
+                            <p></p>
                           </>
                         ) : (
                           <div className="bg-red-400"></div>
@@ -140,6 +158,7 @@ function Navbar({ className }) {
                       </div>
                       <div
                         className="flex-none font-sansation font-regular text-xs flex gap-1  p-2 relative"
+                        ref={modalRef}
                       >
                         {isLogin ? (
                           <>
@@ -151,8 +170,8 @@ function Navbar({ className }) {
                           </>
                         ) : (
                           <>
-                            <FaLocationDot className="text-custom-green" />
-                            <p>Kochi,Ernakulam</p>
+                            {/* <FaLocationDot className="text-custom-green" /> */}
+                            <p></p>
                           </>
                         )}
 
@@ -179,7 +198,7 @@ function Navbar({ className }) {
                       </div>
 
                       <div className="flex items-center justify-end gap-3 p-2 text-xs">
-                        <p>|</p>
+                        {isLogin ? (<p>|</p>) : (<p></p>)}
                         <p title="Facebook">
                           <FaFacebookF className="cursor-pointer hover:text-custom-green" />
                         </p>

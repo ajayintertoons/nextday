@@ -80,6 +80,22 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
     fetchSummaryDetails();
   }, [selectedOption]);
 
+  useEffect(() => {
+    if (insuranceList && props.insurance) {
+      const matched = insuranceList.find(
+        (item) => item.insuranceProviderId === props.insurance
+      );
+
+      if (matched) {
+        const option = {
+          label: matched.insuranceProviderName,
+          value: matched.insuranceProviderId,
+        };
+        setSelectedOption(option);
+      }
+    }
+  }, [insuranceList, props.insurance]);
+
   useImperativeHandle(ref, () => ({
     submitForm: () => formik.handleSubmit(),
     getFormValues: () => formik.values,
@@ -129,7 +145,7 @@ const CreatePickup_Stage3 = forwardRef((props, ref) => {
                   <Dropdown
                     options={options}
                     placeholder="Select Insurance Provider"
-                    value={props?.insurance}
+                    value={selectedOption}
                     onChange={handleSelect}
                   />
                 </div>

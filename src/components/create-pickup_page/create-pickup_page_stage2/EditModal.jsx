@@ -85,6 +85,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
 
     useEffect(()=>{
         if(addressData){ 
+            console.log(addressData?.postalCode, "---postal code")
             setSearchInput(addressData?.postalCode);
             fetchOptions(); 
             setCity(addressData?.cityName);
@@ -320,7 +321,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
     }
 
     return (
-        <Dialog open={isOpen} onClose={() => setEditModalOpen(false)} className="relative" style={{zIndex:99999}}>
+        <Dialog open={isOpen} onClose={() => setEditModalOpen(false)} className="relative" style={{zIndex:999}}>
             <DialogBackdrop
                 transition
                 className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"

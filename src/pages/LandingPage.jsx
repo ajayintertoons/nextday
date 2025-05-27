@@ -40,9 +40,13 @@ const LandingPage = () => {
   const [locationData, setLocaitonData] = useState()
   const [isVisible, setIsVisible] = useState(false);
   const [trackData, setTrackData] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   const [loading,setLoading] = useState(false);
   const [check,setCheck]=useState(false);
   const { login } = useContext(myContext);
+
+  console.log(trackData, "--track")
 
   useEffect(() => {
     request({
@@ -62,9 +66,12 @@ const LandingPage = () => {
     setTrackData([])
     setCheck(true)
     if(!formik.values?.trackingId){
-      formik.setFieldTouched('trackindId', true);
+      formik.setFieldTouched('trackingId', true);
       return;
     }
+
+    setHasSearched(true);
+
     if (isAwbSelected) {
       setLoading(true)
       request({
@@ -75,9 +82,9 @@ const LandingPage = () => {
         setLoading(false)
       }).catch((error) => {
         setLoading(false)
-        if (err.response.status == 500) {
+        if (error.response.status == 500) {
           toast.dismiss();
-          toast.error(err.response.data.message)
+          toast.error(error.response.data.message)
         }
       })
     }
@@ -91,7 +98,7 @@ const LandingPage = () => {
       }).then((response) => {
         setLocaitonData(response?.data[0])
       }).catch((error) => {
-        if (err.response.status == 500) {
+        if (error.response.status == 500) {
           toast.dismiss();
           toast.error(err.response.data.message)
         }
@@ -286,7 +293,14 @@ const LandingPage = () => {
                                     placeholder="Tracking ID"
                                     className="border-none outline-none text-black p-2 w-full font-sansation font-regular"
                                     value={formik.values.trackingId}
-                                    onChange={formik.handleChange}
+                                    onChange={(e) => {
+                                      formik.handleChange(e);
+
+                                      // reset hasSearched when input is cleared
+                                      if (e.target.name === "trackingId" && e.target.value.trim() === "") {
+                                        setHasSearched(false);
+                                      }
+                                    }}
                                     onBlur={formik.handleBlur}
                                   />
                                 </>
@@ -328,10 +342,16 @@ const LandingPage = () => {
                            {loading ?<ClipLoader color="white" size={18}/> : "Track"}
                           </button>
                         </form>
-
-                        {trackData && <div className="max-h-screen">
-                          <TrackingCard3 steps={trackData} />
-                        </div>}
+                       
+                        {hasSearched && !loading && (
+                            trackData && trackData.length > 0 ? (
+                              <div className="max-h-screen">
+                                <TrackingCard3 steps={trackData} />
+                              </div>
+                            ) : (
+                              <p className="text-center text-gray-800 mt-0">No data found</p>
+                            )
+                        )}
 
                         <hr className="border-t-2" />
                         <p className="text-custom-blue text-center font-sansation font-regular text-sm">

@@ -125,17 +125,17 @@ const LoginPage = () => {
                       <RegisterPage />
                     ) : (
                       <>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4">
                           <div>
-                            <div className="flex">
+                            <div className="flex items-center">
                               <p className="font-sansation font-regular">Welcome back to</p>
-                              <div className="w-[6rem] p-1">
+                              <div className="w-[6rem] p-1 pt-[6px]">
                                 <img src={logo} alt="logo" />
                               </div>
                             </div>
                             <p className="bold-sansation text-4xl">{"Customer Login"}</p>
                           </div>
-                          <div className="flex justify-end">
+                          {/* <div className="flex justify-end">
                             <div>
                               <p className="font-sansation font-regular">No Account?</p>
                               <p
@@ -145,7 +145,7 @@ const LoginPage = () => {
                                 Register
                               </p>
                             </div>
-                          </div>
+                          </div> */}
 
                           <div className="col-span-2 mt-3">
                             <div className="flex gap-3">
@@ -169,16 +169,16 @@ const LoginPage = () => {
                                 </div>
                               )}
 
-                              <div className="w-full flex items-center p-2 hover:shadow-md cursor-pointer rounded-lg bg-[#F6F6F6] gap-3 justify-center">
+                              {/* <div className="w-full flex items-center p-2 hover:shadow-md cursor-pointer rounded-lg bg-[#F6F6F6] gap-3 justify-center">
                                 <FcGoogle className="text-3xl" />
                                 <p className="text-[#005EB5] font-sansation font-regular">
                                   Login with Google
                                 </p>
-                              </div>
+                              </div> */}
 
-                              <div className="w-1/4 flex items-center justify-center p-2 hover:shadow-md cursor-pointer bg-[#F6F6F6] rounded-lg">
+                              {/* <div className="w-1/4 flex items-center justify-center p-2 hover:shadow-md cursor-pointer bg-[#F6F6F6] rounded-lg">
                                 <FaFacebook className="text-[#005EB5] text-3xl" />
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         </div>

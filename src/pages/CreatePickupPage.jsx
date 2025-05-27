@@ -240,7 +240,7 @@ const CreatePickupPage = () => {
         pickupScheduleFrom: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleFrom),
         pickupScheduleTo: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleTo),
         modeType: bookingDetails?.booking?.ModeOfTransport,
-        boxType: "",
+        boxType:JSON.parse(bookingDetails?.booking?.boxes)?.[0]?.boxType,
         toPay: bookingDetails?.booking?.IsToPay ? 1 : 0,
         packages: JSON?.parse(bookingDetails?.booking?.boxes)?.map(item => ({
           boxWidth: item?.boxWidth,
@@ -251,7 +251,9 @@ const CreatePickupPage = () => {
           approxWeight: item?.approxWeight,
           packageValue: item?.packageValue,
           images: item?.boxImages?.map(item => ({ imageUrl: item?.imageUrl })),
+          ewaybillNo: item?.ewaybillNo,
           ewaybillFile: item?.ewaybillFile,
+          declarationFile: item?.declarationFile,
           withInvoice: item?.withInvoice,
         })),
         paymentMethod: ""
@@ -268,6 +270,7 @@ const CreatePickupPage = () => {
         ewaybillFile: item?.ewaybillFile,
         withInvoice: item?.withInvoice,
       })))
+      setInsurance(bookingDetails?.booking?.insuranceProvider)
 
       setSelectedConsigner(JSON?.parse(bookingDetails?.pickupRequest?.consignerAddress)[0]?.AddressId);
       setSelectedConsignee(JSON?.parse(bookingDetails?.booking?.consigneeAddress)[0]?.AddressId);
@@ -288,6 +291,10 @@ const CreatePickupPage = () => {
       setImagePreviews(packages?.map(item => item?.images?.map(item => item?.imageUrl)))
     }
   }, [packages])
+
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
 
   // useEffect(()=>{
   //   if(localStoredData?.packages){
