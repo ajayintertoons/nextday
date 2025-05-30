@@ -30,7 +30,7 @@ import React, { forwardRef } from "react";
 
 const OTP_InputField = forwardRef(({ value, placeholder = "", onChange, onBlur, name ,onKeyDown }, ref) => {
   return (
-    <div className="w-full flex items-center mt-2 p-3 border border-gray-300 rounded-lg focus-within:border-blue-500">
+    <div className="w-full flex items-center mt-2 p-[0.535rem] border border-gray-300 rounded-lg focus-within:border-blue-500">
       <input
         type="text"
         placeholder={placeholder}

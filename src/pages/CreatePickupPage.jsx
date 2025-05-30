@@ -41,8 +41,6 @@ const normalValidation = Yup.object({
       return true;
     }),
 
-
-
   boxType: Yup.string().required("Package type is required"),
   packages: Yup.array().of(
     Yup.object().shape({
@@ -139,7 +137,7 @@ const CreatePickupPage = () => {
     console.error("Failed to parse sessionStorage data:", err);
   }
 
-  const [imagePreviews, setImagePreviews] = useState(localStoredData?.packages ? localStoredData?.packages?.map(item => item?.images?.map(item => item?.imageUrl)) : []);
+  const [imagePreviews, setImagePreviews] = useState(localStoredData?.packages ? localStoredData?.packages?.map(item => item?.images?.filter (item => item?.imageUrl)?.map(item=>item?.imageUrl)): []);
   const [packages, setPackages] = useState([{}]);
   const [paymentMethod, setPaymentMethod] = useState();
   const [insurance, setInsurance] = useState();
@@ -173,6 +171,7 @@ const CreatePickupPage = () => {
         approxWeight: "",
         packageValue: "",
         images: null,
+        declarationFile:null,
         ewaybillFile: null,
         withInvoice: false
       },
@@ -236,29 +235,7 @@ const CreatePickupPage = () => {
 
   useEffect(() => {
     if (bookingDetails) {
-      setFormData({
-        pickupScheduleFrom: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleFrom),
-        pickupScheduleTo: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleTo),
-        modeType: bookingDetails?.booking?.ModeOfTransport,
-        boxType:JSON.parse(bookingDetails?.booking?.boxes)?.[0]?.boxType,
-        toPay: bookingDetails?.booking?.IsToPay ? 1 : 0,
-        packages: JSON?.parse(bookingDetails?.booking?.boxes)?.map(item => ({
-          boxWidth: item?.boxWidth,
-          boxLength: item?.boxLength,
-          boxBreadth: item?.boxBreadth,
-          boxDescription: "",
-          volumetricWeight: item?.volumetricWeight,
-          approxWeight: item?.approxWeight,
-          packageValue: item?.packageValue,
-          images: item?.boxImages?.map(item => ({ imageUrl: item?.imageUrl })),
-          ewaybillNo: item?.ewaybillNo,
-          ewaybillFile: item?.ewaybillFile,
-          declarationFile: item?.declarationFile,
-          withInvoice: item?.withInvoice,
-        })),
-        paymentMethod: ""
-      })
-      setPackages(JSON?.parse(bookingDetails?.booking?.boxes)?.map(item => ({
+      const packagess = JSON?.parse(bookingDetails?.booking?.boxes)?.map(item => ({
         boxWidth: item?.boxWidth,
         boxLength: item?.boxLength,
         boxBreadth: item?.boxBreadth,
@@ -266,10 +243,22 @@ const CreatePickupPage = () => {
         volumetricWeight: item?.volumetricWeight,
         approxWeight: item?.approxWeight,
         packageValue: item?.packageValue,
-        images: item?.boxImages?.map(item => ({ imageUrl: item?.imageUrl })),
+        images: item?.boxImages?.filter(item=>item?.imageUrl)?.map(item => ({ imageUrl: item?.imageUrl })),
+        declarationFile:item?.declarationFile,
         ewaybillFile: item?.ewaybillFile,
         withInvoice: item?.withInvoice,
-      })))
+      }))
+      setFormData({
+        pickupScheduleFrom: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleFrom),
+        pickupScheduleTo: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleTo),
+        modeType: bookingDetails?.booking?.ModeOfTransport,
+        boxType:JSON.parse(bookingDetails?.booking?.boxes)?.[0]?.boxType,
+        toPay: bookingDetails?.booking?.IsToPay ? 1 : 0,
+        packages: packagess,
+        paymentMethod: ""
+      })
+      setImagePreviews(packagess?.map(item => item?.images?.filter(item => item?.imageUrl)?.map(item=>item?.imageUrl)))
+      setPackages(packagess)
       setInsurance(bookingDetails?.booking?.insuranceProvider)
 
       setSelectedConsigner(JSON?.parse(bookingDetails?.pickupRequest?.consignerAddress)[0]?.AddressId);
@@ -285,12 +274,6 @@ const CreatePickupPage = () => {
       sessionStorage.setItem("package", packages);
     }
   }, [bookingDetails])
-
-  useEffect(() => {
-    if (packages) {
-      setImagePreviews(packages?.map(item => item?.images?.map(item => item?.imageUrl)))
-    }
-  }, [packages])
 
   // useEffect(() => {
   //   window.scrollTo(0, 0);
@@ -585,7 +568,7 @@ const CreatePickupPage = () => {
   useEffect(() => {
     try {
       const data = sessionStorage.getItem("package");
-      const parsed = data ? JSON.parse(data) : null;
+      const parsed = data ? JSON?.parse(data) : null;
 
       if (parsed?.packages) {
         setPackages(parsed.packages);
@@ -662,7 +645,7 @@ const CreatePickupPage = () => {
   return (
     <>
       {/* ---------------------------- main container div ----------------------------- */}
-      <div className="container mx-auto p-3 pt-[116px] lg:pt-0">
+      <div className="container mx-auto p-[0.535rem] pt-[116px] lg:pt-0">
         <h5 className="px-3 text-3xl bold-sansation my-5 ">Create Booking</h5>
         {/* stepper component */}
         <Stepper

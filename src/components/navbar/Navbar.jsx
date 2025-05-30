@@ -92,6 +92,7 @@ function Navbar({ className }) {
     { label: "Services", path: "/services", hasPlus: true },
     { label: "Blog", path: "/blog", hasPlus: true },
     { label: "Contact Us", path: "/contact-us", hasPlus: false },
+    {label:"Traker", path:"/pincode-finder",hasplus:false}
   ];
 
   const handleClose = ()=>{
@@ -118,7 +119,7 @@ function Navbar({ className }) {
         }} duration={5000} />
         <nav>
           <div className="max-w-full fixed left-0 right-0 lg:relative mb-[117px] lg:mb-[0px]" style={{ backgroundColor: "black", zIndex: 999 }}>
-            <div className="flex justify-between  w-full">
+            <div className="flex justify-between container mx-auto w-full">
               {/* Primary menu and logo */}
               <div className="flex justify-start  w-full">
                 {/* Logo */}
@@ -132,8 +133,8 @@ function Navbar({ className }) {
                 </div>
 
                 {/* Primary navigation */}
-                <div className=" flex flex-col justify-center  w-full">
-                  <div className="hidden lg:flex justify-between items-center gap-2 bg-black text-custom-white">
+                <div className=" flex flex-col justify-center w-full">
+                  <div className="hidden lg:flex justify-between  items-center gap-2 bg-black text-custom-white">
                     <div className="flex items-center gap-2">
                       <div className="flex-none font-sansation font-regular text-xs flex gap-1 ml-3 p-2 items-center ">
                         <IoMail className="text-custom-green" />
@@ -145,8 +146,8 @@ function Navbar({ className }) {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center gap-2">
-                      <div className="flex-none  font-sansation font-regular text-xs  flex gap-1 p-2 items-center cursor-pointer ">
+                    <div className="flex justify-between  items-center gap-2">
+                      <div className="flex-none  font-sansation font-regular text-xs flex gap-1 p-2 items-center cursor-pointer ">
                         {isLogin ? (
                           <>
                             {/* <FaLocationDot className="text-custom-green" /> */}
@@ -229,7 +230,7 @@ function Navbar({ className }) {
                       ))}
                     </div>
 
-                    <div className=" w-3/4 gap-2 flex justify-center ">
+                    <div className=" w-3/4 gap-2 flex justify-end ">
                       {isLogin ? (
                         <>
                           {currentPath !== "/create-pickup-request" && <Button

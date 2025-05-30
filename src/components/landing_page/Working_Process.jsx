@@ -52,7 +52,7 @@ const Working_Process = () => {
     <>
       <div className=" ">
         {/* --------------------- container div -------------------- */}
-        <div className="container mx-auto    pt-10 h-auto">
+        <div className="container mx-auto  pt-10 h-auto">
           {/* ------------------ component header ------------------ */}
           <div className=" grid grid-cols-1 container mx-auto ">
             <div className=" flex justify-center items-center ">
@@ -112,9 +112,9 @@ const Working_Process = () => {
                   className="w-full h-full"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-5 md:gap-10 ">
-                    <div className=" md:grid-col-span-1 lg:grid-col-span-1 xl:grid-col-span-1 mt-2">
+                    <div className=" md:grid-col-span-1 lg:grid-col-span-1 xl:grid-col-span-1">
                       <div className={centeredGrayCircleClasses}>
-                        <div className="flex flex-col justify-center items-center p-3 gap-2">
+                        <div className="flex flex-col justify-center items-center p-[0.535rem] gap-2">
                           <img
                             src={arrow}
                             alt="yourImage"
@@ -129,9 +129,9 @@ const Working_Process = () => {
                       </div>
                     </div>
 
-                    <div className="  md:grid-col-span-1 md:grid-col-span-1 lg:grid-col-span-1 xl:grid-col-span-1 mt-2">
+                    <div className="  md:grid-col-span-1 md:grid-col-span-1 lg:grid-col-span-1 xl:grid-col-span-1">
                       <div className={centeredGrayCircleClasses}>
-                        <div className="flex flex-col justify-center items-center p-3 gap-2">
+                        <div className="flex flex-col justify-center items-center p-[0.535rem] gap-2">
                           <img
                             src={box}
                             alt="yourImage"
@@ -148,7 +148,7 @@ const Working_Process = () => {
 
                     <div className=" md:grid-col-span-1 md:grid-col-span-1 lg:grid-col-span-1 xl:grid-col-span-1 mt-2">
                       <div className={centeredGrayCircleClasses}>
-                        <div className="flex flex-col justify-center items-center p-3 gap-2">
+                        <div className="flex flex-col justify-center items-center p-[0.535rem] gap-2">
                           <img
                             src={gift}
                             alt="arrow"

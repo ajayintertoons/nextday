@@ -12,7 +12,6 @@ const RatingModal = ({ rating, setRating, isRatingModalOpen, setIsRatingModalOpe
 
     const [errorMap, setErrorMap] = useState({});
 
-
     const formik = useGlobalFormik(ratingInitialValues, ratingSchema, (values) => {
         setErrorMap({})
         if (rating > 0) {

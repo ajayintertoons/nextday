@@ -8,7 +8,7 @@ const Button = ({ buttonText, className, icon, onClick, type = "button" }) => {
       className={`${className} bg-custom-green text-white flex items-center  justify-center rounded-md px-2 font-sansation font-regular `}
       onClick={onClick}
     >
-      <span className={`flex items-center gap-2 p-3 ${!buttonText ? 'justify-center' : ''}`}>
+      <span className={`flex items-center gap-2 p-[0.658rem] ${!buttonText ? 'justify-center' : ''}`}>
         {buttonText ? (
           <>
             <span>{buttonText}</span>

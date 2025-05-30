@@ -24,7 +24,7 @@ const We_Offer = () => {
 
   return (
     <>
-      <div className="bg-[#0C1118] h-auto lg:h-[40rem] lg:p-0 xl:p-0 p-3">
+      <div className="bg-[#0C1118] h-auto lg:h-[40rem] lg:p-0 xl:p-0 p-[0.535rem]">
         <div className="mx-0 sm:mx-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2t   ">
           {/* First grid column: Details */}
         
@@ -52,7 +52,7 @@ const We_Offer = () => {
                 <div key={index}>
                   <div className="flex gap-4 mt-5 justify-center items-center md:justify-start lg:justify-start xl:justify-start">
                     <div>
-                      <img src={boxvector} alt="square box" />
+                      <img src={boxvector} alt="square box" className=""/>
                     </div>
                     <div className="w-full">
                       <h1 className="text-xl font-sansation font-bold">
@@ -74,7 +74,7 @@ const We_Offer = () => {
 
           {/* Second grid column: Image */}
           <div className="grid col-span-1  ">
-            <img src={deliveryboy} alt="Delivery boy" />
+            <img src={deliveryboy} alt="Delivery boy" style={{objectFit:"contain",maxHeight:"660px"}}/>
           </div>
         </div>
       </div>

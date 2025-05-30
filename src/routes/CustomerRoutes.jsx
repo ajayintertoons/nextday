@@ -9,6 +9,7 @@ import CreateRecurringPickup from '../pages/CreateRecurringPickup';
 import CreatePickupPage from '../pages/CreatePickupPage';
 import RecurringPickupList from '../pages/RecurringPickupList';
 import ScheduledPickups from '../pages/ScheduledPickups';
+import LocationFinder from '../pages/LocationFinder';
 
 const CustomerRoutes = () => (
   <Routes>

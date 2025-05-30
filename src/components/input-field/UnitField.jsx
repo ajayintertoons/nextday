@@ -63,7 +63,7 @@ const UnitField = ({
 }) => {
   return (
     <div className={`flex flex-col ${className}`}>
-      <div className="flex border focus-within:border-blue-500 rounded-lg overflow-hidden">
+      <div className="flex border focus-within:border-blue-500 rounded-lg overflow-hidden"  style={{height:"45px"}}>
         <input
           type="text"
           placeholder={placeholder}
@@ -72,10 +72,10 @@ const UnitField = ({
           onBlur={onBlur}
           name={name}
           className="w-full sm:w-3/5  border-none outline-none font-sansation font-regular text-md ps-2"
-          style={{height:"50px"}}
+          style={{height:"45px"}}
         />
         <div
-         style={{height:"50px"}}
+         style={{height:"45px"}}
           className={`bg-custom-green text-custom-white w-1/2 text-center font-sansation font-regular flex justify-center items-center ${unitClassName}`}
         >
           <h5 className="m-0">{unit}</h5>

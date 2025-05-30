@@ -22,7 +22,6 @@ const CreateRecurringPickup = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [errorMap, setErrorMap] = useState({});
     const [frequency, setFrequency] = useState(""); // Add state for frequency
-    // const [weeklyDay, setWeeklyDay] = useState([]);
     const [monthlyDate, setMonthlyDate] = useState();
     const [loading, setLoading] = useState(false);
     const [editData, setEditData] = useState();
@@ -30,7 +29,6 @@ const CreateRecurringPickup = () => {
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const id = queryParams.get("id");
-
 
     const formik = useGlobalFormik(recurringInitialValues, recurringSchema, (values) => {
         if (!addressId) {
@@ -144,13 +142,11 @@ const CreateRecurringPickup = () => {
             setFrequency(editData?.frequency);
             formik.setFieldValue('pickupScheduleFrom', convertToTimeInputFormat(editData?.pickupScheduleFrom) || '');
             formik.setFieldValue('pickupScheduleTo', convertToTimeInputFormat(editData?.pickupScheduleTo) || '');
-
             formik.setFieldValue('weeklyDay', editData.frequency === "Weekly" ? editData?.weeklyDay?.split(",") : []);
             formik.setFieldValue('monthlyDate', editData.frequency == "Monthly" ? convertToDateInputFormat(editData?.monthlyDate) : "");
-            setMonthlyDate(convertToDateInputFormat(editData?.monthlyDate))
+            setMonthlyDate(convertToDateInputFormat(editData?.monthlyDate));
             formik.setFieldValue('approxWeight', editData?.approxWeight || '');
             formik.setFieldValue('isActive', editData?.isActive || false);
-
             setAddressId(editData?.consignerId || '');
         }
     }, [editData]);
@@ -170,14 +166,12 @@ const CreateRecurringPickup = () => {
     };
 
     const handleSwitchChange = (nextChecked) => {
-        formik.setFieldValue('isActive', nextChecked);  // Update Formik field value manually
+        formik.setFieldValue('isActive', nextChecked);
     };
 
     const weeks = [{ label: "Sun", value: "1" }, { label: "Mon", value: "2" }, { label: "Tue", value: "3" }, { label: "Wed", value: "4" }, { label: "Thu", value: "5" }, { label: "Fri", value: "6" }, { label: "Sat", value: "7" }]
 
     const [addressId, setAddressId] = useState('');
-    // console.log(addressId , "address ID")
-    // console.log(addressList , "address List")
 
     return (
         <div>
@@ -191,19 +185,19 @@ const CreateRecurringPickup = () => {
                         <div className='my-2 sm:my-4'>
                             <label htmlFor="" className="font-sansation font-regular text-md">Select Address<span className="text-red-500"> *</span></label>
                             <div className='relative my-2 sm:w-1/2'>
-                                <SearchInput className='w-full py-1 border-gray-200 sm:w-full' iconSize={25} placeholder='Search Address' onChange={handleSearch} Icon={CiSearch} value={searchQuery} />
+                                <SearchInput className='w-full py-1 border-gray-200 h-[45px] sm:w-full' iconSize={25} placeholder='Search Address' onChange={handleSearch} Icon={CiSearch} value={searchQuery} />
                                 {searchQuery && (
                                     <IoMdClose
-                                    className='absolute top-1/2 right-8 transform -translate-y-1/2 text-lg cursor-pointer'
-                                    onClick={() => handleSearch({ target: { value: '' } })}
-                                    title="Clear"
+                                        className='absolute top-1/2 right-8 transform -translate-y-1/2 text-lg cursor-pointer'
+                                        onClick={() => handleSearch({ target: { value: '' } })}
+                                        title="Clear"
                                     />
                                 )}
                             </div>
-                            <div className=' ' style={{ maxHeight: '320px', minWidth: "250px", overflowY: 'auto' , cursor: 'pointer' }} >
+                            <div className=' ' style={{ maxHeight: '320px', minWidth: "250px", overflowY: 'auto', cursor: 'pointer' }} >
                                 {addressList.filter(address => address?.addressLabel?.toLowerCase().includes(searchQuery.toLowerCase())).map((item, index) => (
                                     <div key={index} className={`flex items-center border border-gray-200 rounded-md my-2 py-3 pe-3 relative ${String(addressId) === String(item.addressId) ? 'bg-blue-100 border-blue-500' : 'bg-white border-gray-200'}`} style={{ minWidth: "280px" }} onClick={() => setAddressId(addressId === item.addressId ? null : item.addressId)}
->
+                                    >
                                         <div className='p-4 ms-3 rounded-full bg-white shadow-lg'>
                                             <FaLocationDot className='text-2xl text-custom-green' />
                                         </div>
@@ -220,7 +214,7 @@ const CreateRecurringPickup = () => {
                         <div className='sm:mt-4'>
                             <div className='mt-1'>
                                 <label htmlFor="" className='font-sansation font-regular text-md'>Frequency<span className="text-red-500"> *</span></label>
-                                <select value={formik?.values?.frequency} name="frequency" onChange={handleFrequencyChange} className='border-none border-gray-200 outline-none w-full font-sansation font-regular text-sm border p-4 rounded-lg mt-2'>
+                                <select value={formik?.values?.frequency} name="frequency" onChange={handleFrequencyChange} className='border-none border-gray-200 outline-none w-full font-sansation font-regular text-sm border h-[45px] px-2 rounded-lg mt-2'>
                                     <option value="">Select frequency</option>
                                     <option value="Daily">Daily</option>
                                     <option value="Weekly">Weekly</option>
@@ -267,7 +261,7 @@ const CreateRecurringPickup = () => {
                                         name="monthlyDate"
                                         value={monthlyDate ? monthlyDate : formik?.values?.monthlyDate}
                                         onChange={(e) => { formik.setFieldValue('monthlyDate', e.target.value); setMonthlyDate(e.target.value) }}
-                                        className="border border-gray-200 outline-none w-full font-sansation font-regular text-sm p-4 rounded-lg mt-2"
+                                        className="border border-gray-200 outline-none w-full font-sansation font-regular text-sm h-[45px] px-2 rounded-lg mt-2"
                                     />
                                     {!formik.values.monthlyDate && <div className="invalid-feedback text-red-500 text-sm">This field is required</div>}
                                 </div>
@@ -299,7 +293,7 @@ const CreateRecurringPickup = () => {
                                         name="pickupScheduleFrom"
                                         id="pickupScheduleFrom"
                                         value={formik.values?.pickupScheduleFrom}
-                                        className="border border-gray-200 outline-none w-full font-sansation font-regular text-sm p-4 rounded-lg mt-2 mb-2"
+                                        className="border border-gray-200 outline-none w-full font-sansation font-regular text-sm px-2 rounded-lg h-[45px] mt-2 mb-2"
                                         onChange={formik.handleChange}
                                     />
                                     {(formik.errors.pickupScheduleFrom && formik.touched.pickupScheduleFrom) && <div className="invalid-feedback text-red-500 text-sm">{formik.errors?.pickupScheduleFrom}</div>}
@@ -314,7 +308,7 @@ const CreateRecurringPickup = () => {
                                         name="pickupScheduleTo"
                                         id="pickupScheduleTo"
                                         value={formik.values?.pickupScheduleTo}
-                                        className="border border-gray-200 outline-none w-full font-sansation font-regular text-sm p-4 rounded-lg mt-2 mb-2"
+                                        className="border border-gray-200 outline-none w-full font-sansation h-[45px] font-regular text-sm px-2 rounded-lg mt-2 mb-2"
                                         onChange={formik.handleChange}
                                     />
                                     {(formik.touched.pickupScheduleTo && formik.errors.pickupScheduleTo) && <div className="invalid-feedback text-red-500 text-sm">{formik.errors?.pickupScheduleTo}</div>}

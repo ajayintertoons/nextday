@@ -9,6 +9,7 @@ import We_Offer from "../components/landing_page/We_Offer";
 import Working_Process from "../components/landing_page/Working_Process";
 import Button from "../components/button/Button";
 import { useGlobalFormik } from "../utils/custom-hooks/formik-hook/useGlobalFormik";
+import ReCAPTCHA from 'react-google-recaptcha';
 // import {
 //   order_awb_validationSchema,
 //   order_awb_InitialValues,
@@ -26,6 +27,7 @@ import { IoClose } from "react-icons/io5";
 import { locationFinderInitialValues, locationFinderValidationSchema } from "../utils/validation-schema/auth-schema/authSchema";
 import TrackingCard3 from "../components/card/TrackingCard3";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   // ----------------- hooks ----------------------
@@ -42,11 +44,15 @@ const LandingPage = () => {
   const [trackData, setTrackData] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [loading,setLoading] = useState(false);
-  const [check,setCheck]=useState(false);
+  const [loading, setLoading] = useState(false);
+  const [check, setCheck] = useState(false);
   const { login } = useContext(myContext);
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const navigate = useNavigate();
 
-  console.log(trackData, "--track")
+  const handleRecaptchaChange = (token) => {
+    setRecaptchaToken(token);
+  };
 
   useEffect(() => {
     request({
@@ -63,31 +69,7 @@ const LandingPage = () => {
   }, []);
 
   const handleTrack = () => {
-    setTrackData([])
-    setCheck(true)
-    if(!formik.values?.trackingId){
-      formik.setFieldTouched('trackingId', true);
-      return;
-    }
-
-    setHasSearched(true);
-
-    if (isAwbSelected) {
-      setLoading(true)
-      request({
-        url: `V1/getTrackingDetailsByAwb?awblist=${formik.values?.trackingId}`,
-        method: "GET",
-      }).then((response) => {
-        setTrackData(JSON.parse(response?.data[0]?.trackingResult)[0]?.tracking)
-        setLoading(false)
-      }).catch((error) => {
-        setLoading(false)
-        if (error.response.status == 500) {
-          toast.dismiss();
-          toast.error(error.response.data.message)
-        }
-      })
-    }
+     navigate(`/pincode-finder?id=${formik.values?.trackingId}`)
   }
 
   const formik = useGlobalFormik(locationFinderInitialValues, locationFinderValidationSchema,
@@ -104,7 +86,6 @@ const LandingPage = () => {
         }
       })
     });
-
   // ----------------- hooks end here -------------
 
   // ------- Function to handle tab selection ---------
@@ -193,7 +174,7 @@ const LandingPage = () => {
         <Navbar />
         <div className=" flex items-center justify-center h-auto  lg:min-h-[650px] border-t-[0.1rem] border-gray-600 Best pt-[116px] lg:pt-0">
           <div className=" grid grid-cols-1 lg:grid-cols-2 gap-10 container mx-auto ">
-            <div className=" px-8 py-4 flex justify-center items-center sm:block ">
+            <div className=" px-5 py-4 flex justify-center items-center sm:block ">
               <div>
                 <div className="grid grid-cols-[auto_1fr] items-center gap-2">
                   <img src={svg} alt="Logistics Icon" />
@@ -213,8 +194,8 @@ const LandingPage = () => {
                 />
               </div>
             </div>
-            <div className=" m-10 ">
-              <div className="bg-white border-2 border-solid border-black rounded-md  p-5 ">
+            <div className=" my-10 mx-8 lg:mx-0 flex justify-end " >
+              <div className="bg-white border-2 border-solid border-black rounded-md flex-1 p-5 " style={{ maxWidth: "550px" }}>
                 {/* ------------------------ track box ------------------- */}
                 <div>
                   <div className="flex text-black gap-10">
@@ -271,7 +252,7 @@ const LandingPage = () => {
                               AWB Number
                             </p>
                           </div>
-                          <div
+                          {/* <div
                             className={`flex-1 border-2 rounded-r-md ${!isAwbSelected
                               ? "bg-black text-white"
                               : "bg-white text-black border-custom-gray"
@@ -281,7 +262,7 @@ const LandingPage = () => {
                             <p className="p-2 text-center font-sansation font-regular ">
                               Order / Ref Number
                             </p>
-                          </div>
+                          </div> */}
                         </div>
                         <form onSubmit={formik.handleSubmit}>
                           <div className="flex flex-col">
@@ -295,7 +276,6 @@ const LandingPage = () => {
                                     value={formik.values.trackingId}
                                     onChange={(e) => {
                                       formik.handleChange(e);
-
                                       // reset hasSearched when input is cleared
                                       if (e.target.name === "trackingId" && e.target.value.trim() === "") {
                                         setHasSearched(false);
@@ -332,25 +312,32 @@ const LandingPage = () => {
                                 </div>
                               )}
                           </div>
-
+                          <div className="flex justify-center">
+                            <div className="mt-3">
+                              <ReCAPTCHA
+                                sitekey="6Lf94U8rAAAAALKTtDsMDBfY9bT14sCPiq4G3awr"
+                                onChange={handleRecaptchaChange}
+                              />
+                            </div>
+                          </div>
                           <button
                             type="submit"
-                            className="bg-black text-white w-full mt-3 rounded-md flex items-center justify-center p-2 cursor-pointer font-sansation font-bold "
+                            className={`${recaptchaToken ? 'opacity-100' : 'opacity-25'} bg-black text-white w-full mt-3 rounded-md flex items-center justify-center p-2 cursor-pointer font-sansation font-bold`}
                             onClick={() => handleTrack()}
-                            disabled={loading}
+                            disabled={loading || !recaptchaToken}
                           >
-                           {loading ?<ClipLoader color="white" size={18}/> : "Track"}
+                            {loading ? <ClipLoader color="white" size={18} /> : "Track"}
                           </button>
                         </form>
-                       
+
                         {hasSearched && !loading && (
-                            trackData && trackData.length > 0 ? (
-                              <div className="max-h-screen">
-                                <TrackingCard3 steps={trackData} />
-                              </div>
-                            ) : (
-                              <p className="text-center text-gray-800 mt-0">No data found</p>
-                            )
+                          trackData && trackData.length > 0 ? (
+                            <div className="max-h-[450px]" style={{ overflowY: "auto" }}>
+                              <TrackingCard3 steps={trackData} />
+                            </div>
+                          ) : (
+                            <p className="text-center text-gray-800 mt-0">No data found</p>
+                          )
                         )}
 
                         <hr className="border-t-2" />

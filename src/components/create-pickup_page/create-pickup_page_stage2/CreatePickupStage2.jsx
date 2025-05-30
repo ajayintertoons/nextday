@@ -218,7 +218,7 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
           {addressList?.map((item) => (
             <div
               key={item?.addressId}
-              className={`relative border rounded-md p-3 cursor-pointer ${selectedConsigner === item.addressId ? 'bg-gray-200' : ''}`}
+              className={`relative border rounded-md p-[0.535rem] cursor-pointer ${selectedConsigner === item.addressId ? 'bg-gray-200' : ''}`}
               onClick={() => handleConsignerSelect(item)}
             >
               <img
@@ -285,7 +285,7 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
             {consigneeAddressList?.map((item) => (
               <div
                 key={item?.addressId}
-                className={`border rounded-md p-3 relative cursor-pointer ${selectedConsignee === item.addressId ? 'bg-gray-200' : ''}`}
+                className={`border rounded-md p-[0.535rem] relative cursor-pointer ${selectedConsignee === item.addressId ? 'bg-gray-200' : ''}`}
                 onClick={() => handleConsigneeSelect(item)}
               >
                 {/* <img

@@ -3,7 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 function Card({ title, description, icon, buttonText }) {
   return (
-    <div className="bg-custom-gray rounded-lg shadow p-6 w-[15rem] h-[18rem]">
+    <div className="bg-custom-gray rounded-lg shadow p-6  h-[18rem]">
       <div className="flex items-center mb-4">
         <img src={icon} alt={title} className="w-12 h-12" />
       </div>

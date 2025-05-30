@@ -65,7 +65,7 @@ const CustomInputField = ({
         )}
       </div>
       <div
-        className={`w-full flex items-center mt-2 p-3 border border-gray-300 rounded-lg focus-within:border-blue-500 bg-custom-white ${className}`}
+        className={`w-full flex items-center mt-2 p-[0.688rem] border border-gray-300 rounded-lg focus-within:border-blue-500 bg-custom-white ${className}`}
       >
         {mobile && <span className="font-sansation font-regular text-md">+91&nbsp;</span>}
         <InputElement
@@ -86,10 +86,11 @@ const CustomInputField = ({
           name={name}
           rows={rows}
           onFocus={onFocus}
-          className="outline-none w-full font-sansation font-regular border-none text-md"
+          className="outline-none w-full font-sansation font-regular border-none "
+          style={{fontSize:"14px"}}
           ref={ref}
           accept={accept}
-           min={minDateTimeValue} // Disable dates before today
+          min={minDateTimeValue} // Disable dates before today
           max={maxDateTimeValue} // Disable future times
           readOnly={readOnly}
         />

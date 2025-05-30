@@ -26,7 +26,6 @@ import { IoMdClose } from "react-icons/io";
 
 
 const Profile = () => {
-
   const [profileData, setProfileData] = useState({});
   const [isAddAddressModalOpen, setIsAddAddressModalOpen] = useState(false);
   const [isProfileEditMoalOpen, setIsProfileEditModalOpen] = useState(false);
@@ -119,9 +118,9 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <div className='grid xl:grid-cols-2 grid-cols-1 gap-3 p-3 my-3'>
+          <div className='grid xl:grid-cols-2 grid-cols-1 gap-3 p-[0.535rem] my-3'>
             <div className='flex items-center'>
-              <div className='p-3 rounded-full bg-custom-light-blue'>
+              <div className='p-[0.535rem] rounded-full bg-custom-light-blue'>
                 <FaPhone className='text-custom-green' />
               </div>
               <div className='ms-3 py-3'>
@@ -130,7 +129,7 @@ const Profile = () => {
               </div>
             </div>
             <div className='flex items-center'>
-              <div className='p-3 rounded-full bg-custom-light-blue'>
+              <div className='p-[0.535rem] rounded-full bg-custom-light-blue'>
                 <IoIosDocument className='text-custom-green' />
               </div>
               <div className='ms-3 py-3'>
@@ -139,7 +138,7 @@ const Profile = () => {
               </div>
             </div>
             <div className='flex items-center'>
-              <div className='p-3 rounded-full bg-custom-light-blue'>
+              <div className='p-[0.535rem] rounded-full bg-custom-light-blue'>
                 <IoMdMail className='text-custom-green' />
               </div>
               <div className='ms-3 py-3'>

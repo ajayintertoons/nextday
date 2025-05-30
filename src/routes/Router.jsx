@@ -19,6 +19,7 @@ import About from "../pages/About";
 import ContactUs from "../pages/ContactUs";
 import Services from "../pages/Services";
 import Blog from "../pages/Blog";
+import LocationFinder from "../pages/LocationFinder";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,7 @@ export const router = createBrowserRouter([
       { path: "/contact-us", element: <ContactUs /> },
       { path: "/services", element: <Services /> },
       { path: "/blog", element: <Blog /> },
+      { path:"/pincode-finder", element:<LocationFinder />},
       {
         path: "/create-pickup",
         element: (

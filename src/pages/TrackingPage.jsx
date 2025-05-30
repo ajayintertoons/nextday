@@ -49,7 +49,7 @@
       <>
         <div className="m-5 mt-10">
           <div className="container mx-auto rounded-xl shadow-md border border-custom-gray">
-            <div className="grid grid grid-rows-1 p-3">
+            <div className="grid grid grid-rows-1 p-[0.535rem]">
               {/* first row */}
               <div className="grid sm:grid-cols-2 lg:grid-cols-8 md:lg:grid-cols-8 items-center gap-4 ">
                 <div className="lg:col-span-1 sm:col-span-2 ">

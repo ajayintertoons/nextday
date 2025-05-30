@@ -126,13 +126,13 @@ const MyBookings = () => {
         <>
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 mt-2  items-center  ">
-              {!isSearch && <div className="grid grid-cols-4 border rounded-md bold-sansation text-sm    ">
+              {!isSearch && <div className="grid grid-cols-4 border h-[48px] rounded-md bold-sansation text-sm    ">
                 {["All", "Requested", "Ongoing", "Completed"].map(
                   (label, index) => (
                     <div className=" flex justify-center items-center " key={index}>
                       <div
                         onClick={() => handleClick(index)}
-                        className={`flex cursor-pointer justify-center  items-center rounded-md p-2 m-2  w-full 
+                        className={`flex cursor-pointer justify-center  items-center rounded-md p-1 m-2  w-full 
             ${selected === index
                             ? "bg-custom-green text-white"
                             : `bg-${label.toLowerCase()}-300`
@@ -144,8 +144,8 @@ const MyBookings = () => {
                   )
                 )}
               </div>}
-              <div className="flex justify-center items-center h-auto mx-3 mb-3 ">
-                <div className='relative mb-2 mt-3 md:w-3/4'>
+              <div className="flex justify-center items-center h-auto mx-3 mb-1 ">
+                <div className='relative mb-2 mt-3 md:w-3/4' >
                   <SearchInput
                     placeholder="Search "
                     onChange={handleSearch} Icon={CiSearch} value={searchQuery}
@@ -159,7 +159,7 @@ const MyBookings = () => {
                     />
                   )}
                 </div>
-                <button onClick={handleSearchSubmit} type="submit" className="bg-custom-green flex items-center  justify-center rounded-md text-white font-sansation font-regular mt-1 py-2 ms-2 px-3">Search</button>
+                <button onClick={handleSearchSubmit}  type="submit" className="bg-custom-green flex items-center h-[45px] justify-center rounded-md text-white font-sansation font-regular mt-1  ms-2 px-3">Search</button>
               </div>
             </div>
 

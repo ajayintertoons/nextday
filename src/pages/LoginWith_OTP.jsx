@@ -135,7 +135,7 @@ const LoginWith_OTP = () => {
           />
           <span className="text-red-500">{mobileError}</span>
           <div className="bold-sansation pt-5">
-            <button disabled={loading} className="bg-custom-green text-white flex items-center  justify-center rounded-md w-full p-3 font-sansation font-regular ">{loading ? <ClipLoader color="white" size={20} /> : "VERIFY MOBILE NUMBER"}</button>
+            <button disabled={loading} className="bg-custom-green text-white flex items-center  justify-center rounded-md w-full p-[0.535rem] font-sansation font-regular ">{loading ? <ClipLoader color="white" size={20} /> : "VERIFY MOBILE NUMBER"}</button>
           </div>
         </form>
       ) : (
@@ -176,7 +176,7 @@ const LoginWith_OTP = () => {
             <div className="bold-sansation pt-5">
               <button onClick={() => {
                 formik2.handleSubmit();
-              }} disabled={loading} className="bg-custom-green text-white flex items-center  justify-center rounded-md w-full p-3 font-sansation font-regular ">{loading ? <ClipLoader color="white" size={20} /> : "VERIFY OTP"}</button>
+              }} disabled={loading} className="bg-custom-green text-white flex items-center  justify-center rounded-md w-full p-[0.535rem] font-sansation font-regular ">{loading ? <ClipLoader color="white" size={20} /> : "VERIFY OTP"}</button>
             </div>
           </form>
         </>

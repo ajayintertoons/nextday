@@ -42,7 +42,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
       reader.onloadend = () => {
         const base64String = reader.result;
         formik.setFieldValue(`packages[${index}].${fieldName}Name`, file.name); 
-        formik.setFieldValue(`packages[${index}].${fieldName}`, base64String); // Store base64 string
+        formik.setFieldValue(`packages[${index}].${fieldName}`, base64String);
       };
       reader.readAsDataURL(file); // Convert file to base64
     }
@@ -339,7 +339,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                     <div className="flex mt-1 gap-4">
                       <div className="w-full sm:w-1/2 mt-2 cursor-pointer items-end">
                         <div
-                          className="w-full flex h-[3.2rem] items-center border rounded-lg border-gray-300 focus-within:border-blue-500 cursor-pointer"
+                          className="w-full flex h-[45px] items-center border rounded-lg border-gray-300 focus-within:border-blue-500 cursor-pointer"
                           onClick={() => document.getElementById(`declarationFile-${index}`).click()} // Trigger the file input
                         >
                           <div className="bg-black w-1/4 text-custom-white text-2xl border rounded-l-lg border-black h-full flex items-center justify-center">
@@ -404,7 +404,7 @@ const PickupSection2 = ({ formik, setSkip, skip, imagePreviews, setImagePreviews
                     </div>
                     <div className="w-full sm:w-1/2 cursor-pointer items-end pt-2 sm:pt-11" >
                       <div
-                        className="w-full flex h-[3.2rem] items-center border rounded-lg border-gray-300 focus-within:border-blue-500 cursor-pointer"
+                        className="w-full flex h-[45px] items-center border rounded-lg border-gray-300 focus-within:border-blue-500 cursor-pointer"
                         onClick={() => document.getElementById(`ewaybillFile-${index}`).click()} // Trigger the file input
                       >
                         <div className="bg-black w-1/4 text-custom-white text-2xl border rounded-l-lg border-black h-full flex items-center justify-center">

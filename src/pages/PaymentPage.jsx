@@ -46,7 +46,7 @@ const PaymnetPage = () => {
                 <div
                   key={option.id}
                   onClick={() => handleOptionClick(option.id)}
-                  className={`flex gap-3 text-sm font-sansation cursor-pointer font-regular items-center p-3 justify-center border rounded-md
+                  className={`flex gap-3 text-sm font-sansation cursor-pointer font-regular items-center p-[0.535rem] justify-center border rounded-md
             ${selectedpaymentOptions === option.id
                       ? "bg-custom-green text-white"
                       : "bg-white text-black"
@@ -150,7 +150,7 @@ const PaymnetPage = () => {
                 <CostSummary items={items} total={total} />
               </div>
               <div>
-                <div className="flex justify-center border rounded-md mt-5 p-3 bg-[#CAFFE9] cursor-pointer">
+                <div className="flex justify-center border rounded-md mt-5 p-[0.535rem] bg-[#CAFFE9] cursor-pointer">
                   <p className="bold-sansation text-custom-green ">PAY NOW</p>
                 </div>
               </div>

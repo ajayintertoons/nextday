@@ -466,15 +466,14 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                         <span id="addressType" className="text-red-500 mt-1 text-sm">
                                             {errorMap['addressType']}
                                         </span> */}
-                                        <div>
+                                        <div className="mt-2">
                                             <LoadScript googleMapsApiKey={'AIzaSyD_M5QYY_seLbsWsWtVtZRSpCFYUxjRoeI'} libraries={['places']}>
                                                 <label htmlFor="location" className="form-label">Location </label>
                                                 <Autocomplete
                                                     onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
                                                     onPlaceChanged={onPlaceChanged}
                                                 >
-                                                    <input id="location" type="text" className=" outline-none w-full font-sansation font-regular text-sm  p-3 border border-gray-300 rounded-lg mb-2" name="location" value={formik.values.location} onChange={formik.handleChange} placeholder="Enter office location" />
-
+                                                    <input id="location" type="text" className=" outline-none w-full font-sansation font-regular text-sm  pl-3 h-[45px] border border-gray-300 rounded-lg mb-2" name="location" value={formik.values.location} onChange={formik.handleChange} placeholder="Enter office location" />
 
                                                 </Autocomplete>
                                                 <div className="relative">
@@ -557,7 +556,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                         {receivers.map((receiver, index) => (
                                             <div className="pt-3" key={index}>
                                                 <label htmlFor="" className="">Name & Phone Number</label>
-                                                <div className="grid grid-cols-3 gap-1 items-center justify-center" style={{ gridTemplateColumns: '1fr 1fr auto' }}>
+                                                <div className="grid grid-cols-3 gap-1 items-center justify-center" style={{ gridTemplateColumns: '1fr 1fr auto',paddingTop:"0" }}>
                                                     <div>
                                                         <CustomInputField
                                                             type="text"

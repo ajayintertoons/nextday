@@ -84,7 +84,7 @@ const ChangePassword = () => {
                             <div className='flex justify-center md:justify-start'><Button buttonText={"Submit"} type='submit' className="mt-3 px-4" /></div>
                         </form>
                     </div>
-                    <div className='p-3 pb-4 hidden md:block'>
+                    <div className='p-[0.535rem] pb-4 hidden md:block'>
                         <img src={CHANGE_PASSWORD} alt="" className='w-full h-full' />
                     </div>
                 </div>

@@ -110,7 +110,7 @@ const PickupSection1 = ({ formik, setIsReversePickup, isReversePickup, isToPay, 
           />
           <div className="pt-3">
             <label htmlFor="pickupScheduleFrom" className="font-sansation">Pickup Shedule From<span className="text-red-500"> *</span></label>
-            <input type="datetime-local" name="pickupScheduleFrom" className="p-3 mt-2 w-full border border-gray-300 rounded-lg "
+            <input type="datetime-local" name="pickupScheduleFrom" className="p-[0.535rem] mt-2 w-full border border-gray-300 rounded-lg "
               min={getTodayDate()} 
               value={formik?.values?.pickupScheduleFrom} 
               onChange={formik.handleChange}
@@ -124,7 +124,7 @@ const PickupSection1 = ({ formik, setIsReversePickup, isReversePickup, isToPay, 
           </div>
           <div className="pt-3">
             <label htmlFor="pickupScheduleTo" className="font-sansation">Pickup Shedule To<span className="text-red-500"> *</span></label>
-            <input type="datetime-local" name="pickupScheduleTo" className="p-3 mt-2 w-full border border-gray-300 rounded-lg " 
+            <input type="datetime-local" name="pickupScheduleTo" className="p-[0.535rem] mt-2 w-full border border-gray-300 rounded-lg " 
               value={formik?.values?.pickupScheduleTo} 
               onChange={formik.handleChange} 
               onBlur={formik.handleBlur}
@@ -147,11 +147,17 @@ const PickupSection1 = ({ formik, setIsReversePickup, isReversePickup, isToPay, 
               styles={{
                 control: (provided) => ({
                   ...provided,
-                  minHeight: '52px',
-                  height: '52px',
+                  minHeight: '45px',
+                  height: '45px',
                   borderRadius: '8px',
-                  marginTop: "9px"
+                  marginTop: "10px",
+                  fontSize:"14px"
                 }),
+                option: (provided, state) => ({
+                  ...provided,
+                  fontSize: "14px", // Change dropdown option font size here
+                }),
+                
               }}
               onBlur={() => formik.setFieldTouched("boxType", true)}
               isClearable={true}

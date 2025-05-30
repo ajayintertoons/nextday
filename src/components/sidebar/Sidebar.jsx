@@ -37,6 +37,7 @@ const Sidebar = () => {
     { id: "listRecurringPickup", label: "Recurring Pickups", path: "customer/list-recurring-pickup" },
     { id: "myprofile", label: "My Profile", path: "customer/my-profile" },
     { id: "changePassword", label: "Change Password", path: "customer/change-password" },
+    // {id:"pincodeFinder", label:"Pincode Finder", path:"customer/pincode-finder"},
     // { id: "helpFaqs", label: "Help / FAQs", path: "customer/help-faqs" },
     { id: "logout", label: "Logout", path: "/" }, 
   ];

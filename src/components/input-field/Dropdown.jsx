@@ -33,7 +33,7 @@ const Dropdown = ({
   return (
     <div className="relative pt-3">
       <h5 className="font-sansation font-regular">{title}{isMandatory && <span className="text-red-500"> *</span>}</h5>
-      <div className="w-full flex cursor-pointer bg-custom-white justify-between items-center mt-2 p-3 border border-gray-300 rounded-lg focus-within:border-blue-500" onClick={handleToggle} style={{ height: "51px" }}>
+      <div className="w-full flex cursor-pointer bg-custom-white justify-between items-center mt-2 p-[0.535rem] border border-gray-300 rounded-lg focus-within:border-blue-500" onClick={handleToggle} style={{height:'45px'}}>
         <input
           type="text"
           placeholder={placeholder}
@@ -41,7 +41,8 @@ const Dropdown = ({
           readOnly // Make input read-only
           onBlur={onBlur}
           name={name}
-          className="border-none outline-none cursor-pointer w-full font-sansation font-regular text-sm "
+          className="border-none outline-none cursor-pointer w-full font-sansation font-regular  "
+          style={{fontSize:"14px"}}
         />
         <div className="flex items-center " >
           {isOpen ? (
@@ -59,6 +60,7 @@ const Dropdown = ({
                 key={option.value}
                 className="p-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => handleSelect(option)}
+                style={{fontSize:"14px"}}
               >
                 {option.label}
               </li>

@@ -8,7 +8,7 @@ export const Button2 = ({ buttonText, className, onClick,type="button"}) => {
         onClick={onClick}
         type={type}
       >
-        <span className=" gap-2 p-3 ">{buttonText}</span>
+        <span className=" gap-2 p-[0.658rem] ">{buttonText}</span>
       </button>
     </div>
   );

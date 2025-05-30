@@ -512,7 +512,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                           onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
                           onPlaceChanged={onPlaceChanged}
                         >
-                          <input id="location" type="text" className=" outline-none w-full font-sansation font-regular text-sm  p-3 border border-gray-300 rounded-lg mb-2" name="location" value={formik.values.location} onChange={formik.handleChange} placeholder="Enter office location" />
+                          <input id="location" type="text" className=" outline-none w-full font-sansation font-regular text-sm  h-[45px] pl-3 border border-gray-300 rounded-lg mb-2" name="location" value={formik.values.location} onChange={formik.handleChange} placeholder="Enter office location" />
 
                         </Autocomplete>
                         <div className="relative">

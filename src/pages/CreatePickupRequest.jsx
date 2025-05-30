@@ -224,7 +224,7 @@ const CreatePickupRequest = () => {
               )}
             </Formik>
           </div>
-          <div className='p-3 pb-4 hidden md:block'>
+          <div className='p-[0.535rem] pb-4 hidden md:block'>
             <img src={PICKUP_IMG} alt="" className='w-full h-full object-contain' />
           </div>
         </div>
