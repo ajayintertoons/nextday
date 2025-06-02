@@ -28,7 +28,7 @@ import { myContext } from "../../../utils/context_api/context";
 import { IoMdClose } from "react-icons/io";
 import { debounce } from "lodash";
 
-const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddressList }) => {
+const EditModal = ({ data, heading, isOpen, setEditModalOpen, fetchAddressList }) => {
     // const [activeIndex, setActiveIndex] = useState(-1); // for the address selection
     const [countryInfo, setCountryInfo] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState();
@@ -38,8 +38,9 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
     const [errors, setErrors] = useState([]);
     const [errorMap, setErrorMap] = useState({});
     const [map, setMap] = useState(null);
-    const [state,setState] = useState();
-    const [city,setCity] = useState();
+    const [state, setState] = useState();
+    const [city, setCity] = useState();
+    const [addressData, setAddressData] = useState();
     const [receivers, setReceivers] = useState([
         { name: "", phone: "" },
     ]); // Initialize with one receiver
@@ -48,6 +49,24 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
     const [searchInput, setSearchInput] = useState('');
     const [options, setOptions] = useState([]); // Initially, no options
 
+    const fetchEditdata = async () => {
+        try {
+            request({
+                url: `V1/customer/address/${data?.addressId}`,
+                method: "GET"
+            }).then((response) => {
+                setAddressData(response?.data[0])
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        if (data?.addressId) {
+            fetchEditdata();
+        }
+    }, [data?.addressId])
     // Debounced API call to fetch pincode options
     const fetchOptions = useCallback(
         debounce(async (inputValue) => {
@@ -83,15 +102,14 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
         fetchOptions(newValue); // Trigger API call
     };
 
-    useEffect(()=>{
-        if(addressData){ 
-            console.log(addressData?.postalCode, "---postal code")
+    useEffect(() => {
+        if (addressData) {
             setSearchInput(addressData?.postalCode);
-            fetchOptions(); 
+            fetchOptions();
             setCity(addressData?.cityName);
             setState(addressData?.stateName);
         }
-    },[addressData])
+    }, [addressData])
 
     const center = {
         lat: 10.850516,
@@ -107,9 +125,9 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
     const formik = useFormik({
         initialValues: {
             name: addressData?.fullName,
-            email: addressData.emailId,
+            email: addressData?.emailId,
             phoneNumber: addressData?.phoneNo,
-            pincode: addressData?.postalCode,
+            pincode: addressData?.pincodeId || "",
             country: 1,
             state: addressData?.stateId,
             city: addressData?.cityId,
@@ -117,7 +135,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
             addressLine2: addressData?.addressLine2,
             addressType: addressData?.addressType,
             addressLabel: addressData?.addressLabel,
-            receivers: JSON.parse(addressData?.possibleReceivers),
+            receivers: addressData?.possibleReceivers ? JSON?.parse(addressData?.possibleReceivers) : [],
         },
         validationSchema: Yup.object({
             name: nameValidation,
@@ -137,7 +155,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
             // Filter out empty receivers
             // Filter out any empty receiver entries beyond the first one
             request({
-                url: `V1/customer/address/${addressData?.addressId}`,
+                url: `V1/customer/address/${data?.addressId}`,
                 method: "PUT",
                 data: {
                     fullName: values?.name,
@@ -195,10 +213,24 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
 
 
     useEffect(() => {
+        formik.setValues({
+            name: addressData?.fullName,
+            email: addressData?.emailId,
+            phoneNumber: addressData?.phoneNo,
+            pincode: addressData?.pincodeId,
+            country: 1,
+            state: addressData?.stateId,
+            city: addressData?.cityId,
+            addressLine1: addressData?.addressLine1,
+            addressLine2: addressData?.addressLine2,
+            addressType: addressData?.addressType,
+            addressLabel: addressData?.addressLabel,
+            receivers: addressData?.possibleReceivers ? JSON?.parse(addressData?.possibleReceivers) : [],
+        })
         if (addressData?.possibleReceivers) {
-            setReceivers(JSON.parse(addressData?.possibleReceivers))
+            setReceivers(JSON?.parse(addressData?.possibleReceivers))
         }
-        if (addressData.countryId) {
+        if (addressData?.countryId) {
             setSelectedCountry(addressData?.countryId)
         }
         if (addressData?.stateId) {
@@ -208,7 +240,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
             setSelectedCity(addressData?.cityId)
         }
         if (addressData?.postalCode) {
-            setSelectedPincode(addressData?.postalCode)
+            setSelectedPincode(addressData?.postalcodeId)
         }
         if (addressData?.latitude) {
             formik.setFieldValue('latitude', Number(addressData?.latitude));
@@ -321,7 +353,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
     }
 
     return (
-        <Dialog open={isOpen} onClose={() => setEditModalOpen(false)} className="relative" style={{zIndex:999}}>
+        <Dialog open={isOpen} onClose={() => setEditModalOpen(false)} className="relative" style={{ zIndex: 999 }}>
             <DialogBackdrop
                 transition
                 className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
@@ -355,6 +387,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                             onBlur={formik.handleBlur}
                                             error={formik.errors.name}
                                             touched={formik.touched.name}
+                                            isMandatory={true}
                                         />
                                         <span id="fullName" className="text-red-500 mt-1 text-sm">
                                             {errorMap['fullName']}
@@ -370,13 +403,14 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                             error={formik.errors.phoneNumber}
                                             touched={formik.touched.phoneNumber}
                                             mobile={true}
+                                            isMandatory={true}
                                         />
                                         <span id="phoneNo" className="text-red-500 mt-1 text-sm">
                                             {errorMap['phoneNo']}
                                         </span>
 
                                         <div className="mt-3">
-                                            <label htmlFor="pincode" className="form-label">Pincode</label>
+                                            <label htmlFor="pincode" className="form-label">Pincode <span className="text-red-500">*</span></label>
                                             <Select
                                                 value={options?.find(option => option.value == formik.values.pincode) || null} // Set selected value based on formik
                                                 onChange={selectedOption => {
@@ -414,6 +448,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                             error={formik.errors.state}
                                             touched={formik.touched.state}
                                             disabled={true}
+                                            isMandatory={true}
                                         />
                                         {formik.errors.state && formik.touched.state && <div className="text-red-500 mt-1 text-sm">{formik.errors.state}</div>}
 
@@ -431,6 +466,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                             error={formik.errors.city}
                                             touched={formik.touched.city}
                                             disabled={true}
+                                            isMandatory={true}
                                         />
                                         {formik.errors.city && formik.touched.city && <div className="text-red-500 mt-1 text-sm">{formik.errors.city}</div>}
 
@@ -448,6 +484,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                             onBlur={formik.handleBlur}
                                             error={formik.errors.addressLabel}
                                             touched={formik.touched.addressLabel}
+                                            isMandatory={true}
                                         />
                                         <span id="addressLabel" className="text-red-500 mt-1 text-sm">
                                             {errorMap['addressLabel']}
@@ -468,7 +505,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                         </span> */}
                                         <div className="mt-2">
                                             <LoadScript googleMapsApiKey={'AIzaSyD_M5QYY_seLbsWsWtVtZRSpCFYUxjRoeI'} libraries={['places']}>
-                                                <label htmlFor="location" className="form-label">Location </label>
+                                                <label htmlFor="location" className="form-label">Location <span className="text-red-500">*</span></label>
                                                 <Autocomplete
                                                     onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
                                                     onPlaceChanged={onPlaceChanged}
@@ -514,6 +551,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
 
                                             error={formik.errors.email}
                                             touched={formik.touched.email}
+                                            isMandatory={true}
                                         />
                                         <span id="emailId" className="text-red-500 mt-1 text-sm">
                                             {errorMap['emailId']}
@@ -529,6 +567,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                             onBlur={formik.handleBlur}
                                             error={formik.errors.addressLine1}
                                             touched={formik.touched.addressLine1}
+                                            isMandatory={true}
                                         />
                                         <span id="addressLine1" className="text-red-500 mt-1 text-sm">
                                             {errorMap['addressLine1']}
@@ -544,6 +583,7 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                             onBlur={formik.handleBlur}
                                             error={formik.errors.addressLine2}
                                             touched={formik.touched.addressLine2}
+                                            isMandatory={true}
                                         />
                                         <span id="addressLine2" className="text-red-500 mt-1 text-sm">
                                             {errorMap['addressLine2']}
@@ -552,11 +592,10 @@ const EditModal = ({ addressData, heading, isOpen, setEditModalOpen, fetchAddres
                                             Possible Receivers
                                         </h5>
 
-
                                         {receivers.map((receiver, index) => (
                                             <div className="pt-3" key={index}>
                                                 <label htmlFor="" className="">Name & Phone Number</label>
-                                                <div className="grid grid-cols-3 gap-1 items-center justify-center" style={{ gridTemplateColumns: '1fr 1fr auto',paddingTop:"0" }}>
+                                                <div className="grid grid-cols-3 gap-1 items-center justify-center" style={{ gridTemplateColumns: '1fr 1fr auto', paddingTop: "0" }}>
                                                     <div>
                                                         <CustomInputField
                                                             type="text"

@@ -75,14 +75,14 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
               toast.error(err.response.data.message);
             }
           });
-      }else{
+      } else {
         fetchConsigneeAddressList()
       }
     }, 800); // 300ms debounce
-  
+
     return () => clearTimeout(delayDebounce);
   }, [searchConsignee]);
-  
+
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if (searchConsignerAddress) {
@@ -99,32 +99,32 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
               toast.error(err.response.data.message);
             }
           });
-      }else{
+      } else {
         fetchAddressList(setAddressList);
       }
     }, 800); // 300ms debounce
-  
+
     return () => clearTimeout(delayDebounce);
   }, [searchConsignerAddress]);
-  
-  
+
+
 
   useEffect(() => {
     const savedConsigner = sessionStorage.getItem("selectedConsigner");
     const savedConsignee = sessionStorage.getItem("selectedConsignee");
-  
+
     if (savedConsigner) {
       const parsedConsigner = JSON.parse(savedConsigner);
       setSelectedConsigner(parsedConsigner.addressId);
       setSelectedConsignerData(parsedConsigner);
     }
-  
+
     if (savedConsignee) {
       const parsedConsignee = JSON.parse(savedConsignee);
       setSelectedConsignee(parsedConsignee.addressId);
       setSelectedConsigneeData(parsedConsignee);
     }
-  
+
     fetchConsigneeAddressList();
     fetchAddressList(setAddressList);
   }, []);
@@ -153,10 +153,10 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
       const isSame = selectedConsigner === item.addressId;
       const newId = isSame ? null : item.addressId;
       const newData = isSame ? null : item;
-  
+
       setSelectedConsigner(newId);
       setSelectedConsignerData(newData);
-  
+
       sessionStorage.setItem("selectedConsigner", JSON.stringify(newData));
     } else {
       toast.dismiss()
@@ -206,9 +206,9 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
           />
           {searchConsignerAddress && (
             <IoMdClose
-            className='absolute top-1/2 right-8 transform -translate-y-1/2 text-lg cursor-pointer'
-            onClick={() => setSearchConsignerAddress('')}
-            title="Clear"
+              className='absolute top-1/2 right-8 transform -translate-y-1/2 text-lg cursor-pointer'
+              onClick={() => setSearchConsignerAddress('')}
+              title="Clear"
             />
           )}
         </div>
@@ -239,7 +239,7 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
                   </div>
                 </div>
                 <div className="ms-3 flex-1" style={{ minWidth: "170px" }}>
-                  <h5 className="bold-sansation text-lg">{item?.addressLabel}</h5>
+                  <h5 className="bold-sansation text-lg">{item?.fullName}</h5>
                   <p className="font-sansation font-regular text-sm whitespace-nowrap overflow-hidden text-ellipsis pr-5" style={{ minWidth: "100px" }}>
                     {item?.addressLine1 + ',' + item?.addressLine2 + ',' + item?.cityName + ',' + item?.stateName + ',' + item?.countryName}
                   </p>
@@ -274,9 +274,9 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
             />
             {searchConsignee && (
               <IoMdClose
-              className='absolute top-1/2 right-8 transform -translate-y-1/2 text-lg cursor-pointer'
-              onClick={() => setSearchConsignee('')}
-              title="Clear"
+                className='absolute top-1/2 right-8 transform -translate-y-1/2 text-lg cursor-pointer'
+                onClick={() => setSearchConsignee('')}
+                title="Clear"
               />
             )}
           </div>
@@ -306,7 +306,7 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
                     </div>
                   </div>
                   <div className="ms-3 flex-1" style={{ minWidth: "170px" }}>
-                    <h5 className="bold-sansation text-lg">{item?.addressLabel}</h5>
+                    <h5 className="bold-sansation text-lg">{item?.fullName}</h5>
                     <p className="font-sansation font-regular text-sm whitespace-nowrap overflow-hidden text-ellipsis pr-5" style={{ minWidth: "100px" }}>
                       {item?.addressLine1 + ',' + item?.addressLine2 + ',' + item?.cityName + ',' + item?.stateName + ',' + item?.countryName}
                     </p>
@@ -330,8 +330,7 @@ const CreatePickupStage2 = ({ selectedConsigner, setSelectedConsigner, selectedC
             </div>
           </div>
         </div>
-
-        {editModalOpen && <EditModal isOpen={editModalOpen} fetchAddressList={fetchAddressList} addressData={addressData} setEditModalOpen={setEditModalOpen} />}
+        {editModalOpen && <EditModal isOpen={editModalOpen} fetchAddressList={fetchAddressList} data={addressData} setEditModalOpen={setEditModalOpen} />}
       </div>
     </>
   );

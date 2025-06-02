@@ -80,7 +80,7 @@ const RecurringPickupList = () => {
             <div className="relative">
                 <Breadcrub pageTitle="Recurring Pickups" />
             </div>
-            <div className="flex flex-col gap-2 max-h-[510px] overflow-auto">
+            <div className="flex flex-col gap-2 max-h-[510px] mt-5 overflow-auto">
                 {recurringList?.map(item => (
                     <>
                         <div className='border rounded p-2 '>
@@ -91,7 +91,7 @@ const RecurringPickupList = () => {
                                     <MdDelete color='red' size={20} title="Delete" style={{cursor:"pointer"}} onClick={()=>handleDelete(item?.recurringId)}/>
                                 </div>
                             </div>
-                            <div className='flex justify-between items-center flex-wrap mt-2'>
+                            <div className='flex justify-between gap-3 sm:items-center flex-wrap mt-2'>
                                 <div>
                                     <p className='font-sansation text-gray-400'>sheduledPickup Time</p>
                                     <p className='font-sansation'>{convertTimeToAMPM(item?.pickupScheduleFrom)} to {convertTimeToAMPM(item?.pickupScheduleTo)}</p>

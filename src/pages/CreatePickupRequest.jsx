@@ -129,8 +129,8 @@ const CreatePickupRequest = () => {
     <>
     <CancelModal isCancelPickup={isCancelPickup} setIsCancelPickup={setIsCancelPickup} id={id}/>
     <div className="container mx-auto p-3 pt-[116px] lg:pt-0 ">
-      <div className=" p-6 rounded-lg shadow-md w-full ">
-        <div className='float-end'><button className="text-white bg-custom-green py-2 px-5 rounded-md font-sansation" onClick={() => navigate(-1)}>Back</button></div>
+      <div className=" p-6 rounded-lg my-3 shadow-md w-full ">
+        <div className='float-end'><button className="text-white bg-custom-green h-[45px] px-5 rounded-md font-sansation" onClick={() => navigate(-1)}>Back</button></div>
         <h1 className="text-3xl font-bold font-sansation text-gray-800 mb-6">{editData ? "Update Pickup Request" : "Create Pickup Request"}</h1>
 
         <div className='grid grid-cols-1 md:grid-cols-2 h-full rounded-md shadow-sm' >
@@ -155,7 +155,7 @@ const CreatePickupRequest = () => {
                           handlePickupScheduleFromChange(e); 
                           setFieldValue('pickupScheduleFrom', e.target.value);
                         }}
-                        className="mt-1 block w-full px-3 py-2 border rounded-md border-gray-300  focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full px-3 h-[45px] border rounded-md border-gray-300  focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <ErrorMessage name="pickupScheduleFrom" component="div" className="text-red-500 text-sm" />
                     </div>
@@ -168,7 +168,7 @@ const CreatePickupRequest = () => {
                         name="pickupScheduleTo"
                         min={minScheduleTo}
                         max={maxScheduleTo}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mt-1 block w-full px-3 h-[45px] border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <ErrorMessage name="pickupScheduleTo" component="div" className="text-red-500 text-sm " />
                     </div>
@@ -180,7 +180,7 @@ const CreatePickupRequest = () => {
                         id="approxWeight"
                         name="approxWeight"
                         placeholder="Enter approx weight"
-                        style={{ height: "44px" }}
+                        style={{ height: "45px" }}
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <ErrorMessage name="approxWeight" component="div" className="text-red-500 text-sm " />
@@ -196,13 +196,13 @@ const CreatePickupRequest = () => {
                     </button> */}
                     <button
                       type="submit"
-                      className=" py-2 px-4 bg-[#1ba169] text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
+                      className=" h-[45px] px-4 bg-[#1ba169] text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
                     >
                       {loading ? <ClipLoader color='white' size={18} /> : `${editData ? "Update" : "Submit"}`}
                     </button>
                     {editData && <button
                       type="button"
-                      className=" py-2 px-4 bg-[#1ba169] text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
+                      className=" h-[45px] px-4 bg-[#1ba169] text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
                       onClick={() =>  {
                         clearSessionStorage();
                         navigate(`/create-pickup?pickupReqId=${editData?.pickupReqId}`);
@@ -212,7 +212,7 @@ const CreatePickupRequest = () => {
                     </button>}
                     {id && <button
                       type="button"
-                      className="py-2 px-4 bg-red-600 text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
+                      className="h-[45px] px-4 bg-red-600 text-white font-semibold font-sansation rounded-lg min-w-[100px] transition duration-300"
                       onClick={() =>{ setIsCancelPickup(true)}}
                       disabled={loading}
                     >

@@ -192,7 +192,7 @@ const Profile = () => {
           </div>
         </div>
         {(isProfileEditMoalOpen) && <ProfileEditModal setIsProfileEditModalOpen={setIsProfileEditModalOpen} isProfileEditModalOpen={isProfileEditMoalOpen} profileData={profileData} />}
-        {isAddressEditModalOpen && <EditModal isOpen={isAddressEditModalOpen} fetchAddressList={fetchAddressList} setEditModalOpen={setIsAddressEditModalOpen} addressData={addressData} />}
+        {isAddressEditModalOpen && <EditModal isOpen={isAddressEditModalOpen} fetchAddressList={fetchAddressList} setEditModalOpen={setIsAddressEditModalOpen} data={addressData} />}
         {isAddAddressModalOpen && <CreateModal isOpen={isAddAddressModalOpen} onClose={setIsAddAddressModalOpen} fetchAddressList={fetchAddressList} />}
       </div>
     </div>

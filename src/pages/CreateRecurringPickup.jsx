@@ -285,7 +285,7 @@ const CreateRecurringPickup = () => {
                                 </span>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-1 mt-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 mt-2">
                                 <div className="mt-1">
                                     <label htmlFor="" className="font-sansation font-regular text-md">Pickup Schedule From<span className="text-red-500"> *</span></label>
                                     <input
@@ -337,7 +337,7 @@ const CreateRecurringPickup = () => {
                         </div>
                     </div>
                     <div className="flex justify-center items-center">
-                        <button className='bg-custom-green text-white flex items-center  justify-center rounded-md font-sansation font-regular mt-4 px-5 py-3' onClick={() => setErrorMap({})} >{loading ? <ClipLoader size={18} color='white' /> : `${editData ? "Update" : "Submit"}`}</button>
+                        <button className='bg-custom-green text-white flex items-center  justify-center rounded-md font-sansation font-regular mt-4 px-5 h-[45px]' onClick={() => setErrorMap({})} >{loading ? <ClipLoader size={18} color='white' /> : `${editData ? "Update" : "Submit"}`}</button>
                     </div>
                 </form>
             </div>

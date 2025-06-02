@@ -35,7 +35,7 @@ const LandingPage = () => {
   const [isOrderSelect, setIsOrderSelect] = useState(false);
   const [clickLocation, setClickLocation] = useState(true);
   const [countryInfo, setCountryInfo] = useState([]);
-  const [selectedState, setSelectedState] = useState()
+  const [selectedState, setSelectedState] = useState();
   const [selectedCity, setSelectedCity] = useState();
   const [pincodeList, setPincodeList] = useState([])
   const [selectedPincode, setSelectedPincode] = useState()
@@ -48,6 +48,7 @@ const LandingPage = () => {
   const [check, setCheck] = useState(false);
   const { login } = useContext(myContext);
   const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const [locationLoader, setLocationLoader] = useState(false);
   const navigate = useNavigate();
 
   const handleRecaptchaChange = (token) => {
@@ -69,21 +70,24 @@ const LandingPage = () => {
   }, []);
 
   const handleTrack = () => {
-     navigate(`/pincode-finder?id=${formik.values?.trackingId}`)
+    navigate(`/pincode-finder?id=${formik.values?.trackingId}`)
   }
 
   const formik = useGlobalFormik(locationFinderInitialValues, locationFinderValidationSchema,
     (values) => {
+      setLocationLoader(true);
       request({
         url: `V1/service-availability?stateId=${selectedState}&cityId=${selectedCity}&pincode=${selectedPincode}`,
         method: "GET",
       }).then((response) => {
-        setLocaitonData(response?.data[0])
+        setLocaitonData(response?.data[0]);
+        setLocationLoader(false);
       }).catch((error) => {
         if (error.response.status == 500) {
           toast.dismiss();
-          toast.error(err.response.data.message)
+          toast.error(err.response.data.message);
         }
+        setLocationLoader(false);
       })
     });
   // ----------------- hooks end here -------------
@@ -111,7 +115,6 @@ const LandingPage = () => {
     label: city.cityName,
     value: city.cityId
   }))
-
 
   useEffect(() => {
     if (selectedCity) {
@@ -322,7 +325,7 @@ const LandingPage = () => {
                           </div>
                           <button
                             type="submit"
-                            className={`${recaptchaToken ? 'opacity-100' : 'opacity-25'} bg-black text-white w-full mt-3 rounded-md flex items-center justify-center p-2 cursor-pointer font-sansation font-bold`}
+                            className={`${recaptchaToken ? 'opacity-100 cursor-pointer' : 'opacity-25 cursor-not-allowed'} bg-black text-white w-full mt-3 rounded-md flex items-center justify-center p-2  font-sansation font-bold`}
                             onClick={() => handleTrack()}
                             disabled={loading || !recaptchaToken}
                           >
@@ -550,16 +553,16 @@ const LandingPage = () => {
 
                         <button
                           type="submit"
-                          className="bg-black w-full mt-11 text-white rounded-md flex items-center justify-center h-[45px] p-2 cursor-pointer font-sansation font-bold"
+                          className={`bg-black w-full mt-11 ${locationLoader ? "cursor-not-allowed" : "cursor-pointer"} text-white rounded-md flex items-center justify-center h-[45px] p-2  font-sansation font-bold`}
                           onClick={() => setIsVisible(true)}
                         >
-                          Track
+                          {locationLoader ? <ClipLoader size={18} color="white" /> : 'Track'}
                         </button>
                       </form>
 
                       {/* Content Div with Transition */}
                       <div
-                        className={` mt-6 bg-white grid grid-cols-2 sm:grid-cols-4 border transition-all duration-300 ease-in-out ${isVisible ? 'opacity-100 max-h-screen' : 'opacity-0 max-h-0'
+                        className={`mt-6 bg-white grid grid-cols-2 sm:grid-cols-4 border transition-all duration-300 ease-in-out ${isVisible ? 'opacity-100 max-h-screen' : 'opacity-0 max-h-0'
                           }`}
                         style={{ minWidth: '100%', overflow: 'hidden' }}
                       >

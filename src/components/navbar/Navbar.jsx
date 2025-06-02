@@ -1,6 +1,6 @@
-import { useState, useContext, useEffect , useRef } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import logo from "../../images/VerticalBorder.png";
-import { Bars3Icon , XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { IoMail } from "react-icons/io5";
 import { IoMdTime } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
@@ -27,8 +27,8 @@ function Navbar({ className }) {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isOpen,setIsOpen] = useState(false);
-  const [logOutConfirm,setLogOutConfirm] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [logOutConfirm, setLogOutConfirm] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -92,27 +92,27 @@ function Navbar({ className }) {
     { label: "Services", path: "/services", hasPlus: true },
     { label: "Blog", path: "/blog", hasPlus: true },
     { label: "Contact Us", path: "/contact-us", hasPlus: false },
-    {label:"Traker", path:"/pincode-finder",hasplus:false}
+    { label: "Tracker", path: "/pincode-finder", hasplus: false }
   ];
 
-  const handleClose = ()=>{
+  const handleClose = () => {
     setLogOutConfirm(false);
     setIsAccountModalOpen(false);
     setIsOpen(false);
   }
-  const handleConfirm =()=>{
+  const handleConfirm = () => {
     setLogOutConfirm(true);
   }
 
-  useEffect(()=>{
-    if(isOpen && logOutConfirm){
+  useEffect(() => {
+    if (isOpen && logOutConfirm) {
       logOut();
     }
-  },[isOpen,logOutConfirm])
+  }, [isOpen, logOutConfirm])
 
   return (
     <>
-    <LogOutModal isOpen={isOpen} onClose={handleClose} onConfirm={handleConfirm} title="Log Out" message="Are you sure you want to logout ?"/>
+      <LogOutModal isOpen={isOpen} onClose={handleClose} onConfirm={handleConfirm} title="Log Out" message="Are you sure you want to logout ?" />
       <div className={`${isLogin ? "bg-[#0C1118]" : ""} ${className}`}>
         <Toaster containerStyle={{
           zIndex: 10001, // Ensure container has higher z-index
@@ -188,7 +188,7 @@ function Navbar({ className }) {
                               </button>
                               <button
                                 className="flex items-center px-4 rounded-md py-2 text-custom-green hover:bg-gray-200"
-                                onClick={()=>setIsOpen(true)}
+                                onClick={() => setIsOpen(true)}
                               >
                                 <FaArrowRight className="mr-2" />
                                 Logout
@@ -288,79 +288,79 @@ function Navbar({ className }) {
             className={`fixed z-40 w-full bg-gray-100 font-sansation overflow-y-auto scrollbar-hide flex flex-col lg:hidden gap-12 origin-top duration-700 pt-[116px] lg:pt-0 ${!toggleMenu ? "h-0" : "h-full"}`}
           >
             <div className="px-5 py-4">
-            {isLogin ? (
-              <div className="flex flex-col gap-1 font-bold tracking-wide pb-3">
-                {/* Profile */}
-                <div
-                  className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
-                  onClick={() => {
-                    navigate(`/home/${userType.toLowerCase()}/my-profile`);
-                    setToggleMenu(!toggleMenu);
-                  }}
-                >
-                  <span>Profile</span>
-                  <FaUserCircle className="text-lg" />
-                </div>
+              {isLogin ? (
+                <div className="flex flex-col gap-1 font-bold tracking-wide pb-3">
+                  {/* Profile */}
+                  <div
+                    className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                    onClick={() => {
+                      navigate(`/home/${userType.toLowerCase()}/my-profile`);
+                      setToggleMenu(!toggleMenu);
+                    }}
+                  >
+                    <span>Profile</span>
+                    <FaUserCircle className="text-lg" />
+                  </div>
 
-                {/* Logout */}
-                <div
-                  className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
-                  onClick={logOut}
-                >
-                  <span>Logout</span>
-                  <FaArrowRight className="text-lg" />
-                </div>
+                  {/* Logout */}
+                  <div
+                    className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                    onClick={logOut}
+                  >
+                    <span>Logout</span>
+                    <FaArrowRight className="text-lg" />
+                  </div>
 
-                {/* Action Buttons */}
-                <>
-                  {currentPath !== "/create-pickup-request" && (
-                    <div
-                      className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
-                      onClick={() => {
-                        navigate(`/create-pickup-request`);
-                        setToggleMenu(!toggleMenu);
-                      }}
-                    >
-                      <span>Request Pickup</span>
-                      <FaArrowRight className="text-lg" />
-                    </div>
-                  )}
-                  {currentPath !== "/create-pickup" && (
-                    <div
-                      className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
-                      onClick={() => {
-                        sessionStorage.removeItem("package");
-                        sessionStorage.removeItem("pickupOptions");
-                        navigate(`/create-pickup`);
-                        setToggleMenu(!toggleMenu);
-                      }}
-                    >
-                      <span>Create Booking</span>
-                      <FaArrowRight className="text-lg" />
-                    </div>
-                  )}
-                </>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-4 font-bold tracking-wide py-3">
-                <div
-                  className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
-                  onClick={() => {
-                    setIsLoginModalOpen(true);
-                    setToggleMenu(!toggleMenu);
-                  }}
-                >
-                  <span>Login</span>
+                  {/* Action Buttons */}
+                  <>
+                    {currentPath !== "/create-pickup-request" && (
+                      <div
+                        className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                        onClick={() => {
+                          navigate(`/create-pickup-request`);
+                          setToggleMenu(!toggleMenu);
+                        }}
+                      >
+                        <span>Request Pickup</span>
+                        <FaArrowRight className="text-lg" />
+                      </div>
+                    )}
+                    {currentPath !== "/create-pickup" && (
+                      <div
+                        className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                        onClick={() => {
+                          sessionStorage.removeItem("package");
+                          sessionStorage.removeItem("pickupOptions");
+                          navigate(`/create-pickup`);
+                          setToggleMenu(!toggleMenu);
+                        }}
+                      >
+                        <span>Create Booking</span>
+                        <FaArrowRight className="text-lg" />
+                      </div>
+                    )}
+                  </>
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="flex flex-col gap-4 font-bold tracking-wide py-3">
+                  <div
+                    className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
+                    onClick={() => {
+                      setIsLoginModalOpen(true);
+                      setToggleMenu(!toggleMenu);
+                    }}
+                  >
+                    <span>Login</span>
+                  </div>
+                </div>
+              )}
 
-            <div className="mt-1 border-t pt-4 flex flex-col gap-1 font-bold tracking-wide">
+              <div className="mt-1 border-t pt-4 flex flex-col gap-1 font-bold tracking-wide">
                 {menuItems?.map((item, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
-                    onClick={() =>{ navigate(item.path);setToggleMenu(!toggleMenu);}}
+                    onClick={() => { navigate(item.path); setToggleMenu(!toggleMenu); }}
                   >
                     <button className="btn rounded-md ">
                       {item.label}

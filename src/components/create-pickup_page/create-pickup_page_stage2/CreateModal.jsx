@@ -33,8 +33,8 @@ import { IoMdClose } from "react-icons/io";
 const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
   const [countryInfo, setCountryInfo] = useState([]);
   const [selectedPincode, setSelectedPincode] = useState();
-  const [state,setState] = useState();
-  const [city,setCity] = useState();
+  const [state, setState] = useState();
+  const [city, setCity] = useState();
   const [errorMap, setErrorMap] = useState({});
   const [map, setMap] = useState(null);
   const [receivers, setReceivers] = useState([
@@ -52,15 +52,15 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
           url: `V1/searchpincode?searchTerm=${searchInput}`,
           method: "GET",
         }).then((response) => {
-          setOptions(response?.data?.map(item=>({
-            label:item?.pincode,
-            value:item?.pincodeId,
-            cityName:item?.cityName,
-            cityId:item?.cityId,
-            stateName:item?.stateName,
-            stateId:item?.stateId,
-            countryName:item?.countryName,
-            countryId:item?.countryId
+          setOptions(response?.data?.map(item => ({
+            label: item?.pincode,
+            value: item?.pincodeId,
+            cityName: item?.cityName,
+            cityId: item?.cityId,
+            stateName: item?.stateName,
+            stateId: item?.stateId,
+            countryName: item?.countryName,
+            countryId: item?.countryId
           })))
         }).catch((err) => {
           if (err.response.status == 500) {
@@ -225,7 +225,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
     setMarker(newCenter);
     setAddress(place.formatted_address);
     map.panTo(newCenter);
-    
+
   };
 
   const onMapClick = (event) => {
@@ -292,13 +292,13 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
   }
 
   return (
-    <Dialog open={isOpen} onClose={() => onClose(false)} className="relative "  style={{zIndex:999}}>
+    <Dialog open={isOpen} onClose={() => onClose(false)} className="relative " style={{ zIndex: 999 }}>
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-       
+
       />
-      <form onSubmit={formik.handleSubmit} style={{zIndex:99999}}>
+      <form onSubmit={formik.handleSubmit} style={{ zIndex: 99999 }}>
         <div className="fixed inset-0 w-screen overflow-y-auto">
           <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0">
             <DialogPanel
@@ -419,9 +419,9 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                         value={options?.find(option => option.value == formik.values.pincode) || null} // Set selected value based on formik
                         onChange={selectedOption => {
                           formik.setFieldValue('pincode', selectedOption ? selectedOption.value : '');
-                          formik.setFieldValue('state',selectedOption?.stateId);
-                          formik.setFieldValue('city',selectedOption?.cityId);
-                          formik.setFieldValue('country',selectedOption?.countryId);
+                          formik.setFieldValue('state', selectedOption?.stateId);
+                          formik.setFieldValue('city', selectedOption?.cityId);
+                          formik.setFieldValue('country', selectedOption?.countryId);
                           setState(selectedOption?.stateName);
                           setCity(selectedOption?.cityName);
                           setSelectedPincode(selectedOption ? selectedOption.value : ''); // Optionally handle selected option
@@ -438,8 +438,8 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                       />
                       {formik.errors.pincode && formik.touched.pincode && <div className="text-red-500 mt-1 text-sm">{formik.errors.pincode}</div>}
                       <span id="pincodeId" className="text-red-500 mt-1 text-sm">
-                      {errorMap['pincodeId']}
-                    </span>
+                        {errorMap['pincodeId']}
+                      </span>
                     </div>
                     <CustomInputField
                       type="text"
@@ -452,6 +452,7 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                       error={formik.errors.state}
                       touched={formik.touched.state}
                       disabled={true}
+                      isMandatory={true}
                     />
                     {/* {formik.errors.state && formik.touched.state && <div className="text-red-500 mt-1 text-sm">{formik.errors.state}</div>} */}
 
@@ -469,10 +470,11 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                       error={formik.errors.city}
                       touched={formik.touched.city}
                       disabled={true}
+                      isMandatory={true}
                     />
                     {/* {formik.errors.city && formik.touched.city && <div className="text-red-500 mt-1 text-sm">{formik.errors.city}</div>} */}
 
-                    {(!formik.errors.city && !formik.touched.city) &&<span id="cityId" className="text-red-500 mt-1 text-sm">
+                    {(!formik.errors.city && !formik.touched.city) && <span id="cityId" className="text-red-500 mt-1 text-sm">
                       {errorMap['cityId']}
                     </span>}
 
@@ -623,7 +625,6 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                               mobile={true}
                             />
                           </div>
-
                           {/* Show "Remove" button only if there's more than one receiver */}
                           {index > 0 && (
                             <button
@@ -647,8 +648,6 @@ const CreateModal = ({ heading, isOpen, onClose, fetchAddressList }) => {
                         className="w-[7rem] h-[2rem] text-custom-green border-custom-green hover:border-custom-gray hover:bg-[#CAFFE5]"
                       />
                     </div>
-
-
                   </div>
                 </div>
 
