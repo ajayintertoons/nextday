@@ -61,7 +61,6 @@ const RateCalculator_Page = () => {
                 //   onChange={}
                 />
               </div>
-
               <div>
                 <CustomInputField
                   title="Delivery Pincode"

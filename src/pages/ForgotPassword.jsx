@@ -200,6 +200,7 @@ const ForgotPassword = () => {
             error={formik.errors.mobile}
             touched={formik.touched.mobile}
             mobile={true}
+            isMandatory={true}
           />
           <span className="text-red-500">{mobileError}</span>
           <div className="bold-sansation pt-5">

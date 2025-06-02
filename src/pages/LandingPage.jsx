@@ -172,7 +172,7 @@ const LandingPage = () => {
         style={{
           backgroundImage: `url(${bg})`,
         }}
-        className="bg-cover bg-center bg-no-repeat "
+        className="bg-cover bg-center bg-no-repeat"
       >
         <Navbar />
         <div className=" flex items-center justify-center h-auto  lg:min-h-[650px] border-t-[0.1rem] border-gray-600 Best pt-[116px] lg:pt-0">

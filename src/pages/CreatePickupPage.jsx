@@ -416,7 +416,6 @@ const CreatePickupPage = () => {
             sessionStorage.removeItem("pickupOptions");
             sessionStorage.removeItem("selectedConsigner");
             sessionStorage.removeItem("selectedConsignee");
-            console.log("Package removed from sessionStorage.");
             toast.success(response?.message)
           } catch (err) {
             console.error("Failed to remove item from sessionStorage:", err);
@@ -480,7 +479,6 @@ const CreatePickupPage = () => {
             sessionStorage.removeItem("selectedConsigner");
             sessionStorage.removeItem("selectedConsignee");
             toast.success(response?.message);
-            console.log("Package removed from sessionStorage.");
           } catch (err) {
             console.error("Failed to remove item from sessionStorage:", err);
           }
@@ -577,9 +575,6 @@ const CreatePickupPage = () => {
       console.error("Failed to parse sessionStorage data:", err);
     }
   }, []); // Empty dependency array ensures it runs only once on mount
-
-
-
 
   // const handleNext = () => {
   //   formik.validateForm().then((errors) => {

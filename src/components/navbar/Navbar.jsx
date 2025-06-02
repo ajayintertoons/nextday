@@ -305,7 +305,7 @@ function Navbar({ className }) {
                   {/* Logout */}
                   <div
                     className="flex items-center justify-between px-2 py-2 hover:bg-custom-green hover:text-white transition-colors cursor-pointer"
-                    onClick={logOut}
+                    onClick={()=>setIsOpen(true)}
                   >
                     <span>Logout</span>
                     <FaArrowRight className="text-lg" />
