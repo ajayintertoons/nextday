@@ -180,6 +180,7 @@ const ForgotPassword = () => {
               onBlur={formik2.handleBlur}
               error={formik2.errors.password}
               touched={formik2.touched.password}
+              isMandatory={true}
             />
             <span className="text-red-500">{passwordError}</span>
             <div className="bold-sansation pt-5">

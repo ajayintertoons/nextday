@@ -137,7 +137,7 @@ const CreatePickupPage = () => {
     console.error("Failed to parse sessionStorage data:", err);
   }
 
-  const [imagePreviews, setImagePreviews] = useState(localStoredData?.packages ? localStoredData?.packages?.map(item => item?.images?.filter (item => item?.imageUrl)?.map(item=>item?.imageUrl)): []);
+  const [imagePreviews, setImagePreviews] = useState(localStoredData?.packages ? localStoredData?.packages?.map(item => item?.images?.filter(item => item?.imageUrl)?.map(item => item?.imageUrl)) : []);
   const [packages, setPackages] = useState([{}]);
   const [paymentMethod, setPaymentMethod] = useState();
   const [insurance, setInsurance] = useState();
@@ -171,7 +171,7 @@ const CreatePickupPage = () => {
         approxWeight: "",
         packageValue: "",
         images: null,
-        declarationFile:null,
+        declarationFile: null,
         ewaybillFile: null,
         withInvoice: false
       },
@@ -229,7 +229,7 @@ const CreatePickupPage = () => {
         ],
         paymentMethod: "",
       })
-      localStoredData=null;
+      localStoredData = null;
     }
   }, [])
 
@@ -243,8 +243,8 @@ const CreatePickupPage = () => {
         volumetricWeight: item?.volumetricWeight,
         approxWeight: item?.approxWeight,
         packageValue: item?.packageValue,
-        images: item?.boxImages?.filter(item=>item?.imageUrl)?.map(item => ({ imageUrl: item?.imageUrl })),
-        declarationFile:item?.declarationFile,
+        images: item?.boxImages?.filter(item => item?.imageUrl)?.map(item => ({ imageUrl: item?.imageUrl })),
+        declarationFile: item?.declarationFile,
         ewaybillFile: item?.ewaybillFile,
         withInvoice: item?.withInvoice,
       }))
@@ -252,12 +252,12 @@ const CreatePickupPage = () => {
         pickupScheduleFrom: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleFrom),
         pickupScheduleTo: convertDateFormatUTC(bookingDetails?.pickupRequest?.pickupScheduleTo),
         modeType: bookingDetails?.booking?.ModeOfTransport,
-        boxType:JSON.parse(bookingDetails?.booking?.boxes)?.[0]?.boxType,
+        boxType: JSON.parse(bookingDetails?.booking?.boxes)?.[0]?.boxType,
         toPay: bookingDetails?.booking?.IsToPay ? 1 : 0,
         packages: packagess,
         paymentMethod: ""
       })
-      setImagePreviews(packagess?.map(item => item?.images?.filter(item => item?.imageUrl)?.map(item=>item?.imageUrl)))
+      setImagePreviews(packagess?.map(item => item?.images?.filter(item => item?.imageUrl)?.map(item => item?.imageUrl)))
       setPackages(packagess)
       setInsurance(bookingDetails?.booking?.insuranceProvider)
 
@@ -618,7 +618,6 @@ const CreatePickupPage = () => {
 
       // markAllFieldsTouched();
 
-
       formik.validateForm().then((errors) => {
         markAllFieldsTouched(); // Mark fields as touched AFTER validation triggers errors
 
@@ -654,9 +653,7 @@ const CreatePickupPage = () => {
             <PickupSection1 formik={formik} isReversePickup={isReversePickup} setIsReversePickup={setIsReversePickup} isToPay={isToPay} setIsToPay={setIsToPay} />
             <PickupSection2 formik={formik} setSkip={setSkip} skip={skip} packages={packages} setPackages={setPackages} imagePreviews={imagePreviews} setImagePreviews={setImagePreviews} />
           </>
-
         )}
-
         {/* ------------- pickup first page end ----------- */}
 
         {/* ------------- pickup second page ----------- */}

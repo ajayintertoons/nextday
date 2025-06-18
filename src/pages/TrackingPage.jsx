@@ -67,7 +67,7 @@ const TrackingPage = () => {
                   <div className="bold-sansation">
                     <h5>Edappally, Ernakulam</h5>
                     <p className="text-[#B0B0B0] text-[0.7rem]">
-                      Rd. Santa Ana, Illinois 85486
+                      Rd. Santa Ana, Illinois 85486  
                     </p>
                   </div>
                 </div>

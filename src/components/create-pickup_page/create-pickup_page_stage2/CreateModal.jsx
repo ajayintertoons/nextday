@@ -10,7 +10,6 @@ import mapImage from "../../../images/mapimage2.png";
 import Select from 'react-select';
 import debounce from 'lodash/debounce';
 
-
 import {
   emailValidation,
   nameValidation,
